@@ -14,8 +14,8 @@ export default function fetchAPI(path, method = "GET", body = {}) {
   return fetch(`${SERVER_URL}/${path}`, options).then((res) => {
     if (res.ok) return res.json();
     else
-      return res.json().then((data) => {
-        throw Error(data.error);
+      return res.json().then((res) => {
+        throw Error(JSON.stringify(res));
       });
   });
 }

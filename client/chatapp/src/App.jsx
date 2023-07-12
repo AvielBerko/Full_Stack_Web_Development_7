@@ -12,7 +12,9 @@ function App() {
   })
 
   if (usersQuery.isLoading) return <p>Loading...</p>
-  if (usersQuery.isError) return <pre>Error: {usersQuery.error.message}</pre>
+  if (usersQuery.isError){
+    return <pre>{(usersQuery.error.message)}</pre>
+  } 
 
   return (
     <div>
