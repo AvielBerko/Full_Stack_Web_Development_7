@@ -10,7 +10,7 @@ app.use(cors());
 app.get('/', (req, res) => res.send({data: "hello world!"}));
 
 // Routes
-const users = require('./routes/Users');
+const users = require('./routes/users');
 app.use('/users', users);
 
 // Listen on port

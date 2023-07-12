@@ -1,16 +1,25 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useQuery } from '@tanstack/react-query';
+import fetchAPI from './api/fetch_api';
 
 function App() {
-  const [text, setText] = useState("")
 
-  fetch("http://127.0.0.1:3000/users").then(res => res.json()).then(res => {console.log(res); setText(res[2].name);});
+  const usersQuery = useQuery({
+    queryKey: ['users'],
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    queryFn: () => fetchAPI('users')
+  })
+
+  if (usersQuery.isLoading) return <p>Loading...</p>
+  if (usersQuery.isError) return <pre>Error: {usersQuery.error.message}</pre>
+
   return (
-    <>
-      <p>{text}</p>
-    </> 
+    <div>
+      {usersQuery.data.map((user) => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
   )
 }
 
