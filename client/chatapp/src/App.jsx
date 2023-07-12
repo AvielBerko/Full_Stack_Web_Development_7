@@ -6,7 +6,7 @@ import './App.css'
 function App() {
   const [text, setText] = useState("")
 
-  fetch("http://127.0.0.1:3000/users").then(res => res.json()).then(res => {console.log(res); setText(res[2].name);});
+  fetch("http://127.0.0.1:3000/users").then(res => res.json()).then(res => {console.log(res); setText(res[0].name);});
   return (
     <>
       <p>{text}</p>
