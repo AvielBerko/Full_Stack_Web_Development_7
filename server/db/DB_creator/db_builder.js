@@ -1,5 +1,6 @@
 const mysql = require('mysql2')
 
+
 MYSQL_HOST = '127.0.0.1'
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = 'itamar8236'

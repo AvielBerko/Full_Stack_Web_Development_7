@@ -9,6 +9,10 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send({data: "hello world!"}));
 
+// Routes
+const users = require('./routes/Users');
+app.use('/users', users);
+
 // Listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening to port ${port}`));

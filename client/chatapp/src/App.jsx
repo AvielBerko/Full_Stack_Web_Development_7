@@ -6,11 +6,11 @@ import './App.css'
 function App() {
   const [text, setText] = useState("")
 
-  fetch("http://127.0.0.1:3000/").then(res => res.json()).then(res => setText(res.data));
+  fetch("http://127.0.0.1:3000/users").then(res => res.json()).then(res => {console.log(res); setText(res[2].name);});
   return (
     <>
       <p>{text}</p>
-    </>
+    </> 
   )
 }
 
