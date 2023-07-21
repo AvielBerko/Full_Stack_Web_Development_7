@@ -109,12 +109,31 @@ db_name = 'fswd7db'
 const tables = {
     users: {
         columns: [
-            'id INT PRIMARY KEY AUTO_INCREMENT',
-            'name VARCHAR(255)',
-            // 'username VARCHAR(255) UNIQUE',
-            // 'email VARCHAR(255)',
+            'id VARCHAR(36) PRIMARY KEY',
+            'name VARCHAR(255) UNIQUE',
+            'email VARCHAR(255)',
+            'phone_number VARCHAR(10) UNIQUE',
+            'valid BOOLEAN',
         ],
         constraints: [
+        ]
+    },
+    passwords: {
+        columns: [
+            'user_id VARCHAR(36) UNIQUE',
+            'password VARCHAR(36)',
+        ],
+        constraints: [
+            'FOREIGN KEY (user_id) REFERENCES users(id)',
+        ]
+    },
+    admins: {
+        columns: [
+            'id VARCHAR(36) PRIMARY KEY',
+            'user_id VARCHAR(36) UNIQUE',
+        ],
+        constraints: [
+            'FOREIGN KEY (user_id) REFERENCES users(id)',
         ]
     },
 }
