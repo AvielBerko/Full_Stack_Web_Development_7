@@ -16,6 +16,7 @@ export default function Login() {
 
   const handleLogin = () => {
     login(username, password).then((user) => {
+      console.log(user);
       if (user) {
         setAuth(user);
         navigate("/home", { replace: true });

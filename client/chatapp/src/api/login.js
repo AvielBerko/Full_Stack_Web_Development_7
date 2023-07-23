@@ -12,7 +12,7 @@ export default function login(username, password)  {
     }
   })
   .then((data) => {
-    return data.ok ? data.json() : null; // data.jwt : null;
+    return data.ok ? data : null; // data.jwt : null;
   });
   // .then((token) => {
   //   return { ...jwtDecode(token), token };

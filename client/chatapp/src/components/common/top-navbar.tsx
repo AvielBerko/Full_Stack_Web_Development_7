@@ -1,21 +1,25 @@
 import React from 'react';
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useSession } from "../../custom-hooks/use-session";
+import { useNavigate } from 'react-router-dom';
 
 export default function TopNavbar() {
-  const [user, setUser] = useSession("auth", null);
+  const [auth, setAuth] = useSession("auth", null);
 
+  const navigate = useNavigate(); 
+  
   const logOut = () => {
-    setUser(null);
+    setAuth(null);
+    navigate("/login", { replace: true });
   };
 
   const loggedInLinks = (
     <Nav className="me-auto">
       <Nav.Link href="/home">Home</Nav.Link>
-      <Nav.Link href="/info">Info</Nav.Link>
-      <Nav.Link href="/todos">Todos</Nav.Link>
-      <Nav.Link href="/posts">Posts</Nav.Link>
-      <Nav.Link href="/albums">Albums</Nav.Link>
+      <Nav.Link href="/profile">Profile</Nav.Link>
+      <Nav.Link href="/contacts">Contacts</Nav.Link>
+      <Nav.Link href="/dmessages">Direct Messages</Nav.Link>
+      <Nav.Link href="/groups">Groups</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>
         Logout
       </Nav.Link>
@@ -31,7 +35,7 @@ export default function TopNavbar() {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Container>{user ? loggedInLinks : loggedOutLinks}</Container>
+      <Container>{auth ? loggedInLinks : loggedOutLinks}</Container>
     </Navbar>
   );
 }
