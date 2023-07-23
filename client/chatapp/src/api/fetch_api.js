@@ -1,6 +1,6 @@
-import { SERVER_URL } from "../server_cfg.js";
+import { SERVER_URL } from "../env.js";
 
-export default function fetchAPI(path, method = "GET", body = {}) {
+export default async function fetchAPI(path, method = "GET", body = {}) {
   const options = {
     method,
     headers: {
