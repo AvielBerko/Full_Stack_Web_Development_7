@@ -11,10 +11,11 @@ export default async function fetchAPI(path, method = "GET", body = {}) {
     options.body = JSON.stringify(body);
   }
 
-  const res = await fetch(`${SERVER_URL}/${path}`, options);
-  if (res.ok) return res.json();
-  else
-    return res.json().then((data) => {
-      throw Error(data.error);
-    });
+  return fetch(`${SERVER_URL}/${path}`, options).then((res) => {
+    if (res.ok) return res.json();
+    else
+      return res.json().then((res) => {
+        throw Error(JSON.stringify(res));
+      });
+  });
 }
