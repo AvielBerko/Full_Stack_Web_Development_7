@@ -1,6 +1,6 @@
-import { SERVER_URL } from "../server_cfg.js";
+import { SERVER_URL } from "../env.js";
 
-export default function fetchAPI(path, method = "GET", body = {}) {
+export default async function fetchAPI(path, method = "GET", body = {}) {
   const options = {
     method,
     headers: {
@@ -11,11 +11,10 @@ export default function fetchAPI(path, method = "GET", body = {}) {
     options.body = JSON.stringify(body);
   }
 
-  return fetch(`${SERVER_URL}/${path}`, options).then((res) => {
-    if (res.ok) return res.json();
-    else
-      return res.json().then((data) => {
-        throw Error(data.error);
-      });
-  });
+  const res = await fetch(`${SERVER_URL}/${path}`, options);
+  if (res.ok) return res.json();
+  else
+    return res.json().then((data) => {
+      throw Error(data.error);
+    });
 }
