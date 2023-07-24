@@ -36,7 +36,7 @@ const passwords_values = users.map(user=> [user.id, 'itamar8236', true])
 
 
 //admins data section:
-const admins_values = users.slice(0, 2).map(user=> [uuidv4(), user.id, true])
+const admins_values = users.slice(0, 2).map(user=> [user.id, true])
 
 //contacts data section:
 const contacts_values = users.slice(1).map(user=> [users[0].id, user.id, user.name + '1', true]).concat([[users[1].id, users[0].id, 'itamar1', true]])
@@ -137,7 +137,7 @@ function fill_passwords(){
 function fill_admins(){
     //insert data to admins
     connection.query(
-        `INSERT INTO admins (id, user_id, valid) VALUES ?;`,
+        `INSERT INTO admins (user_id, valid) VALUES ?;`,
         [admins_values],
         (err, res) => {
             if (err) throw err;
