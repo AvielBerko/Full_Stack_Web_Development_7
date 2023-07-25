@@ -110,7 +110,7 @@ function fill_users(){
 
     //insert data to users
     connection.query(
-        `INSERT INTO users (id, name, email, phone_number, valid) VALUES ?;`,
+        `INSERT INTO users (id, username, email, phone_number, valid) VALUES ?;`,
         [users_values],
         (err, res) => {
             if (err) throw err;
