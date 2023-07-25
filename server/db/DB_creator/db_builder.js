@@ -11,7 +11,7 @@ const tables = {
     users: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
-            'name VARCHAR(255) UNIQUE',
+            'username VARCHAR(255) UNIQUE',
             'email VARCHAR(255) UNIQUE',
             'phone_number VARCHAR(10)',
             'valid BOOLEAN',
