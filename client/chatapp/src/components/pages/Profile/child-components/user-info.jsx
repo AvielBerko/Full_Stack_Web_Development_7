@@ -11,7 +11,7 @@ const UserInfo = ({ user, setUser }) => {
   const [isEditable, setIsEditable] = useState(false);
   const [username, setUsername] = useState(user.username ?? "");
   const [email, setEmail] = useState(user.email ?? "");
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber ?? "");
+  const [phoneNumber, setPhoneNumber] = useState(user.phone_number ?? "");
 
   const [alert, setAlert] = useState("");
   const [succ, setSucc] = useState(false)
@@ -52,7 +52,7 @@ const UserInfo = ({ user, setUser }) => {
         id: user.id,
         username,
         email,
-        phoneNumber
+        phone_number: phoneNumber
         //token: user.token,
       };
       updateUserMutation.mutate(newUser);
@@ -68,7 +68,7 @@ const UserInfo = ({ user, setUser }) => {
       <Card.Body>
       <EdibaleLabel isEditable={false} label='Email' setter={setEmail} value={email} WrapperComponent={Card.Title} />
       <EdibaleLabel isEditable={isEditable} label='Username' setter={setUsername} value={username} WrapperComponent={Card.Text} />
-        <EdibaleLabel isEditable={isEditable} label='PhoneNumber' setter={setPhoneNumber} value={phoneNumber} WrapperComponent={Card.Text} />
+      <EdibaleLabel isEditable={isEditable} label='Phone Number' setter={setPhoneNumber} value={phoneNumber} WrapperComponent={Card.Text} />
       </Card.Body>
     </Card>
     <BlockButton onClick={() => {

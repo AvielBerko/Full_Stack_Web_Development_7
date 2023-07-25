@@ -83,16 +83,12 @@ export default function Register() {
         username,
         password,
         email,
-        phoneNumber,
+        phone_number: phoneNumber,
       };
       register(newUser).then((res) => {
-        if (!res.ok) {
-          setAlert(res.err); // TODO handle the error
-          return;
-        }
         setAuth(newUser); // TODO change to res.token
         navigate("/home", { replace: true });
-      });
+      }).catch((error) => setAlert(error.message));;
     }
   };
 
