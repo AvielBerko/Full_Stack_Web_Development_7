@@ -4,7 +4,7 @@ import routes from "../env.js";
 export function updateUser(newUser) {
   return axios
     .put(
-      routes.updateUser,
+      routes.updateUser(newUser.id),
       newUser /*{
         headers: { Authorization: user.token },
       }*/
