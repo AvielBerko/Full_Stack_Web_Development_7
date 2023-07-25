@@ -16,6 +16,7 @@ const contacts = require('./routes/contacts');
 const dmessages = require('./routes/dmessages');
 const groups = require('./routes/groups');
 const gmessages = require('./routes/gmessages');
+const gusers = require('./routes/gmembers');
 
 app.use('/', auth)
 app.use('/users', users);
@@ -23,6 +24,7 @@ app.use('/contacts', contacts);
 app.use('/dmessages', dmessages);
 app.use('/groups', groups);
 app.use('/gmessages', gmessages);
+app.use('/gusers', gusers);
 
 // Listen on port
 const port = process.env.PORT || 3000;

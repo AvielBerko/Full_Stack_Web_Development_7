@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const new_dmessage = req.body;
+        //TODO - add a check it is from group member(?)
         new_dmessage.id = uuidv4();
         await dmessages_db.addDirectMessage(new_dmessage);
         res.send(new_dmessage);
