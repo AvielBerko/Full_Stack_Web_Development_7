@@ -1,7 +1,6 @@
 const mysql = require('mysql2')
 const dbConfig = require('./db_config.js')
 
-console.log()
 const connectionConfig = {
   host: dbConfig.HOST,
   user: dbConfig.USER,

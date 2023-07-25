@@ -33,10 +33,13 @@ async function addUser(new_user) {
     return generic.create(tables.USERS, new_user)
 }
 
+async function updateUser(user_id, updated_user) {
+    return generic.update(tables.USERS, updated_user, {id: user_id})
+}
+
 async function addPassword(user, password){
     const pwd = {user_id: user.id, password: password, valid:true};
-    console.log(pwd);
     return generic.create(tables.PASSWORDS, pwd);
 }
 
-module.exports = {getCurrentUsers, login, addUser, addPassword};
+module.exports = {getCurrentUsers, login, addUser, addPassword, updateUser};

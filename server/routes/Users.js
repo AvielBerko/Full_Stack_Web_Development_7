@@ -11,4 +11,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const updated_user = req.body;
+    const user_id = req.params.id;
+    //TODO - validate new user and password!
+    const user = await users_db.updateUser(user_id, updated_user);
+    res.send(updated_user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 module.exports = router;
