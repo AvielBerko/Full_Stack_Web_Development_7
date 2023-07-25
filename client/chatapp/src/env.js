@@ -5,7 +5,7 @@ export const SERVER_URL = `${DOMAIN}:${PORT}`;
 
 const routes = {
   login: `${SERVER_URL}/login`,
-  updateUserData: `${SERVER_URL}/users`,
+  updateUser: `${SERVER_URL}/users`,
   getTodos: `${SERVER_URL}/todos`,
   deleteTodo: `${SERVER_URL}/todos`,
   addTodo: `${SERVER_URL}/todos`,

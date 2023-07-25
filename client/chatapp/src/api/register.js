@@ -11,14 +11,14 @@ export default function register(user)  {
       return null;
     }
   })
-  .then((data) => {
-    if (!data.ok) {
-      return data;
-    }
-    return {
-      ok: true,
-      user: data.user
-      //user: { ...jwtDecode(data.token), token: data.token },
-    };
-  });
+  // .then((data) => {
+  //   if (!data.ok) {
+  //     return data;
+  //   }
+  //   return {
+  //     ok: true,
+  //     user: data.user
+  //     //user: { ...jwtDecode(data.token), token: data.token },
+  //   };
+  // });
 }

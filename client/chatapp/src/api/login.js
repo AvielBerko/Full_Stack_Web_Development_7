@@ -10,10 +10,10 @@ export default function login(username, password)  {
     } else {
       return null;
     }
-  })
-  .then((data) => {
-    return data.ok ? data : null; // data.jwt : null;
   });
+  // .then((data) => {
+  //   return data.ok ? data : null; // data.jwt : null;
+  // });
   // .then((token) => {
   //   return { ...jwtDecode(token), token };
   // });
