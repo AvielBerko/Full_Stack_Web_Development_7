@@ -12,13 +12,17 @@ app.get('/', (req, res) => res.send({data: "hello world!"}));
 // Routes
 const users = require('./routes/Users');
 const auth = require('./routes/user_auth');
-const contacts = require('./routes/contacts');0
+const contacts = require('./routes/contacts');
 const dmessages = require('./routes/dmessages');
+const groups = require('./routes/groups');
+const gmessages = require('./routes/gmessages');
 
 app.use('/', auth)
 app.use('/users', users);
 app.use('/contacts', contacts);
 app.use('/dmessages', dmessages);
+app.use('/groups', groups);
+app.use('/gmessages', gmessages);
 
 // Listen on port
 const port = process.env.PORT || 3000;
