@@ -12,9 +12,11 @@ app.get('/', (req, res) => res.send({data: "hello world!"}));
 // Routes
 const users = require('./routes/Users');
 const auth = require('./routes/user_auth');
+const contacts = require('./routes/contacts');
 
 app.use('/', auth)
 app.use('/users', users);
+app.use('/contacts', contacts);
 
 // Listen on port
 const port = process.env.PORT || 3000;

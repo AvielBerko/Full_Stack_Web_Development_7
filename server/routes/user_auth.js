@@ -20,7 +20,8 @@ router.post("/register", async (req, res) => {
         //TODO - validate new user and password!
         new_user.id = uuidv4();
         await users_db.addUser(new_user);
-        await users_db.addPassword(new_user, password);
+        new_password = {id: uuidv4(), password:password}
+        await users_db.addPassword(new_user, new_password);
         res.send(new_user);
     } catch (err) {
      res.status(400).send(err);
