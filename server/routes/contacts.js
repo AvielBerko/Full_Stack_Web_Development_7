@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const contact_id = req.params.id;
-        const updated_contact = {...req.body, id:contact_id};
+        const updated_contact = {name:req.body.name, id:contact_id};
         await contacts_db.updateContact(updated_contact);
         res.send(updated_contact);
     } catch (err) {
