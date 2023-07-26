@@ -3,7 +3,6 @@ import Login from "../pages/Login/login";
 // import Home from "../../pages/home/home";
 import Register from "../pages/Register/register";
 import Profile from "../pages/Profile/profile";
-import Contacts from "../pages/Contacts/contacts";
 import DirectMessaging from "../pages/Direct Messaging/direct-messaging";
 
 export default function Router() {
@@ -14,7 +13,6 @@ export default function Router() {
       {/* <Route path="home" element={<Home />} /> */}
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="contacts" element={<Contacts />} />
       <Route path="dmessages" element={<DirectMessaging />} />
 
     </Routes>

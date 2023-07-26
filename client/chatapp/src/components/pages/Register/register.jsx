@@ -87,7 +87,7 @@ export default function Register() {
       };
       register(newUser).then((res) => {
         setAuth(newUser); // TODO change to res.token
-        navigate("/home", { replace: true });
+        navigate("/profile", { replace: true });
       }).catch((error) => setAlert(error.message));;
     }
   };

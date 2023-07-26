@@ -64,7 +64,7 @@ export default function SingleChat({ user, contact_id }) {
           const isSentByUser = message.sender_id === user.id;
           const senderStyle = isSentByUser
             ? { alignSelf: 'end', backgroundColor: '#007bff', color: '#fff', margin: '5px' }
-            : { alignSelf: 'start', backgroundColor: '#f0f0f0', color: '#000', margin: '5px' };
+            : { alignSelf: 'start', backgroundColor: '#b0b0b0', color: '#000', margin: '5px' };
 
           return (
             <div
