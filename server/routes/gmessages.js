@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
     try {
         const new_gmessage = req.body;
         new_gmessage.id = uuidv4();
+        new_gmessage.edited = false;
         await gmessages_db.addGroupMessage(new_gmessage);
         res.send(new_gmessage);
     } catch (err) {
@@ -29,6 +30,7 @@ router.put("/:id", async (req, res) => {
     try {
         const gmessages_id = req.params.id;
         const updated_gmessage = {...req.body, id:gmessages_id};
+        updated_gmessage.edited = true;
         await gmessages_db.updateGroupMessage(updated_gmessage);
         res.send(updated_gmessage);
     } catch (err) {

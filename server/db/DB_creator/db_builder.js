@@ -71,6 +71,7 @@ const tables = {
             'message TEXT',
             'type VARCHAR(5)',//text, pic, video
             'time_sent TIMESTAMP',
+            'edited BOOLEAN',
             'valid BOOLEAN',
         ],
         constraints: [
@@ -115,6 +116,7 @@ const tables = {
             'message TEXT',
             'type VARCHAR(5)',//text, pic, video
             'time_sent TIMESTAMP',
+            'edited BOOLEAN',
             'valid BOOLEAN',
         ],
         constraints: [
