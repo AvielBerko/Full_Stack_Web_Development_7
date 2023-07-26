@@ -21,7 +21,8 @@ const tables = {
     },
     passwords: {
         columns: [
-            'user_id VARCHAR(36) PRIMARY KEY',
+            'id VARCHAR(36) PRIMARY KEY',
+            'user_id VARCHAR(36) UNIQUE',
             'password VARCHAR(36)',
             'valid BOOLEAN',
         ],
@@ -31,7 +32,8 @@ const tables = {
     },
     admins: {
         columns: [
-            'user_id VARCHAR(36) PRIMARY KEY',
+            'id VARCHAR(36) PRIMARY KEY',
+            'user_id VARCHAR(36) UNIQUE',
             'valid BOOLEAN',
         ],
         constraints: [
@@ -40,13 +42,14 @@ const tables = {
     },
     contacts: {
         columns: [
+            'id VARCHAR(36) PRIMARY KEY',
             'saver_id VARCHAR(36)',
             'user_id VARCHAR(36)',
             'name VARCHAR(255)',
             'valid BOOLEAN',
         ],
         constraints: [
-            'PRIMARY KEY (saver_id, user_id)',
+            'UNIQUE (saver_id, user_id)',
             'FOREIGN KEY (saver_id) REFERENCES users(id)',
             'FOREIGN KEY (user_id) REFERENCES users(id)',
             'UNIQUE (saver_id, name)',
@@ -81,12 +84,13 @@ const tables = {
 
     groupusers: {
         columns: [
+            'id VARCHAR(36) PRIMARY KEY',
             'groupchat_id VARCHAR(36)',
             'user_id VARCHAR(36)',
             'valid BOOLEAN',
         ],
         constraints: [
-            'PRIMARY KEY (groupchat_id, user_id)',
+            'UNIQUE (groupchat_id, user_id)',
             'FOREIGN KEY (groupchat_id) REFERENCES groupchat(id)',
             'FOREIGN KEY (user_id) REFERENCES users(id)',
         ]

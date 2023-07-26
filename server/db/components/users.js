@@ -16,7 +16,7 @@ async function login(user_data){
             INNER JOIN
             ${tables.USERS}
             ON ${tables.PASSWORDS}.user_id = ${tables.USERS}.id
-            WHERE username = ? AND password = ?
+            WHERE username = ? AND password = ? AND ${tables.USERS}.valid = 1 AND ${tables.PASSWORDS}.valid = 1
             ;`,
             values,
             (error, result) => {
@@ -33,12 +33,12 @@ async function addUser(new_user) {
     return generic.create(tables.USERS, new_user)
 }
 
-async function updateUser(user_id, updated_user) {
-    return generic.update(tables.USERS, updated_user, {id: user_id})
+async function updateUser(updated_user) {
+    return generic.update(tables.USERS, updated_user, {id: updated_user.id})
 }
 
 async function addPassword(user, password){
-    const pwd = {user_id: user.id, password: password, valid:true};
+    const pwd = {user_id: user.id, valid:true, ...password};
     return generic.create(tables.PASSWORDS, pwd);
 }
 

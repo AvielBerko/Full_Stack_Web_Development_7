@@ -33,14 +33,14 @@ const users_values = users.map(user => [user.id, user.name, user.email, user.pho
 
 
 //passwords data section:
-const passwords_values = users.map(user=> [user.id, 'itamar8236', true]);
-passwords_values[passwords_values.length - 1][1] = 'a';
+const passwords_values = users.map(user=> [uuidv4(), user.id, 'itamar8236', true]);
+passwords_values[passwords_values.length - 1][2] = 'a';
 
 //admins data section:
-const admins_values = users.slice(0, 2).map(user=> [user.id, true])
+const admins_values = users.slice(0, 2).map(user=> [uuidv4(), user.id, true])
 
 //contacts data section:
-const contacts_values = users.slice(1).map(user=> [users[0].id, user.id, user.name + '1', true]).concat([[users[1].id, users[0].id, 'itamar1', true]])
+const contacts_values = users.slice(1).map(user=> [uuidv4(), users[0].id, user.id, user.name + '1', true]).concat([[uuidv4(), users[1].id, users[0].id, 'itamar1', true]])
 
 //dmessages data section:
 const dmessages_values = [
@@ -59,12 +59,12 @@ const g2_id = groupchat_values[1][0]
 
 //groupusers data section:
 const groupusers_values = [
-    [g1_id, users[0].id, true],
-    [g1_id, users[1].id, true],
+    [uuidv4(), g1_id, users[0].id, true],
+    [uuidv4(), g1_id, users[1].id, true],
 
-    [g2_id, users[1].id, true],
-    [g2_id, users[3].id, true],
-    [g2_id, users[4].id, true],
+    [uuidv4(), g2_id, users[1].id, true],
+    [uuidv4(), g2_id, users[3].id, true],
+    [uuidv4(), g2_id, users[4].id, true],
 ]
 
 const gmessages_values = [
@@ -126,7 +126,7 @@ function fill_users(){
 function fill_passwords(){
     //insert data to passwords
     connection.query(
-        `INSERT INTO passwords (user_id, password, valid) VALUES ?;`,
+        `INSERT INTO passwords (id, user_id, password, valid) VALUES ?;`,
         [passwords_values],
         (err, res) => {
             if (err) throw err;
@@ -138,7 +138,7 @@ function fill_passwords(){
 function fill_admins(){
     //insert data to admins
     connection.query(
-        `INSERT INTO admins (user_id, valid) VALUES ?;`,
+        `INSERT INTO admins (id, user_id, valid) VALUES ?;`,
         [admins_values],
         (err, res) => {
             if (err) throw err;
@@ -150,7 +150,7 @@ function fill_admins(){
 function fill_contacts(){
     //insert data to contacts
     connection.query(
-        `INSERT INTO contacts (saver_id, user_id, name, valid) VALUES ?;`,
+        `INSERT INTO contacts (id, saver_id, user_id, name, valid) VALUES ?;`,
         [contacts_values],
         (err, res) => {
             if (err) throw err;
@@ -187,7 +187,7 @@ function fill_groupchat(){
 function fill_groupusers(){
     //insert data to groups
     connection.query(
-        `INSERT INTO groupusers (groupchat_id, user_id, valid) VALUES ?;`,
+        `INSERT INTO groupusers (id, groupchat_id, user_id, valid) VALUES ?;`,
         [groupusers_values],
         (err, res) => {
             if (err) throw err;
