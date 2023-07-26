@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
         const gmembers = await gmembers_db.getGroupMembers(group_id);
         res.send(gmembers);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -20,7 +20,10 @@ router.post("/", async (req, res) => {
         await gmembers_db.addGroupMember(new_gmember);
         res.send(new_gmember);
     } catch (err) {
-      res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'User is already member of the group!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -41,7 +44,7 @@ router.post("/", async (req, res) => {
         await gmembers_db.deleteGroupMember(gmember_id);
         res.status(204).end();
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 

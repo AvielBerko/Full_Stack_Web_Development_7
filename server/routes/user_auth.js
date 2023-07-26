@@ -10,7 +10,8 @@ router.post("/login", async (req, res) => {
     if (user.length === 0) res.status(401).send({error: 'Invalid credentials'})
     else res.send(user[0]);
   } catch (err) {
-    res.status(400).send(err);
+    console.log(err);
+    res.status(500).send({error: 'Internal server error'});
   }
 });
 
@@ -24,7 +25,10 @@ router.post("/register", async (req, res) => {
         await users_db.addPassword(new_user, new_password);
         res.send(new_user);
     } catch (err) {
-     res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'Username or Email already exists!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 

@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
         const groups = await groups_db.getActiveGroups();
         res.send(groups);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -19,7 +19,10 @@ router.post("/", async (req, res) => {
         await groups_db.addGroup(new_group);
         res.send(new_group);
     } catch (err) {
-      res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'Name already exists for another group!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -30,7 +33,10 @@ router.put("/:id", async (req, res) => {
         await groups_db.updateGroup(updated_group);
         res.send(updated_group);
     } catch (err) {
-      res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'Name already exists for another group!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -40,7 +46,7 @@ router.put("/:id", async (req, res) => {
         await groups_db.deleteGroup(group_id);
         res.status(204).end();
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
