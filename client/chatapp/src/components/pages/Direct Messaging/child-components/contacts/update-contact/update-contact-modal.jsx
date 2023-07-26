@@ -8,8 +8,8 @@ import {
   ModalHeader,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
-import { updateContact } from "../../../../../api/contacts";
+import EdibaleLabel from "../../../../../common/edibaleLabel/edibale-label";
+import { updateContact } from "../../../../../../api/contacts";
 import { useMutation } from "@tanstack/react-query";
 
 export default function UpdateContactModal({ contact, showState }) {
@@ -48,7 +48,7 @@ export default function UpdateContactModal({ contact, showState }) {
       window.alert("Please write a name.");
       return;
     }
-    updateContactMutetion.mutate({ ...contact, name: newName });
+    updateContactMutetion.mutate({ id: contact.id, name: newName });
     setShow(false);
   };
 
