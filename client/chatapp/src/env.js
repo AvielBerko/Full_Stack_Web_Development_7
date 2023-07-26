@@ -5,7 +5,14 @@ export const SERVER_URL = `${DOMAIN}:${PORT}`;
 
 const routes = {
   login: `${SERVER_URL}/login`,
+  getUser: (id) => `${SERVER_URL}/users/${id}`,
+  getUsers: `${SERVER_URL}/users`,
   updateUser: (id) => `${SERVER_URL}/users/${id}`,
+  getContacts: (id, start, end) =>
+  start ? `${SERVER_URL}/contacts/${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
+  addContact: `${SERVER_URL}/contacts`,
+  updateContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
+  deleteContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
   getTodos: `${SERVER_URL}/todos`,
   deleteTodo: `${SERVER_URL}/todos`,
   addTodo: `${SERVER_URL}/todos`,
@@ -16,7 +23,6 @@ const routes = {
   getPosts: (start, end) =>
     start ? `${SERVER_URL}/posts/${start}/${end}` : `${SERVER_URL}/posts`,
   deletePost: (id) => `${SERVER_URL}/posts/${id}`,
-  updatePost: `${SERVER_URL}/posts`,
   getComments: (postId, start, end) =>
     start != undefined
       ? `${SERVER_URL}/comments/${postId}/${start}/${end}`
