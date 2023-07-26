@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
     const users = await users_db.getCurrentUsers();
     res.send(users);
   } catch (err) {
-    res.status(400).send(err);
+    res.status(500).send({error: 'Internal server error'});
   }
 });
 
@@ -19,7 +19,10 @@ router.put("/:id", async (req, res) => {
     await users_db.updateUser(updated_user);
     res.send(updated_user);
   } catch (err) {
-    res.status(400).send(err);
+    if(err.code === 'ER_DUP_ENTRY'){
+      res.status(400).send({error: 'Username or Email already exists!'})
+    }
+    else res.status(500).send({error: 'Internal server error'});
   }
 });
 

@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
         const gmessages = await gmessages_db.getGroupMessages(group_id);
         res.send(gmessages);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
         await gmessages_db.addGroupMessage(new_gmessage);
         res.send(new_gmessage);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -31,7 +31,7 @@ router.put("/:id", async (req, res) => {
         await gmessages_db.updateGroupMessage(updated_gmessage);
         res.send(updated_gmessage);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -41,7 +41,7 @@ router.put("/:id", async (req, res) => {
         await gmessages_db.deleteGroupMessage(gmessage_id);
         res.status(204).end();
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 

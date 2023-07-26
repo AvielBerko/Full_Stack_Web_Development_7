@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
         const dmessages_from_id2 = await dmessages_db.getDirectMessages(id2, id1);
         res.send(dmessages_from_id1.concat(dmessages_from_id2));
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
         await dmessages_db.addDirectMessage(new_dmessage);
         res.send(new_dmessage);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -34,7 +34,7 @@ router.put("/:id", async (req, res) => {
         await dmessages_db.updateDirectMessage(updated_dmessage);
         res.send(updated_dmessage);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -44,7 +44,7 @@ router.put("/:id", async (req, res) => {
         await dmessages_db.deleteDirectMessage(dmessage_id);
         res.status(204).end();
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 

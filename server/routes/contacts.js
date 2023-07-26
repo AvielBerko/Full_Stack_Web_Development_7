@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
         const contacts = await contacts_db.getUserContacts(user_id);
         res.send(contacts);
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -20,7 +20,10 @@ router.post("/", async (req, res) => {
         await contacts_db.addContact(new_contact);
         res.send(new_contact);
     } catch (err) {
-      res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'Duplicate contact or name!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -31,7 +34,10 @@ router.put("/:id", async (req, res) => {
         await contacts_db.updateContact(updated_contact);
         res.send(updated_contact);
     } catch (err) {
-      res.status(400).send(err);
+      if(err.code === 'ER_DUP_ENTRY'){
+        res.status(400).send({error: 'Duplicate contact or name!'})
+      }
+      else res.status(500).send({error: 'Internal server error'});
     }
   });
 
@@ -41,7 +47,7 @@ router.put("/:id", async (req, res) => {
         await contacts_db.deleteContact(contact_id);
         res.status(204).end();
     } catch (err) {
-      res.status(400).send(err);
+      res.status(500).send({error: 'Internal server error'});
     }
   });
 
