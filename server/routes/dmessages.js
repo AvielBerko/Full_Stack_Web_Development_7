@@ -9,7 +9,9 @@ router.get("/", async (req, res) => {
         const id2 = req.query.id2;
         const dmessages_from_id1 = await dmessages_db.getDirectMessages(id1, id2);
         const dmessages_from_id2 = await dmessages_db.getDirectMessages(id2, id1);
-        res.send(dmessages_from_id1.concat(dmessages_from_id2));
+        const conversation = dmessages_from_id1.concat(dmessages_from_id2);
+        const sorted_conversation = conversation.slice().sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
+        res.send(sorted_conversation);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
     }

@@ -48,12 +48,19 @@ const dmessages_values = [
     [uuidv4(), users[1].id, users[0].id, 'Hello, this is a direct message from aviel to itamar', 'text', new Date(), true],
     [uuidv4(), users[2].id, users[5].id, 'Hello, this is a direct message from shay to moshe', 'text', new Date(), true],
 ]
+for (let i = 0; i < 3; i++) {
+    dmessages_values[i][5].setSeconds(i);
+  }
 
 //groupchat data section:
 const groupchat_values = [
     [uuidv4(), 'work little and get much', new Date(), true],
     [uuidv4(), 'the boring people group', new Date(), true],
 ]
+for (let i = 0; i < 2; i++) {
+    groupchat_values[i][2].setSeconds(i);
+  }
+
 const g1_id = groupchat_values[0][0]
 const g2_id = groupchat_values[1][0]
 
