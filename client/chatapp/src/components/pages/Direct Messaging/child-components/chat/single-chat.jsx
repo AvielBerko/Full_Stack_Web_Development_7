@@ -12,7 +12,7 @@ export default function SingleChat({ user, contact_id }) {
     queryFn: () => {
       return getMessages({id1: user.id, id2: contact_id/*, limit: 1000*/});
     },
-    refetchInterval: 1000,
+    //refetchInterval: 1000,
   });
 
   const sendMessageMutation = useMutation({
@@ -45,7 +45,7 @@ export default function SingleChat({ user, contact_id }) {
       alert('Please write a message.');
       return;
     }
-    sendMessageMutation.mutate({ message: newMessage, sender_id: user.id, receiver_id: contact_id, time_sent: getDate() });
+    sendMessageMutation.mutate({ message: newMessage, sender_id: user.id, receiver_id: contact_id, time_sent: getDate(), type: 'text'});
     setNewMessage('');
   };
 

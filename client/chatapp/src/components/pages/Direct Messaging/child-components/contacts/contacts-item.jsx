@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { ListGroupItem, Card, Button, ListGroup } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteContact } from "../../../../../api/contacts";
 import { createPortal } from "react-dom";
 import UpdateContactModal from "./update-contact/update-contact-modal";
+import { useContextMenu } from "../../../../../custom-hooks/use-context-menu"; // Import the custom hook
+import ContextMenu from "../../../../common/ContextMenu/context-menu";
 
 export default function ContactsItem({
   contact,
@@ -12,39 +14,28 @@ export default function ContactsItem({
 }) {
   if (!contact) return <></>;
 
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = useState({
-    x: 0,
-    y: 0,
-  });
   const [showUpdateContactModal, setShowUpdateContactModal] = useState(false);
-  const contextMenuRef = useRef(null);
 
-  const queryClient = useQueryClient();
+  const {
+    isContextMenuOpen,
+    contextMenuPosition,
+    contextMenuRef,
+    openContextMenu,
+    closeContextMenu,
+  } = useContextMenu(); // Use the custom hook
 
   const handleContextMenu = (event) => {
-    event.preventDefault();
-    setContextMenuPosition({ x: event.clientX, y: event.clientY });
-    setIsContextMenuOpen(true);
-  };
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (
-        isContextMenuOpen &&
-        contextMenuRef.current &&
-        !contextMenuRef.current.contains(event.target)
-      ) {
-        setIsContextMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      window.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isContextMenuOpen]);
+    openContextMenu(event);
+  
+    // Trigger the click event programmatically (simulating a regular click)
+    const clickEvent = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      button: 0, // 0 for left click, 1 for middle click, 2 for right click
+    });
+    event.currentTarget.dispatchEvent(clickEvent);
+  };  
+  const queryClient = useQueryClient();
 
   const selected = selectedContact === contact.user_id;
 
@@ -52,8 +43,6 @@ export default function ContactsItem({
     mutationFn: () => deleteContact(contact.id),
     onSuccess: (results) => {
       if (results === "") {
-        // update the cache and remove the deleted contact
-
         queryClient.invalidateQueries(["contacts"]);
       } else {
         setAlert(results);
@@ -68,51 +57,11 @@ export default function ContactsItem({
     deleteContactMutation.mutate();
   };
 
-  const contextMenu = (
-    <div
-      ref={contextMenuRef}
-      style={{
-        position: "fixed",
-        top: contextMenuPosition.y,
-        left: contextMenuPosition.x,
-        backgroundColor: "white",
-        boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
-        padding: "4px",
-        borderRadius: "4px",
-        zIndex: 9999, // Set a high z-index value to place it on top
-      }}
-      onClick={() => setIsContextMenuOpen(false)}
-    >
-      <ListGroup variant="flush">
-        <ListGroup.Item className="d-flex">
-          <Button
-            variant="success"
-            className="flex-grow-1"
-            onClick={() => setShowUpdateContactModal(true)}
-          >
-            Edit
-          </Button>
-        </ListGroup.Item>
-        <ListGroup.Item className="d-flex">
-          <Button
-            variant="danger"
-            className="flex-grow-1"
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
-        </ListGroup.Item>
-      </ListGroup>
-    </div>
-  );
-
   const updateContactModalDOM = (
-    <ListGroupItem>
       <UpdateContactModal
         contact={contact}
         showState={[showUpdateContactModal, setShowUpdateContactModal]}
       />
-    </ListGroupItem>
   );
 
   return (
@@ -136,7 +85,17 @@ export default function ContactsItem({
           </Card>
         </div>
       </ListGroupItem>
-      {isContextMenuOpen && createPortal(contextMenu, document.body)}
+      {isContextMenuOpen &&
+        createPortal(
+          <ContextMenu
+            contextMenuRef={contextMenuRef}
+            contextMenuPosition={contextMenuPosition}
+            onClose={closeContextMenu}
+            onEdit={() => setShowUpdateContactModal(true)}
+            onDelete={handleDelete}
+          />,
+          document.body
+        )}
     </div>
   );
 }
