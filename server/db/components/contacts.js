@@ -3,7 +3,24 @@ const generic = require('../crud.js');
 const tables = require('../table_names.js');
 
 async function getUserContacts(user_id){
-    return generic.read(tables.CONTACTS, {saver_id: user_id, valid: true});
+    return new Promise((resolve, reject) => {
+        db_connection.getConnection(con => {
+            con.query(`
+                SELECT ${tables.CONTACTS}.id, saver_id, user_id, name, email, phone_number FROM
+                ${tables.CONTACTS}
+                INNER JOIN
+                ${tables.USERS}
+                ON ${tables.CONTACTS}.user_id = ${tables.USERS}.id
+                WHERE saver_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.CONTACTS}.valid = 1
+                ;`,
+                [user_id],
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            })
+        });
+    });
+    //return generic.read(tables.CONTACTS, {saver_id: user_id, valid: true});
 }
 
 async function addContact(new_contact){

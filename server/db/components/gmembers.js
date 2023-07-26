@@ -22,4 +22,4 @@ async function deleteGroupMember(gmember_id){
     return generic.update(tables.GROUP_MEMBERS, deleted, {id: gmember_id});
 }
 
-module.exports = {getGroupMembers, addGroupMember, updateGroupMember, deleteGroupMember};
+module.exports = {getGroupMembers, addGroupMember, deleteGroupMember};
