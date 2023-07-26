@@ -19,6 +19,7 @@ router.post("/", async (req, res) => {
         const new_gmessage = req.body;
         new_gmessage.id = uuidv4();
         new_gmessage.edited = false;
+        new_gmessage.time_sent = new Date(new_gmessage.time_sent);//creating date object from received string
         await gmessages_db.addGroupMessage(new_gmessage);
         res.send(new_gmessage);
     } catch (err) {
