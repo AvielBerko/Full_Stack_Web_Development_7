@@ -11,33 +11,40 @@ const tables = {
     users: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
-            'username VARCHAR(255) UNIQUE',
-            'email VARCHAR(255) UNIQUE',
+            'username VARCHAR(255)',
+            'email VARCHAR(255)',
             'phone_number VARCHAR(10)',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
+            'UNIQUE (username, unarchived)',
+            'UNIQUE (email, unarchived)',
         ]
     },
     passwords: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
-            'user_id VARCHAR(36) UNIQUE',
+            'user_id VARCHAR(36)',
             'password VARCHAR(36)',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
             'FOREIGN KEY (user_id) REFERENCES users(id)',
+            'UNIQUE (user_id, unarchived)',
         ]
     },
     admins: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
-            'user_id VARCHAR(36) UNIQUE',
+            'user_id VARCHAR(36)',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
             'FOREIGN KEY (user_id) REFERENCES users(id)',
+            'UNIQUE (user_id, unarchived)',
         ]
     },
     contacts: {
@@ -47,12 +54,13 @@ const tables = {
             'user_id VARCHAR(36)',
             'name VARCHAR(255)',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
-            'UNIQUE (saver_id, user_id)',
+            'UNIQUE (saver_id, user_id, unarchived)',
             'FOREIGN KEY (saver_id) REFERENCES users(id)',
             'FOREIGN KEY (user_id) REFERENCES users(id)',
-            'UNIQUE (saver_id, name)',
+            'UNIQUE (saver_id, name, unarchived)',
         ]
     },
     dmessages: {
@@ -74,11 +82,13 @@ const tables = {
     groupchat: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
-            'name VARCHAR(255) UNIQUE',
+            'name VARCHAR(255)',
             'time_created TIMESTAMP',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
+            'UNIQUE (name, unarchived)',
         ]
     },
 
@@ -88,9 +98,10 @@ const tables = {
             'groupchat_id VARCHAR(36)',
             'user_id VARCHAR(36)',
             'valid BOOLEAN',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
-            'UNIQUE (groupchat_id, user_id)',
+            'UNIQUE (groupchat_id, user_id, unarchived)',
             'FOREIGN KEY (groupchat_id) REFERENCES groupchat(id)',
             'FOREIGN KEY (user_id) REFERENCES users(id)',
         ]
