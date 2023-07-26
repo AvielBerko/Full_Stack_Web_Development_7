@@ -4,9 +4,11 @@ import EdibaleLabel from '../../../common/edibaleLabel/edibale-label';
 import BlockButton from '../../../common/BlockButton/block-button';
 import { updateUser } from '../../../../api/profile';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSession } from '../../../../custom-hooks/use-session';
 
 const UserInfo = ({ user, setUser }) => {
   // const { id, username, email, phoneNumber } = user;
+  const [_, setAuth] = useSession("auth", null);
 
   const [isEditable, setIsEditable] = useState(false);
   const [username, setUsername] = useState(user.username ?? "");
@@ -19,7 +21,10 @@ const UserInfo = ({ user, setUser }) => {
 
   // Mutation function using react-query's useMutation hook
   const updateUserMutation = useMutation(updateUser, {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Update the user in the session
+      console.log(data);
+      setAuth(data);
       setSucc(true);
       setAlert('Changes saved successfully');
       setIsEditable(false);
