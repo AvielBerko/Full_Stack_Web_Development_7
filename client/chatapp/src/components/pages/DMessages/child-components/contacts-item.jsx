@@ -12,6 +12,9 @@ export default function ContactsItem({ user, contact, selectedContact, setSelect
             <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
               {contact.name}
             </Card.Title>
+            <Card.Text style={{fontSize: "12.5px"}}>
+              Number: {contact.phone_number}
+            </Card.Text>
           </Card.Body>
         </Card>
       </div>

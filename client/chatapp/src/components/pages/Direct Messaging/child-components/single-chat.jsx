@@ -58,13 +58,13 @@ export default function SingleChat({ user, contact_id }) {
   const sortedMessages = messages.slice().sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc' }}>
+    <div style={{ maxWidth: '90%', margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
+      <div style={{ height: '800px', overflowY: 'scroll', border: '1px solid #ccc', display: 'flex', flexDirection: 'column'}}>
         {sortedMessages.map((message) => {
           const isSentByUser = message.sender_id === user.id;
           const senderStyle = isSentByUser
-            ? { justifyContent: 'start', backgroundColor: '#007bff', color: '#fff' }
-            : { justifyContent: 'end', backgroundColor: '#f0f0f0', color: '#000' };
+            ? { alignSelf: 'end', backgroundColor: '#007bff', color: '#fff', margin: '5px' }
+            : { alignSelf: 'start', backgroundColor: '#f0f0f0', color: '#000', margin: '5px' };
 
           return (
             <div
@@ -73,7 +73,7 @@ export default function SingleChat({ user, contact_id }) {
                 padding: '8px',
                 borderRadius: '8px',
                 marginBottom: '8px',
-                maxWidth: '70%',
+                maxWidth: '50%',
                 ...senderStyle,
               }}
             >

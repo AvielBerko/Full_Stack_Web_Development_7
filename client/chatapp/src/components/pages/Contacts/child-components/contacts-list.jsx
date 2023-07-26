@@ -57,7 +57,7 @@ export default function ContactsList({ sortBy }) {
           const newData = oldData.pages.map((page) => {
             return page.map((contact) => {
               if (contact.id === results.id) {
-                return results;
+                return { ...contact, ...results};
               }
               return contact;
             });
