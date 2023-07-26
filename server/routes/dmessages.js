@@ -23,9 +23,11 @@ router.post("/", async (req, res) => {
         //TODO - add a check it is from group member(?)
         new_dmessage.id = uuidv4();
         new_dmessage.edited = false;
+        new_dmessage.time_sent = new Date(new_dmessage.time_sent);//creating date object from received string
         await dmessages_db.addDirectMessage(new_dmessage);
         res.send(new_dmessage);
     } catch (err) {
+      console.log(err)
       res.status(500).send({error: 'Internal server error'});
     }
   });
