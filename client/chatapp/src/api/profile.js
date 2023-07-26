@@ -15,5 +15,11 @@ export function updateUser(newUser) {
       } else {
         return null;
       }
-    });
+    })
+    .catch((err) => {
+      if (err.response.data) {
+        throw new Error(err.response.data.error);
+      }
+      throw new Error(err.message);
+    });;
 }

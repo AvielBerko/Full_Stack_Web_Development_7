@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 import { createPortal } from "react-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient} from "@tanstack/react-query";
 import ContextMenu from "../../../../common/ContextMenu/context-menu";
 import { useContextMenu } from "../../../../../custom-hooks/use-context-menu"; // Import the custom hook
 import { deleteMessage } from "../../../../../api/direct_messaging";
 import UpdateMessageModal from "./update-message/update-message-modal";
 
-export default function Message({ message, isSentByUser }) {
+export default function Message({ message, user, contact_id }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
-
+  const queryClient = useQueryClient();
+  const isSentByUser = message.sender_id === user.id;
   const senderStyle = isSentByUser
     ? {
         alignSelf: "flex-end",
@@ -47,7 +48,8 @@ export default function Message({ message, isSentByUser }) {
     mutationFn: () => deleteMessage(message.id),
     onSuccess: (results) => {
       if (results === "") {
-        queryClient.invalidateQueries(["messages"]);
+        //queryClient.invalidateQueries(['messages']);
+        queryClient.refetchQueries(["messages", user?.id, contact_id]);
       } else {
         setAlert(results);
       }

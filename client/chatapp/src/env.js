@@ -5,6 +5,7 @@ export const SERVER_URL = `${DOMAIN}:${PORT}`;
 
 const routes = {
   login: `${SERVER_URL}/login`,
+  register: `${SERVER_URL}/register`,
   getUser: (id) => `${SERVER_URL}/users/${id}`,
   getUsers: `${SERVER_URL}/users`,
   updateUser: (id) => `${SERVER_URL}/users/${id}`,

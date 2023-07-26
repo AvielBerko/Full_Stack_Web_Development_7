@@ -35,17 +35,17 @@ export default function Register() {
       return "Email is required.";
     }
 
-    // if (!emailRegex.test(email)) {
-    //   return "Email is not valid.";
-    // }
+    if (!emailRegex.test(email)) {
+      return "Email is not valid.";
+    }
 
     if (!password) {
       return "Password is required.";
     }
 
-    // if (!passwordRegex.test(password)) {
-    //   return "Password must contain a letter, a number, a special character, and be between 6 and 16 characters long.";
-    // }
+    if (!passwordRegex.test(password)) {
+      return "Password must contain a letter, a number, a special character, and be between 6 and 16 characters long.";
+    }
 
     if (!passwordConfirm) {
       return "Confirm Password is required.";
@@ -67,9 +67,9 @@ export default function Register() {
       return "Username can only contain English letters and numbers.";
     }
 
-    // if (!phoneNumberRegex.test(phoneNumber)) {
-    //     return "Phone number must be 10 digits long.";
-    // }
+    if (!phoneNumberRegex.test(phoneNumber)) {
+        return "Phone number must be 10 digits long.";
+    }
 
     return ""; // Empty string indicates the form is valid
   };
@@ -86,7 +86,7 @@ export default function Register() {
         phone_number: phoneNumber,
       };
       register(newUser).then((res) => {
-        setAuth(newUser); // TODO change to res.token
+        setAuth(res); // TODO change to res.token
         navigate("/profile", { replace: true });
       }).catch((error) => setAlert(error.message));;
     }

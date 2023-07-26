@@ -10,7 +10,12 @@ export default function register(user)  {
     } else {
       return null;
     }
-  })
+  }).catch((err) => {
+    if (err.response.data) {
+      throw new Error(err.response.data.error);
+    }
+    throw new Error (err.message);
+  });
   // .then((data) => {
   //   if (!data.ok) {
   //     return data;
