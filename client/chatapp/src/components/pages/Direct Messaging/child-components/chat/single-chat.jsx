@@ -29,23 +29,13 @@ export default function SingleChat({ user, contact_id }) {
     },
   });
 
-  function getDate() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
 
   const handleSendMessage = () => {
     if (!newMessage) {
       alert('Please write a message.');
       return;
     }
-    sendMessageMutation.mutate({ message: newMessage, sender_id: user.id, receiver_id: contact_id, time_sent: getDate(), type: 'text'});
+    sendMessageMutation.mutate({ message: newMessage, sender_id: user.id, receiver_id: contact_id, time_sent: new Date(), type: 'text'});
     setNewMessage('');
   };
 

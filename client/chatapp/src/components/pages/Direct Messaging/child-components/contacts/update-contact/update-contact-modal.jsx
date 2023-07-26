@@ -48,7 +48,7 @@ export default function UpdateContactModal({ contact, showState }) {
       window.alert("Please write a name.");
       return;
     }
-    updateContactMutetion.mutate({ ...contact, name: newName });
+    updateContactMutetion.mutate({ id: contact.id, name: newName });
     setShow(false);
   };
 

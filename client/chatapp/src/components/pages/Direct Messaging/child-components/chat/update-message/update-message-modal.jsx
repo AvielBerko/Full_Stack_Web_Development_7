@@ -37,7 +37,7 @@ export default function UpdateMessageModal({ message, showState }) {
       window.alert("Please write a message.");
       return;
     }
-    updateMessageMutetion.mutate({ ...message, message: newMessage });
+    updateMessageMutetion.mutate({ id: message.id, message: newMessage });
     setShow(false);
   };
 
