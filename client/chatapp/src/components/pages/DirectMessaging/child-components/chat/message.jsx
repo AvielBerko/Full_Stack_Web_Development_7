@@ -83,8 +83,11 @@ export default function Message({ message, isSentByUser }) {
         }}
       >
         <div key={message.id}>
-          <div style={{ marginBottom: "4px" }}>{message.message}</div>
-          <div style={{ fontSize: "12px", textAlign: "right" }}>
+         {Boolean(message.edited) && (<div style={{ fontSize: "10px", textAlign: "right" }}>
+            edited
+          </div>)}
+          <div style={{ marginBottom: "4px"}}>{message.message}</div>
+          <div style={{ fontSize: "10px", textAlign: "right" }}>
             {new Date(message.time_sent).toLocaleString()}
           </div>
         </div>

@@ -3,7 +3,7 @@ import Login from "../pages/Login/login";
 // import Home from "../../pages/home/home";
 import Register from "../pages/Register/register";
 import Profile from "../pages/Profile/profile";
-import DirectMessaging from "../pages/Direct Messaging/direct-messaging";
+import DirectMessaging from "../pages/DirectMessaging/direct-messaging";
 
 export default function Router() {
   return (
