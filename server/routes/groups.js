@@ -16,6 +16,7 @@ router.post("/", async (req, res) => {
     try {
         const new_group = req.body;
         new_group.id = uuidv4();
+        new_group.time_created = new Date(new_group.time_created);
         await groups_db.addGroup(new_group);
         res.send(new_group);
     } catch (err) {
