@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
       else res.status(500).send({error: 'Internal server error'});
     }
   });
-
+//TODO - decide if delete or enable here and in db
 // router.put("/:id", async (req, res) => {
 //     try {
 //         const gmembers_id = req.params.id;

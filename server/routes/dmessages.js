@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
         const new_dmessage = req.body;
         //TODO - add a check it is from group member(?)
         new_dmessage.id = uuidv4();
+        new_dmessage.edited = false;
         await dmessages_db.addDirectMessage(new_dmessage);
         res.send(new_dmessage);
     } catch (err) {
@@ -33,6 +34,7 @@ router.put("/:id", async (req, res) => {
     try {
         const dmessages_id = req.params.id;
         const updated_dmessage = {...req.body, id:dmessages_id};
+        updated_dmessage.edited = true;
         await dmessages_db.updateDirectMessage(updated_dmessage);
         res.send(updated_dmessage);
     } catch (err) {

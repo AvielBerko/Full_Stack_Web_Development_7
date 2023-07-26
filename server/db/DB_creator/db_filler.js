@@ -44,9 +44,9 @@ const contacts_values = users.slice(1).map(user=> [uuidv4(), users[0].id, user.i
 
 //dmessages data section:
 const dmessages_values = [
-    [uuidv4(), users[0].id, users[1].id, 'Hello, this is a direct message from itamar to aviel', 'text', new Date(), true],
-    [uuidv4(), users[1].id, users[0].id, 'Hello, this is a direct message from aviel to itamar', 'text', new Date(), true],
-    [uuidv4(), users[2].id, users[5].id, 'Hello, this is a direct message from shay to moshe', 'text', new Date(), true],
+    [uuidv4(), users[0].id, users[1].id, 'Hello, this is a direct message from itamar to aviel', 'text', new Date(), false, true],
+    [uuidv4(), users[1].id, users[0].id, 'Hello, this is a direct message from aviel to itamar', 'text', new Date(), false, true],
+    [uuidv4(), users[2].id, users[5].id, 'Hello, this is a direct message from shay to moshe', 'text', new Date(), false, true],
 ]
 for (let i = 0; i < 3; i++) {
     dmessages_values[i][5].setSeconds(i);
@@ -75,12 +75,12 @@ const groupusers_values = [
 ]
 
 const gmessages_values = [
-    [uuidv4(), g1_id, users[0].id, 'this is important group message from itamar', 'text', new Date(), true],
-    [uuidv4(), g1_id, users[1].id, 'this is important group message from aviel', 'text', new Date(), true], 
+    [uuidv4(), g1_id, users[0].id, 'this is important group message from itamar', 'text', new Date(), false, true],
+    [uuidv4(), g1_id, users[1].id, 'this is important group message from aviel', 'text', new Date(), false, true], 
     
-    [uuidv4(), g2_id, users[1].id, 'this is boring group message from aviel', 'text', new Date(), true], 
-    [uuidv4(), g2_id, users[3].id, 'this is boring group message from david', 'text', new Date(), true], 
-    [uuidv4(), g2_id, users[4].id, 'this is boring group message from yossi', 'text', new Date(), true], 
+    [uuidv4(), g2_id, users[1].id, 'this is boring group message from aviel', 'text', new Date(), false, true], 
+    [uuidv4(), g2_id, users[3].id, 'this is boring group message from david', 'text', new Date(), false, true], 
+    [uuidv4(), g2_id, users[4].id, 'this is boring group message from yossi', 'text', new Date(), false, true], 
 ]
 
 
@@ -169,7 +169,7 @@ function fill_contacts(){
 function fill_dmessages(){
     //insert data to dmessages
     connection.query(
-        `INSERT INTO dmessages (id, sender_id, receiver_id, message, type, time_sent, valid) VALUES ?;`,
+        `INSERT INTO dmessages (id, sender_id, receiver_id, message, type, time_sent, edited, valid) VALUES ?;`,
         [dmessages_values],
         (err, res) => {
             if (err) throw err;
@@ -206,7 +206,7 @@ function fill_groupusers(){
 function fill_gmessages(){
     //insert data to groups
     connection.query(
-        `INSERT INTO gmessages (id, groupchat_id, sender_id, message, type, time_sent, valid) VALUES ?;`,
+        `INSERT INTO gmessages (id, groupchat_id, sender_id, message, type, time_sent, edited, valid) VALUES ?;`,
         [gmessages_values],
         (err, res) => {
             if (err) throw err;
