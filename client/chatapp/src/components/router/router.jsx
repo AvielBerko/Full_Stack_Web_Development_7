@@ -4,6 +4,7 @@ import Login from "../pages/Login/login";
 import Register from "../pages/Register/register";
 import Profile from "../pages/Profile/profile";
 import Contacts from "../pages/Contacts/contacts";
+import DMessages from "../pages/DMessages/dmessages";
 
 export default function Router() {
   return (
@@ -14,6 +15,8 @@ export default function Router() {
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
       <Route path="contacts" element={<Contacts />} />
+      <Route path="dmessages" element={<DMessages />} />
+
     </Routes>
   );
 }

@@ -9,10 +9,13 @@ const routes = {
   getUsers: `${SERVER_URL}/users`,
   updateUser: (id) => `${SERVER_URL}/users/${id}`,
   getContacts: (id, start, end) =>
-  start ? `${SERVER_URL}/contacts/${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
+  start ? `${SERVER_URL}/contacts?saver_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
   addContact: `${SERVER_URL}/contacts`,
   updateContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
   deleteContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
+  getMessages: (options) =>
+  options ? `${SERVER_URL}/dmessages?${new URLSearchParams(options).toString()}` : `${SERVER_URL}/dmessages/${id}`,
+  sendMessage: `${SERVER_URL}/dmessages`,
   getTodos: `${SERVER_URL}/todos`,
   deleteTodo: `${SERVER_URL}/todos`,
   addTodo: `${SERVER_URL}/todos`,

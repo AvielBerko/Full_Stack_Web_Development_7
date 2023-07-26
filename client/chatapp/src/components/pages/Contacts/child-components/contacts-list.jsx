@@ -9,7 +9,11 @@ import {
   getContacts,
   updateContact,
 } from "../../../../api/contacts";
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import AddContactModal from "./add-contact/add-contact-modal";
 
 export default function ContactsList({ sortBy }) {
@@ -72,7 +76,9 @@ export default function ContactsList({ sortBy }) {
     mutationFn: (contactId) => deleteContact(contactId),
     onSuccess: (results) => {
       if (results === "") {
-        contactsQuery.refetch();
+        // update the cache and remove the deleted contact
+
+        queryClient.invalidateQueries(["contacts"]);
       } else {
         setAlert(results);
       }
@@ -138,11 +144,12 @@ export default function ContactsList({ sortBy }) {
 
   if (contactsQuery.isLoading) return <>Loading</>;
   if (contactsQuery.isError) return <>Error</>;
-  if (!contactsQuery.data.pages[0].length) return <>No data</>; //TODO fix
-  const contactsDOM = contactsQuery?.data?.pages
-    ?.reduce((prev, cur) => [...prev, ...cur], [])
-    .map((contact) => {
-      return (
+
+  let contactsDOM = null;
+  if (contactsQuery.data.pages[0].length) {
+    contactsDOM = contactsQuery.data.pages
+      ?.reduce((prev, cur) => [...prev, ...cur], [])
+      .map((contact) => (
         <ContactsItem
           key={contact.id}
           user={user}
@@ -152,8 +159,8 @@ export default function ContactsList({ sortBy }) {
           selectedContact={selectedContact}
           setSelectedContact={setSelectedContact}
         />
-      );
-    });
+      ));
+  }
 
   const alertDOM = (
     <Row>
@@ -163,6 +170,18 @@ export default function ContactsList({ sortBy }) {
         </Alert>
       </Col>
     </Row>
+  );
+
+  const addContactModalDOM = (
+    <ListGroupItem>
+      <AddContactModal
+        user={user}
+        showState={[showAddContactModal, setShowAddContactModal]}
+        contacts={contactsQuery.data.pages[0]}
+        refetchContacts={contactsQuery.refetch}
+        //setAlert={setAlert}
+      />
+    </ListGroupItem>
   );
 
   return (
@@ -175,16 +194,8 @@ export default function ContactsList({ sortBy }) {
         {" "}
         Add Contact
       </BlockButton>
-      <ListGroupItem>
-        <AddContactModal
-          user={user}
-          showState={[showAddContactModal, setShowAddContactModal]}
-          contacts={contactsQuery.data.pages[0]}
-          refetchContacts={contactsQuery.refetch}
-          //setAlert={setAlert}
-        />
-      </ListGroupItem>
-      {contactsDOM}
+      {addContactModalDOM}
+      {contactsDOM ?? <>No data</>}
     </ListGroup>
   );
 }

@@ -12,7 +12,6 @@ export default function ContactsItem({
 }) {
   if (!contact) return <></>;
 
-  // const [showComments, setShowComments] = useState<Boolean>(false);
   const [isEditable, setIsEditable] = useState(false);
   const [newName, setNewName] = useState(contact.name || "");
 
@@ -44,13 +43,15 @@ export default function ContactsItem({
               <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
                 {contact.name}
               </Card.Title>
-              {/* <Card.Text style={{ fontWeight: selected ? "bold" : "normal" }}>
-                {postState.body}
-              </Card.Text> */}
+              <div className="d-flex justify-content-start gap-3">
+              <Card.Text>
+                Email: {contact.email}
+              </Card.Text>
+              <Card.Text>
+                Phone Number: {contact.phone_number}
+              </Card.Text>
+              </div>
               <div className="d-flex justify-content-between">
-                {/* <Button onClick={() => setShowComments(!showComments)}>
-                  {showComments ? "Hide Comments" : "Show Comments"}
-                </Button> */}
                 <div className="d-flex gap-2">
                   <Button onClick={() => setIsEditable(!isEditable)}>
                     Edit
@@ -61,8 +62,6 @@ export default function ContactsItem({
             </Card.Body>
           )}
         </Card>
-
-        {/* {showComments && <CommentsList post={postState} user={user} />} */}
       </div>
     </ListGroupItem>
   );
