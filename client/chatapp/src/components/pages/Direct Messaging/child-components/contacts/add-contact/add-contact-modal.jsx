@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, FormControl, FormLabel, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
 import UserItem from "./user-item";
-import { addContact } from "../../../../../api/contacts";
-import { getUsers } from "../../../../../api/users";
+import { addContact } from "../../../../../../api/contacts";
+import { getUsers } from "../../../../../../api/users";
 import { useQuery, useMutation} from "@tanstack/react-query";
 
 export default function AddContactModal({ user, showState, contacts, refetchContacts/*setAlert*/}) {

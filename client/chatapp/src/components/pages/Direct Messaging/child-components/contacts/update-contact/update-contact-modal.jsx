@@ -8,8 +8,8 @@ import {
   ModalHeader,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
-import { updateContact } from "../../../../../api/contacts";
+import EdibaleLabel from "../../../../../common/edibaleLabel/edibale-label";
+import { updateContact } from "../../../../../../api/contacts";
 import { useMutation } from "@tanstack/react-query";
 
 export default function UpdateContactModal({ contact, showState }) {

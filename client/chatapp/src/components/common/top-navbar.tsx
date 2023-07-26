@@ -15,9 +15,7 @@ export default function TopNavbar() {
 
   const loggedInLinks = (
     <Nav className="me-auto">
-      <Nav.Link href="/home">Home</Nav.Link>
       <Nav.Link href="/profile">Profile</Nav.Link>
-      <Nav.Link href="/contacts">Contacts</Nav.Link>
       <Nav.Link href="/dmessages">Direct Messages</Nav.Link>
       <Nav.Link href="/groups">Groups</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>

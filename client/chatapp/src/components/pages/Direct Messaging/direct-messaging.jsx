@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useState } from "react";
-import ContactList from "./child-components/contacts-list";
-import SingleChat from "./child-components/single-chat";
+import ContactList from "./child-components/contacts/contacts-list";
+import SingleChat from "./child-components/chat/single-chat";
 import { useSession } from "../../../custom-hooks/use-session";
 
 export default function DirectMessaging() {

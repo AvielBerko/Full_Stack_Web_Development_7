@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ListGroupItem, Card, Button, ListGroup } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteContact } from "../../../../api/contacts";
+import { deleteContact } from "../../../../../api/contacts";
 import { createPortal } from "react-dom";
 import UpdateContactModal from "./update-contact/update-contact-modal";
 

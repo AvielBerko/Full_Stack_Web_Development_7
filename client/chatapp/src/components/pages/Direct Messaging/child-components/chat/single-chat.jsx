@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getMessages, sendMessage } from '../../../../api/direct_messaging';
+import { getMessages, sendMessage } from '../../../../../api/direct_messaging';
+import Message from './message';
 
 export default function SingleChat({ user, contact_id }) {
   const [newMessage, setNewMessage] = useState('');
@@ -11,7 +12,7 @@ export default function SingleChat({ user, contact_id }) {
     queryFn: () => {
       return getMessages({id1: user.id, id2: contact_id/*, limit: 1000*/});
     },
-    //refetchInterval: 1000,
+    refetchInterval: 1000,
   });
 
   const sendMessageMutation = useMutation({
@@ -60,29 +61,9 @@ export default function SingleChat({ user, contact_id }) {
   return (
     <div style={{ maxWidth: '90%', margin: '0 auto', display: 'flex', flexDirection: 'column'}}>
       <div style={{ height: '800px', overflowY: 'scroll', border: '1px solid #ccc', display: 'flex', flexDirection: 'column'}}>
-        {sortedMessages.map((message) => {
+      {sortedMessages.map((message) => {
           const isSentByUser = message.sender_id === user.id;
-          const senderStyle = isSentByUser
-            ? { alignSelf: 'end', backgroundColor: '#007bff', color: '#fff', margin: '5px' }
-            : { alignSelf: 'start', backgroundColor: '#b0b0b0', color: '#000', margin: '5px' };
-
-          return (
-            <div
-              key={message.id}
-              style={{
-                padding: '8px',
-                borderRadius: '8px',
-                marginBottom: '8px',
-                maxWidth: '50%',
-                ...senderStyle,
-              }}
-            >
-              <div style={{ marginBottom: '4px' }}>{message.message}</div>
-              <div style={{ fontSize: '12px', textAlign: 'right' }}>
-                {new Date(message.time_sent).toLocaleString()}
-              </div>
-            </div>
-          );
+          return <Message key={message.id} message={message} isSentByUser={isSentByUser} />;
         })}
       </div>
       <div style={{ display: 'flex', marginTop: '8px' }}>
