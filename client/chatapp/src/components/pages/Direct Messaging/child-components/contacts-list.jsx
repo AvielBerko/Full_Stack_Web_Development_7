@@ -7,9 +7,13 @@ import {
 import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
+import AddContactModal from "./add-contact/add-contact-modal";
+import BlockButton from "../../../common/BlockButton/block-button";
 
 export default function ContactsList({ user, selectedContact, setSelectedContact}) {
   const CONTACTS_PER_PAGE = 10;
+  
+  const [showAddContactModal, setShowAddContactModal] = useState(false);
   const [alert, setAlert] = useState("");
 
   if (!user?.id) return <></>;
@@ -91,7 +95,6 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
       .map((contact) => (
         <ContactsItem
           key={contact.id}
-          user={user}
           contact={contact}
           selectedContact={selectedContact}
           setSelectedContact={setSelectedContact}
@@ -109,10 +112,30 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
     </Row>
   );
 
+  const addContactModalDOM = (
+    <ListGroupItem>
+      <AddContactModal
+        user={user}
+        showState={[showAddContactModal, setShowAddContactModal]}
+        contacts={contactsQuery.data.pages[0]}
+        refetchContacts={contactsQuery.refetch}
+        //setAlert={setAlert}
+      />
+    </ListGroupItem>
+  );
+
   return (
     <ListGroup>
-      {alert && alertDOM}
-      {contactsDOM ?? <>No data</>}
-    </ListGroup>
+    {alert && alertDOM}
+    <BlockButton
+      variant="success"
+      onClick={() => setShowAddContactModal(true)}
+    >
+      {" "}
+      Add Contact
+    </BlockButton>
+    {addContactModalDOM}
+    {contactsDOM ?? <>No data</>}
+  </ListGroup>
   );
 }

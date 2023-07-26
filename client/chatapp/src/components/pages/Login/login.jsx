@@ -19,11 +19,11 @@ export default function Login() {
       console.log(user);
       if (user) {
         setAuth(user);
-        navigate("/home", { replace: true });
+        navigate("/dmessages", { replace: true });
       } else {
         setAlert("Wrong username or password.");
       }
-    }).catch((error) => setAlert(error?.response?.data?.error ? error.response.data.error : "Wrong username or password.")); //setAlert("Wrong username or password."));
+    }).catch((error) => setAlert(error?.response?.data?.error ? error.response.data.error : "There was an unexpected issue, please try again later.")); //setAlert("Wrong username or password."));
   };
 
   const alertDOM = (
