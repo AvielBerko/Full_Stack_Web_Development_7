@@ -23,7 +23,7 @@ export default function Login() {
       } else {
         setAlert("Wrong username or password.");
       }
-    }).catch((error) => setAlert(error.response.data.error)); //setAlert("Wrong username or password."));
+    }).catch((error) => setAlert(error?.response?.data?.error ? error.response.data.error : "Wrong username or password.")); //setAlert("Wrong username or password."));
   };
 
   const alertDOM = (
