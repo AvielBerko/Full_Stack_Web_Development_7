@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
-    const { error } = dmessages_schema.validate(req.body)
+    const { error } = gmessages_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const gmessages_id = req.params.id;
