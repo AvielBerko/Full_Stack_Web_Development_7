@@ -6,6 +6,7 @@ const Joi = require('joi');
 
 const contact_schema = Joi.object({
   new: Joi.boolean(),
+  id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   saver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   user_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   name: Joi.string().min(3).max(30).alphanum().required(),

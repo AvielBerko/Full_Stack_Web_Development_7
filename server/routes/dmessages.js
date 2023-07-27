@@ -6,6 +6,7 @@ const Joi = require('joi');
 
 const dmessages_schema = Joi.object({
   new: Joi.boolean(),
+  id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   sender_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   receiver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   message: Joi.string().min(1).required(),
