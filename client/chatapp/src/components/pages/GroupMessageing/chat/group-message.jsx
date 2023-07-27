@@ -28,7 +28,7 @@ export default function GroupMessage({ message, user, groupID }) {
     (contact) => contact.user_id === message.sender_id
   );
 
-  const nameOrAddress = isSentByContact
+  const nameOrAddress = isSentByUser ? "" : isSentByContact
     ? contactsQuery.data?.find(
         (contact) => contact.user_id === message.sender_id
       )?.name
