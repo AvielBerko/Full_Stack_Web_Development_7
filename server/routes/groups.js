@@ -5,8 +5,14 @@ const {v4: uuidv4} = require('uuid');
 
 router.get("/", async (req, res) => {
     try {
+      if (req.query.user_id){
+        const groups = await groups_db.getUserGroups(req.query.user_id);
+        res.send(groups)
+      }
+      else{
         const groups = await groups_db.getActiveGroups();
         res.send(groups);
+      }
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
     }
