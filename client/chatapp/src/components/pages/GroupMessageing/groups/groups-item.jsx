@@ -39,7 +39,7 @@ export default function GroupsItem({
   };  
   const queryClient = useQueryClient();
 
-  const selected = selectedGroup === group.user_id;
+  const selected = selectedGroup === group.id;
 
   const deleteGroupMutation = useMutation({
     mutationFn: () => deleteGroup(group.id),
@@ -98,6 +98,9 @@ export default function GroupsItem({
               <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
                 {group.name}
               </Card.Title>
+              <Card.Text style={{ fontSize: "12.5px" }}>
+                Created: {new Date(group.time_created).toLocaleDateString()}
+              </Card.Text>
             </Card.Body>
           </Card>
         </div>
