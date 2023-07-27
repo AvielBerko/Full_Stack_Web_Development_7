@@ -1,6 +1,7 @@
 const express = require("express");
 const users_db = require('../db/components/users.js');
 const router = express.Router();
+const Joi = require('joi');
 
 const updated_user_schema = Joi.object({
   username: Joi.string().min(3).max(30).alphanum(),
