@@ -3,9 +3,10 @@ const cors = require('cors');
 const app = express();  
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
 
 app.get('/', (req, res) => res.send({data: "hello world!"}));
 
@@ -16,7 +17,7 @@ const contacts = require('./routes/contacts');
 const dmessages = require('./routes/dmessages');
 const groups = require('./routes/groups');
 const gmessages = require('./routes/gmessages');
-const gusers = require('./routes/gmembers');
+const gmembers = require('./routes/gmembers');
 
 app.use('/', auth)
 app.use('/users', users);
@@ -24,7 +25,11 @@ app.use('/contacts', contacts);
 app.use('/dmessages', dmessages);
 app.use('/groups', groups);
 app.use('/gmessages', gmessages);
-app.use('/gusers', gusers);
+app.use('/groups/:id/members', (req, res, next) => {
+    // Pass the 'id' parameter to the request locals
+    req.locals = { groupchat_id: req.params.id };
+    next();
+  }, gmembers);
 
 // Listen on port
 const port = process.env.PORT || 3000;

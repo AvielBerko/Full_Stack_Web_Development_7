@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         const new_gmember = req.body;
+        new_gmember.groupchat_id = req.locals.groupchat_id;
         new_gmember.id = uuidv4();
         await gmembers_db.addGroupMember(new_gmember);
         res.send(new_gmember);
@@ -40,10 +41,13 @@ router.post("/", async (req, res) => {
 //     }
 //   });
 
-  router.delete("/:id", async (req, res) => {
+  router.delete("/:user_id", async (req, res) => {
     try {
-        const gmember_id = req.params.id;
-        const result = await gmembers_db.deleteGroupMember(gmember_id);
+        const groupchat_id = req.locals.groupchat_id;
+        const user_id = req.params.user_id;
+        console.log(groupchat_id);
+        console.log(user_id);
+        const result = await gmembers_db.deleteGroupMember(groupchat_id, user_id);
         if (result.changedRows === 0) res.status(404).send({error: 'Group member to delete was not found!'});
         res.status(204).end();
     } catch (err) {

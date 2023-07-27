@@ -12,10 +12,27 @@ const users = require('../components/users.js');
 //     console.log(result);
 // }
 
-async function test(){
-    result = await users.login({username: 'itamar', password: 'itamar8236'})
-    console.log(result);
-    console.log(result.length)
+// async function test(){
+//     result = await users.login({username: 'itamar', password: 'itamar8236'})
+//     console.log(result);
+//     console.log(result.length)
+// }
+
+// test();
+
+
+const Joi = require('joi');
+
+
+const user_schema = {
+  username: Joi.string().min(3).max(30).alphanum().required(),
+  email: Joi.string().email().required()
+  //phone_number
 }
 
-test();
+
+
+// const userData = {username: 'test', 'email': 'test@gmail.com'}
+// const { error, value } = user_schema.validate(userData);
+// console.log(error);
+// console.log(value);

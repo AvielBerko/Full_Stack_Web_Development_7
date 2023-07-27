@@ -2,6 +2,19 @@ const express = require("express");
 const users_db = require('../db/components/users.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
+
+// const user_schema = {
+//   username: Joi.string().min(3).max(30).alphanum().required(),
+//   email: Joi.string.email().required()
+//   phone_number
+// }
+
+// const schema = Joi.string().guid({
+//   version: [
+//       'uuidv4',
+//       'uuidv5'
+//   ]string.isoDate()
 
 router.post("/login", async (req, res) => {
   try {
