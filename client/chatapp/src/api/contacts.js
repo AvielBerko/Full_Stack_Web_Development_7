@@ -13,9 +13,9 @@ export function getContacts(id, start, end) {
     // })
     .catch((err) => {
       if(err.response.data){
-        return err.response.data.error;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -31,9 +31,9 @@ export function updateContact(contact) {
     // })
     .catch((err) => {
       if(err.response.data){
-        return err.response.data.err;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -49,9 +49,9 @@ export function deleteContact(contactID) {
     // })
     .catch((err) => {
       if(err.response.data){
-        return err.response.data.err;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -67,8 +67,8 @@ export function addContact(contact) {
     // })
     .catch((err) => {
       if(err.response.data){
-        return JSON.stringify(err.response.data);
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }

@@ -36,6 +36,10 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
       return allPagesCount;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
+    onError: (error) => {
+      setAlert(error.message);
+      // console.error("Error occurred during contacts query:", error);
+    }
   });
 
   // const handleSort = () => {
@@ -87,9 +91,8 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
 
   if (contactsQuery.isLoading) return <>Loading</>;
   if (contactsQuery.isError) return <>Error</>;
-
   let contactsDOM = null;
-  if (contactsQuery.data.pages[0].length) {
+  if (contactsQuery.data?.pages[0]?.length) {
     contactsDOM = contactsQuery.data.pages
       ?.reduce((prev, cur) => [...prev, ...cur], [])
       .map((contact) => (
@@ -98,6 +101,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
           contact={contact}
           selectedContact={selectedContact}
           setSelectedContact={setSelectedContact}
+          setAlert={setAlert}
         />
       ));
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -6,6 +6,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row, Col, Alert, Container
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import EdibaleLabel from "../../../../../common/edibaleLabel/edibale-label";
@@ -14,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function UpdateContactModal({ contact, showState }) {
   const [newName, setNewName] = useState(contact.name || "");
+  const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
   const queryClient = useQueryClient();
@@ -39,22 +41,59 @@ export default function UpdateContactModal({ contact, showState }) {
       }
     },
     onError: (error) => {
-      setAlert("An unexpected error occurred. Please try again later.");
+      setAlert(error.message);
     },
   });
 
   const update = () => {
     if (!newName) {
-      window.alert("Please write a name.");
+      setAlert("Please write a name.");
       return;
     }
-    updateContactMutetion.mutate({ id: contact.id, name: newName });
+    if (newName !== contact.name) 
+      updateContactMutetion.mutate({ id: contact.id, name: newName });
+    else
+      resetModal();
+    //setShow(false);
+  };
+
+  const resetModal = () => {
+    setNewName(contact.name || "");
+    setAlert("");
     setShow(false);
   };
 
+  useEffect(() => {
+    resetModal();
+  }, [contact]);
+
+
+  const alertDOM = (
+    <Row>
+      <Col>
+        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+          {alert}
+        </Alert>
+      </Col>
+    </Row>
+  );
+
   return (
     <Modal show={show}>
-      <ModalHeader>Update Contact</ModalHeader>
+      <ModalHeader>
+        <Container fluid>
+        <Row className="text-center">
+          <Col>
+            <h3>Update Contact</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {alert && alertDOM}
+          </Col>
+        </Row>
+        </Container>
+      </ModalHeader>
       <ModalBody>
         <Card>
           <Card.Body>
@@ -78,7 +117,7 @@ export default function UpdateContactModal({ contact, showState }) {
         >
           Save
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="danger" onClick={resetModal}>
           Cancel
         </Button>
       </ModalFooter>

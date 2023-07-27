@@ -15,15 +15,22 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    login(username, password).then((user) => {
+    if (!username)
+      setAlert("Please enter a username.");
+    else if (!password)
+      setAlert("Please enter a password.");
+    else 
+      login(username, password).then((user) => {
       console.log(user);
       if (user) {
         setAuth(user);
         navigate("/dmessages", { replace: true });
       } else {
-        setAlert("Wrong username or password.");
+        setAlert("Something went wrong... Please try again later.");
       }
-    }).catch((error) => setAlert(error?.response?.data?.error ? error.response.data.error : "There was an unexpected issue, please try again later.")); //setAlert("Wrong username or password."));
+    }).catch((error) => {
+      setAlert(error.message);
+    });
   };
 
   const alertDOM = (

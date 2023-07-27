@@ -7,9 +7,9 @@ export function getMessages(options) {
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
-        return err.response.data.error;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -19,9 +19,9 @@ export function sendMessage(message) {
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
-        return err.response.data.error;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -31,9 +31,9 @@ export function deleteMessage(messageId) {
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
-        return err.response.data.error;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }
 
@@ -43,8 +43,8 @@ export function updateMessage(message) {
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
-        return err.response.data.error;
+        throw new Error(err.response.data.error);
       }
-      return err.message;
+      throw new Error(err.message);
     });
 }

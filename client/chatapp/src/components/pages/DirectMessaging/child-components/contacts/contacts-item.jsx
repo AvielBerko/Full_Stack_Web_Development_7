@@ -11,6 +11,7 @@ export default function ContactsItem({
   contact,
   selectedContact,
   setSelectedContact,
+  setAlert,
 }) {
   if (!contact) return <></>;
 
@@ -48,8 +49,9 @@ export default function ContactsItem({
         setAlert(results);
       }
     },
-    onError: () => {
-      setAlert("An unexpected error occurred. Please try again later.");
+    onError: (error) => {
+      //setAlert("An unexpected error occurred. Please try again later.");
+      setAlert(error.message);
     },
   });
 
@@ -61,6 +63,7 @@ export default function ContactsItem({
       <UpdateContactModal
         contact={contact}
         showState={[showUpdateContactModal, setShowUpdateContactModal]}
+        setAlert={setAlert}
       />
   );
 

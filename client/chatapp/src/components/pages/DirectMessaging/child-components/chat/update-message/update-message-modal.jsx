@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -28,18 +28,23 @@ export default function UpdateMessageModal({ message, showState }) {
       }
     },
     onError: (error) => {
-      setAlert("An unexpected error occurred. Please try again later.");
+      setAlert(error.message);
     },
   });
 
   const update = () => {
-    if (!newMessage) {
-      window.alert("Please write a message.");
-      return;
-    }
-    updateMessageMutetion.mutate({ id: message.id, message: newMessage });
+    if (newMessage !== message.message)
+      updateMessageMutetion.mutate({ id: message.id, message: newMessage });
     setShow(false);
   };
+
+  const resetModal = () => {
+    setNewMessage(message.message);
+  };
+
+  useEffect(() => {
+    resetModal();
+  }, [show]);
 
   return (
     <Modal show={show}>
