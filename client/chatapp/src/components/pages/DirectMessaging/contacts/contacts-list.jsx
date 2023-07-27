@@ -117,7 +117,6 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
   );
 
   const addContactModalDOM = (
-    <ListGroupItem>
       <AddContactModal
         user={user}
         showState={[showAddContactModal, setShowAddContactModal]}
@@ -125,7 +124,6 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
         refetchContacts={contactsQuery.refetch}
         //setAlert={setAlert}
       />
-    </ListGroupItem>
   );
 
   return (

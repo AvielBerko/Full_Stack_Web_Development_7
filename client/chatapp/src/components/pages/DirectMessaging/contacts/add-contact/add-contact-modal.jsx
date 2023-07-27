@@ -75,7 +75,7 @@ export default function AddContactModal({
     resetModal();
   }, [show]);
 
-  if (usersQuery.isLoading) return <>Loading</>;
+  if (usersQuery.isLoading) return <></>;
   if (usersQuery.isError) return <>Error: {error.message}</>;
   if (!usersQuery.data.length) return <>No data</>;
   // add a filter to remove the users that are already contacts
