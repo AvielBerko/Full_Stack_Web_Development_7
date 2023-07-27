@@ -12,10 +12,14 @@ const routes = {
   getContacts: (id, start, end) =>
   start ? `${SERVER_URL}/contacts?saver_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
   addContact: `${SERVER_URL}/contacts`,
-  updateContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
-  deleteContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
-  getGroupMessages: (options) =>
-  options ? `${SERVER_URL}/gmessages?${new URLSearchParams(options).toString()}` : `${SERVER_URL}/gmessages/${id}`,
+  updateContact: (id) => `${SERVER_URL}/contacts/${id}`,
+  deleteContact: (id) => `${SERVER_URL}/contacts/${id}`,
+  getMessages: (options) =>
+  options ? `${SERVER_URL}/dmessages?${new URLSearchParams(options).toString()}` : `${SERVER_URL}/dmessages/${id}`,
+  sendMessage: `${SERVER_URL}/dmessages`,
+  deleteMessage: (id) => `${SERVER_URL}/dmessages/${id}`,
+  updateMessage: (id) => `${SERVER_URL}/dmessages/${id}`,
+  getGroupMessages: (id) => `${SERVER_URL}/groups/${id}/messages`,
   sendGroupMessage: `${SERVER_URL}/gmessages`,
   deleteGroupMessage: (messageId) => `${SERVER_URL}/gmessages/${messageId}`,
   updateGroupMessage: (id) => `${SERVER_URL}/gmessages/${id}`,
@@ -23,10 +27,10 @@ const routes = {
   start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
   getAllGroups: `${SERVER_URL}/groups`,
   addGroup: `${SERVER_URL}/groups`,
-  joinGroup: (groupID) => `${SERVER_URL}/groups/${groupID}/members`,
+  joinGroup: (id) => `${SERVER_URL}/groups/${id}/members`,
   leaveGroup: (groupID, userID) => `${SERVER_URL}/groups/${groupID}/members/${userID}`,
-  updateGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
-  deleteGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
+  updateGroup: (id) => `${SERVER_URL}/groups/${id}`,
+  deleteGroup: (id) => `${SERVER_URL}/groups/${id}`,
 };
 export default routes;
 export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });

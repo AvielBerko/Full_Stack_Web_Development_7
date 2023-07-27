@@ -25,13 +25,14 @@ const Joi = require('joi');
 
 console.log('hi!')
 const user_schema = Joi.object({
+  new: Joi.boolean(),
   username: Joi.string().min(3).max(30).alphanum().required(),
   email: Joi.string().email().required(),
-  phoneNumber: Joi.string().min(10).when('method', {is: 'POST', then: Joi.required()})
+  phoneNumber: Joi.string().min(10).when('new', {is: true, then: Joi.required()})
 })
-const userData = {username: 't123', 'email': 'test@gmail.com'}
+const userData = {username: 't123', 'email': 'test@gmail.com', }
 
-const { error } = user_schema.validate(userData, {context: {method:'POST'}})
+const { error } = user_schema.validate({...userData, new:true})
 
 
 if (error) console.log(error.details[0].message)

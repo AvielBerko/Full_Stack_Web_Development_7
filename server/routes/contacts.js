@@ -4,12 +4,12 @@ const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
 
-// const contact_schema = Joi.object({
-//   username: Joi.string().min(3).max(30).alphanum().required(),
-//   email: Joi.string().email().required(),
-//   phone_number: Joi.string().min(10).max(15), 
-//   password: Joi.string().min(4).required()
-// })
+const contact_schema = Joi.object({
+  new: Joi.boolean(),
+  saver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  user_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  name: Joi.string().min(3).max(30).alphanum().required(),
+})
 
 router.get("/", async (req, res) => {
     try {
@@ -22,6 +22,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const { error } = contact_schema.validate({...req.body, new: true})
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_contact = req.body;
         new_contact.id = uuidv4();
@@ -36,6 +38,8 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const { error } = contact_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const contact_id = req.params.id;
         const updated_contact = {name:req.body.name, id:contact_id};
