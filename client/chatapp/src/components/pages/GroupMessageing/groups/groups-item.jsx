@@ -9,6 +9,7 @@ import ContextMenu from "../../../common/ContextMenu/context-menu";
 
 export default function GroupsItem({
   group,
+  user,
   selectedGroup,
   setSelectedGroup,
   setAlert,
@@ -56,7 +57,7 @@ export default function GroupsItem({
   });
 
   const leaveGroupMutation = useMutation({
-    mutationFn: (guserID) => leaveGroup(guserID),
+    mutationFn: (data) => leaveGroup(data.groupID, data.userID),
     onSuccess: (results) => {
       if (results === "") {
         queryClient.invalidateQueries(["groups", user.id]);
@@ -72,7 +73,7 @@ export default function GroupsItem({
 
   const handleDelete = () => {
     //deleteGroupMutation.mutate();
-    leaveGroupMutation.mutate();
+    leaveGroupMutation.mutate({ groupID: group.id, userID: user.id });
   };
 
   const updateGroupModalDOM = (

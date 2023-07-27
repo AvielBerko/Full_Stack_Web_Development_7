@@ -33,11 +33,10 @@ export default function JoinGroupModal({
     queryFn: () => {
       return getAllGroups();
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const joinGroupMutation = useMutation({
-    mutationFn: (guser) => joinGroup(guser),
+    mutationFn: (groupID) => joinGroup(groupID, {user_id: user.id }),
     onSuccess: (results) => {
         refetchGroups();
         setShow(false);
@@ -52,10 +51,7 @@ export default function JoinGroupModal({
       setAlert("Please select a group.");
       return;
     }
-    joinGroupMutation.mutate({
-      groupchat_id: selectedGroup,
-      user_id: user.id,
-    });
+    joinGroupMutation.mutate(selectedGroup);
   };
 
   const resetModal = () => {
@@ -67,7 +63,7 @@ export default function JoinGroupModal({
     resetModal();
   }, [show]);
 
-  if (groupsQuery.isLoading) return <>Loading</>;
+  if (groupsQuery.isLoading) return <></>;
   if (groupsQuery.isError) return <>Error: {error.message}</>;
   if (!groupsQuery.data.length) return <>No data</>;
   // add a filter to remove the groups that are already groups

@@ -49,9 +49,9 @@ export function deleteGroup(groupID) {
     });
 }
 
-export function joinGroup(guser) {
+export function joinGroup(groupID, data) {
   return axios
-    .post(routes.joinGroup, guser)
+    .post(routes.joinGroup(groupID), data)
     .then((res) => res.data)
     .catch((err) => {
       if(err.response.data){
@@ -61,9 +61,9 @@ export function joinGroup(guser) {
     });
 }
 
-export function leaveGroup(guserID) {
+export function leaveGroup(groupID, userID) {
   return axios
-    .delete(routes.leaveGroup(guserID))
+    .delete(routes.leaveGroup(groupID, userID))
     .then((res) => res.data)
     .catch((err) => {
       if(err.response.data){

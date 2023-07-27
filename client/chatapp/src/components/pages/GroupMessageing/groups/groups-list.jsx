@@ -113,6 +113,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
       <GroupsItem
         key={group.id}
         group={group}
+        user={user}
         selectedGroup={selectedGroup}
         setSelectedGroup={setSelectedGroup}
         setAlert={setAlert}
@@ -131,7 +132,6 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   );
 
   const joinGroupModalDOM = (
-    <ListGroupItem>
       <JoinGroupModal
         user={user}
         showState={[showJoinGroupModal, setShowJoinGroupModal]}
@@ -139,17 +139,14 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
         refetchGroups={groupsQuery.refetch}
         //setAlert={setAlert}
       />
-    </ListGroupItem>
   );
 
   const addGroupModalDOM = (
-    <ListGroupItem>
       <AddGroupModal
         user={user}
         showState={[showAddGroupModal, setShowAddGroupModal]}
         refetchGroups={groupsQuery.refetch}
       />
-    </ListGroupItem>
   );
 
 

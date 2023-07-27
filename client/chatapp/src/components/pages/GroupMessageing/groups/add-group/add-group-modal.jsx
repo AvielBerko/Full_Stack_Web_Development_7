@@ -23,11 +23,11 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
 
   const addGroupMutation = useMutation({
     mutationFn: (
-
       async (group) => {
         try {
           const addedGroup = await addGroup(group);
-          await joinGroup({ groupchat_id: addedGroup.id, user_id: user.id });
+
+          await joinGroup(addedGroup.id, {user_id: user.id });
           return addedGroup;
         } catch (error) {
           // Handle errors if needed
@@ -48,6 +48,7 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
   const create = () => {
     addGroupMutation.mutate({
       name,
+      time_created: new Date(),
     });
   };
 
