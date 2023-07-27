@@ -23,6 +23,8 @@ const routes = {
   start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
   getAllGroups: `${SERVER_URL}/groups`,
   addGroup: `${SERVER_URL}/groups`,
+  joinGroup: `${SERVER_URL}/gusers`,
+  leaveGroup: (id) => `${SERVER_URL}/gusers/${id}`,
   updateGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
   deleteGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
 };

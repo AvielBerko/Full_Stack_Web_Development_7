@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { ListGroup, ListGroupItem, Row, Col, Alert } from "react-bootstrap";
+import {
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+  Alert,
+  Container,
+} from "react-bootstrap";
 import GroupsItem from "./groups-item";
-import {
-  getGroups,
-} from "../../../../api/groups";
-import {
-  useInfiniteQuery, useQuery,
-} from "@tanstack/react-query";
-import AddGroupModal from "./join-group/join-group-modal";
+import { getGroups } from "../../../../api/groups";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import JoinGroupModal from "./join-group/join-group-modal";
 import BlockButton from "../../../common/BlockButton/block-button";
+import AddGroupModal from "./add-group/add-group-modal";
 
-export default function GroupsList({ user, selectedGroup, setSelectedGroup}) {
+export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   const GROUPS_PER_PAGE = 10;
-  
+
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
-  const [alert, setAlert] = useState("");
+  const [showJoinGroupModal, setShowJoinGroupModal] = useState(false);
+  const [alert, setAlert] = useState("");  
 
   if (!user?.id) return <></>;
 
@@ -27,7 +32,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup}) {
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       setAlert(error.message);
-    }
+    },
   });
 
   // const groupsQuery = useInfiniteQuery({
@@ -87,7 +92,6 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup}) {
   //   handleSort();
   // }, [sortBy]);
 
-
   // TODO:
   // const postsDOM = postsQuery?.data?.pages
   // ?.reduce((prev, cur) => [...prev, ...cur], [])
@@ -105,16 +109,15 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup}) {
   if (groupsQuery.isError) return <>Error</>;
   let groupsDOM = null;
   if (groupsQuery.data?.length) {
-    groupsDOM = groupsQuery.data
-      .map((group) => (
-        <GroupsItem
-          key={group.id}
-          group={group}
-          selectedGroup={selectedGroup}
-          setSelectedGroup={setSelectedGroup}
-          setAlert={setAlert}
-        />
-      ));
+    groupsDOM = groupsQuery.data.map((group) => (
+      <GroupsItem
+        key={group.id}
+        group={group}
+        selectedGroup={selectedGroup}
+        setSelectedGroup={setSelectedGroup}
+        setAlert={setAlert}
+      />
+    ));
   }
 
   const alertDOM = (
@@ -127,30 +130,57 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup}) {
     </Row>
   );
 
-  const addGroupModalDOM = (
+  const joinGroupModalDOM = (
     <ListGroupItem>
-      <AddGroupModal
+      <JoinGroupModal
         user={user}
-        showState={[showAddGroupModal, setShowAddGroupModal]}
-        groups={groupsQuery.data}
+        showState={[showJoinGroupModal, setShowJoinGroupModal]}
+        userGroups={groupsQuery.data}
         refetchGroups={groupsQuery.refetch}
         //setAlert={setAlert}
       />
     </ListGroupItem>
   );
 
+  const addGroupModalDOM = (
+    <ListGroupItem>
+      <AddGroupModal
+        user={user}
+        showState={[showAddGroupModal, setShowAddGroupModal]}
+        refetchGroups={groupsQuery.refetch}
+      />
+    </ListGroupItem>
+  );
+
+
   return (
     <ListGroup>
-    {alert && alertDOM}
-    <BlockButton
-      variant="success"
-      onClick={() => setShowAddGroupModal(true)}
-    >
-      {" "}
-      Add Group
-    </BlockButton>
-    {addGroupModalDOM}
-    {groupsDOM ?? <>No data</>}
-  </ListGroup>
+      {alert && alertDOM}
+      <Container>
+        <Row>
+          <Col>
+            <BlockButton
+              variant="success"
+              onClick={() => setShowAddGroupModal(true)}
+            >
+              {" "}
+              New Group
+            </BlockButton>
+          </Col>
+          <Col>
+            <BlockButton
+              variant="success"
+              onClick={() => setShowJoinGroupModal(true)}
+            >
+              {" "}
+              Join Group
+            </BlockButton>
+          </Col>
+        </Row>
+      </Container>
+      {joinGroupModalDOM}
+      {addGroupModalDOM}
+      {groupsDOM ?? <>No data</>}
+    </ListGroup>
   );
 }

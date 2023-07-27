@@ -31,6 +31,7 @@ export default function AddContactModal({
 
   const usersQuery = useQuery({
     queryKey: ["users"],
+    enabled: show,
     queryFn: () => {
       return getUsers();
     },
