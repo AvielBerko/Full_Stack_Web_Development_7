@@ -1,6 +1,6 @@
 import React, { useState, useRef} from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getMessages, sendMessage } from "../../../../../api/direct_messaging";
+import { getMessages, sendMessage } from "../../../../api/dmessges";
 import { Alert, Row, Col } from "react-bootstrap";
 import Message from "./message";
 

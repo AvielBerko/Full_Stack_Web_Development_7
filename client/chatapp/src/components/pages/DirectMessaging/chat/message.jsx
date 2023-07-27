@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 import { createPortal } from "react-dom";
 import { useMutation, useQueryClient} from "@tanstack/react-query";
-import ContextMenu from "../../../../common/ContextMenu/context-menu";
-import { useContextMenu } from "../../../../../custom-hooks/use-context-menu"; // Import the custom hook
-import { deleteMessage } from "../../../../../api/direct_messaging";
+import ContextMenu from "../../../common/ContextMenu/context-menu";
+import { useContextMenu } from "../../../../custom-hooks/use-context-menu"; // Import the custom hook
+import { deleteMessage } from "../../../../api/dmessges";
 import UpdateMessageModal from "./update-message/update-message-modal";
 
 export default function Message({ message, user, contact_id }) {

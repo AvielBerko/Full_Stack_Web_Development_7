@@ -3,12 +3,12 @@ import { ListGroup, ListGroupItem, Row, Col, Alert } from "react-bootstrap";
 import ContactsItem from "./contacts-item";
 import {
   getContacts,
-} from "../../../../../api/contacts";
+} from "../../../../api/contacts";
 import {
   useInfiniteQuery,
 } from "@tanstack/react-query";
 import AddContactModal from "./add-contact/add-contact-modal";
-import BlockButton from "../../../../common/BlockButton/block-button";
+import BlockButton from "../../../common/BlockButton/block-button";
 
 export default function ContactsList({ user, selectedContact, setSelectedContact}) {
   const CONTACTS_PER_PAGE = 10;

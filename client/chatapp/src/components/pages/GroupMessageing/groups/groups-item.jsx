@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import { ListGroupItem, Card, Button, ListGroup } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteContact } from "../../../../../api/contacts";
+import { deleteGroup } from "../../../../api/groups";
 import { createPortal } from "react-dom";
-import UpdateContactModal from "./update-contact/update-contact-modal";
-import { useContextMenu } from "../../../../../custom-hooks/use-context-menu"; // Import the custom hook
-import ContextMenu from "../../../../common/ContextMenu/context-menu";
+import UpdateGroupModal from "./update-group/update-group-modal";
+import { useContextMenu } from "../../../../custom-hooks/use-context-menu";
+import ContextMenu from "../../../common/ContextMenu/context-menu";
 
-export default function ContactsItem({
-  contact,
-  selectedContact,
-  setSelectedContact,
+export default function GroupsItem({
+  group,
+  selectedGroup,
+  setSelectedGroup,
   setAlert,
 }) {
-  if (!contact) return <></>;
+  if (!group) return <></>;
 
-  const [showUpdateContactModal, setShowUpdateContactModal] = useState(false);
+  const [showUpdateGroupModal, setShowUpdateGroupModal] = useState(false);
 
   const {
     isContextMenuOpen,
@@ -38,13 +38,13 @@ export default function ContactsItem({
   };  
   const queryClient = useQueryClient();
 
-  const selected = selectedContact === contact.user_id;
+  const selected = selectedGroup === group.user_id;
 
-  const deleteContactMutation = useMutation({
-    mutationFn: () => deleteContact(contact.id),
+  const deleteGroupMutation = useMutation({
+    mutationFn: () => deleteGroup(group.id),
     onSuccess: (results) => {
       if (results === "") {
-        queryClient.invalidateQueries(["contacts"]);
+        queryClient.invalidateQueries(["groups"]);
       } else {
         setAlert(results);
       }
@@ -56,34 +56,31 @@ export default function ContactsItem({
   });
 
   const handleDelete = () => {
-    deleteContactMutation.mutate();
+    deleteGroupMutation.mutate();
   };
 
-  const updateContactModalDOM = (
-      <UpdateContactModal
-        contact={contact}
-        showState={[showUpdateContactModal, setShowUpdateContactModal]}
+  const updateGroupModalDOM = (
+      <UpdateGroupModal
+        group={group}
+        showState={[showUpdateGroupModal, setShowUpdateGroupModal]}
         setAlert={setAlert}
       />
   );
 
   return (
     <div onContextMenu={handleContextMenu}>
-      {updateContactModalDOM}
+      {updateGroupModalDOM}
       <ListGroupItem>
         <div
           onClick={() => {
-            setSelectedContact(contact.user_id);
+            setSelectedGroup(group.user_id);
           }}
         >
           <Card>
             <Card.Body>
               <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
-                {contact.name}
+                {group.name}
               </Card.Title>
-              <Card.Text style={{ fontSize: "12.5px" }}>
-                Number: {contact.phone_number}
-              </Card.Text>
             </Card.Body>
           </Card>
         </div>
@@ -94,7 +91,7 @@ export default function ContactsItem({
             contextMenuRef={contextMenuRef}
             contextMenuPosition={contextMenuPosition}
             onClose={closeContextMenu}
-            onEdit={() => setShowUpdateContactModal(true)}
+            onEdit={() => setShowUpdateGroupModal(true)}
             onDelete={handleDelete}
           />,
           document.body

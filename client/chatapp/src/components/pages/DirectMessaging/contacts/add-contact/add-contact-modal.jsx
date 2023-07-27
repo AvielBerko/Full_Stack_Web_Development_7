@@ -14,8 +14,8 @@ import {
   Container,
 } from "react-bootstrap";
 import UserItem from "./user-item";
-import { addContact } from "../../../../../../api/contacts";
-import { getUsers } from "../../../../../../api/users";
+import { addContact } from "../../../../../api/contacts";
+import { getUsers } from "../../../../../api/users";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 export default function AddContactModal({

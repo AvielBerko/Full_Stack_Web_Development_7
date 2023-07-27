@@ -8,9 +8,9 @@ import {
   ModalHeader,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import { updateMessage } from "../../../../../../api/direct_messaging";
+import { updateMessage } from "../../../../../api/dmessges";
 import { useMutation } from "@tanstack/react-query";
-import Input from "../../../../../common/Input/input";
+import Input from "../../../../common/Input/input";
 
 export default function UpdateMessageModal({ message, showState }) {
   const [newMessage, setNewMessage] = useState(message.message || "");

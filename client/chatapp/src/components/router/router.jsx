@@ -4,6 +4,7 @@ import Login from "../pages/Login/login";
 import Register from "../pages/Register/register";
 import Profile from "../pages/Profile/profile";
 import DirectMessaging from "../pages/DirectMessaging/direct-messaging";
+import GroupMessaging from "../pages/GroupMessageing/group-messaging";
 
 export default function Router() {
   return (
@@ -14,6 +15,7 @@ export default function Router() {
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
       <Route path="dmessages" element={<DirectMessaging />} />
+      <Route path="gmessages" element={<GroupMessaging />} />
 
     </Routes>
   );
