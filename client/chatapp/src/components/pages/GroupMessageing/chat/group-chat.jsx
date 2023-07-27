@@ -101,7 +101,7 @@ export default function GroupChat({ user, groupID }) {
               key={message.id}
               message={message}
               user={user}
-              contact_id={contact_id}
+              groupID={groupID}
             />
           );
         })}
