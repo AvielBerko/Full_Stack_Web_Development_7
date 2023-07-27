@@ -13,9 +13,9 @@ export function getGroupMessages(groupID) {
     });
 }
 
-export function sendGroupMessage(message) {
+export function sendGroupMessage(groupID, message) {
   return axios
-    .post(routes.sendMessage, message)
+    .post(routes.sendGroupMessage(groupID), message)
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
@@ -25,9 +25,9 @@ export function sendGroupMessage(message) {
     });
 }
 
-export function deleteGroupMessage(messageId) {
+export function deleteGroupMessage(groupID, messageId) {
   return axios
-    .delete(routes.deleteMessage(messageId))
+    .delete(routes.deleteGroupMessage(groupID, messageId))
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {
@@ -37,9 +37,10 @@ export function deleteGroupMessage(messageId) {
     });
 }
 
-export function updateGroupMessage(message) {
+export function updateGroupMessage(groupID, message) {
+  console.log(message);
   return axios
-    .put(routes.updateMessage(message.id), message)
+    .put(routes.updateGroupMessage(groupID, message.id), message)
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data) {

@@ -8,24 +8,20 @@ import {
   ModalHeader,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import { updateMessage } from "../../../../../api/dmessges";
+import { updateGroupMessage } from "../../../../../api/gmessages";
 import { useMutation } from "@tanstack/react-query";
 import Input from "../../../../common/Input/input";
 
-export default function UpdateMessageModal({ message, showState }) {
+export default function UpdateMessageModal({ message, showState, groupID }) {
   const [newMessage, setNewMessage] = useState(message.message || "");
   const [show, setShow] = showState;
 
   const queryClient = useQueryClient();
 
   const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateMessage(message),
+    mutationFn: (message) => updateGroupMessage(groupID, message),
     onSettled: (results) => {
-      if (typeof results === "string") {
-        setAlert(results);
-      } else {
-        queryClient.invalidateQueries(["messages"])
-      }
+        queryClient.invalidateQueries(["groups", groupID, "messages"])
     },
     onError: (error) => {
       setAlert(error.message);
