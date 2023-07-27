@@ -9,35 +9,32 @@ import {
   Row, Col, Alert, Container
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import EdibaleLabel from "../../../../../common/edibaleLabel/edibale-label";
-import { updateContact } from "../../../../../../api/contacts";
+import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
+import { updateGroup } from "../../../../../api/groups";
 import { useMutation } from "@tanstack/react-query";
 
-export default function UpdateContactModal({ contact, showState }) {
-  const [newName, setNewName] = useState(contact.name || "");
+export default function UpdateGroupModal({ group, showState }) {
+  const [newName, setNewName] = useState(group.name || "");
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
   const queryClient = useQueryClient();
-  const updateContactMutetion = useMutation({
-    mutationFn: (contact) => updateContact(contact),
+  const updateGroupMutetion = useMutation({
+    mutationFn: (group) => updateGroup(group),
     onSettled: (results) => {
       if (typeof results === "string") {
         setAlert(results);
       } else {
-        //contactsQuery.refetch();
-        queryClient.setQueriesData(["contacts"], (oldData) => {
-          const newData = oldData.pages.map((page) => {
-            return page.map((contact) => {
-              if (contact.id === results.id) {
-                return { ...contact, ...results };
+        //groupsQuery.refetch();
+        queryClient.setQueriesData(["groups"], (oldData) => {
+          const newData = oldData.map((group) => {
+              if (group.id === results.id) {
+                return { ...group, ...results };
               }
-              return contact;
+              return group;
             });
           });
-          return { pages: newData };
-        });
-        //queryClient.invalidateQueries(["contacts"])
+        //queryClient.invalidateQueries(["groups"])
       }
     },
     onError: (error) => {
@@ -50,22 +47,22 @@ export default function UpdateContactModal({ contact, showState }) {
       setAlert("Please write a name.");
       return;
     }
-    if (newName !== contact.name) 
-      updateContactMutetion.mutate({ id: contact.id, name: newName });
+    if (newName !== group.name) 
+      updateGroupMutetion.mutate({ id: group.id, name: newName });
     else
       resetModal();
     //setShow(false);
   };
 
   const resetModal = () => {
-    setNewName(contact.name || "");
+    setNewName(group.name || "");
     setAlert("");
     setShow(false);
   };
 
   useEffect(() => {
     resetModal();
-  }, [contact]);
+  }, [group]);
 
 
   const alertDOM = (
@@ -84,7 +81,7 @@ export default function UpdateContactModal({ contact, showState }) {
         <Container fluid>
         <Row className="text-center">
           <Col>
-            <h3>Update Contact</h3>
+            <h3>Update Group</h3>
           </Col>
         </Row>
         <Row>
@@ -99,13 +96,11 @@ export default function UpdateContactModal({ contact, showState }) {
           <Card.Body>
             <EdibaleLabel
               isEditable={true}
-              label="Name"
+              label="Group Name"
               setter={setNewName}
               value={newName}
               WrapperComponent={Card.Title}
             />
-              <Card.Text>Email: {contact.email}</Card.Text>
-              <Card.Text>Phone Number: {contact.phone_number}</Card.Text>
           </Card.Body>
         </Card>
       </ModalBody>

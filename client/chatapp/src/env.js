@@ -14,11 +14,17 @@ const routes = {
   addContact: `${SERVER_URL}/contacts`,
   updateContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
   deleteContact: (contactID) => `${SERVER_URL}/contacts/${contactID}`,
-  getMessages: (options) =>
-  options ? `${SERVER_URL}/dmessages?${new URLSearchParams(options).toString()}` : `${SERVER_URL}/dmessages/${id}`,
-  sendMessage: `${SERVER_URL}/dmessages`,
-  deleteMessage: (messageId) => `${SERVER_URL}/dmessages/${messageId}`,
-  updateMessage: (id) => `${SERVER_URL}/dmessages/${id}`,
+  getGroupMessages: (options) =>
+  options ? `${SERVER_URL}/gmessages?${new URLSearchParams(options).toString()}` : `${SERVER_URL}/gmessages/${id}`,
+  sendGroupMessage: `${SERVER_URL}/gmessages`,
+  deleteGroupMessage: (messageId) => `${SERVER_URL}/gmessages/${messageId}`,
+  updateGroupMessage: (id) => `${SERVER_URL}/gmessages/${id}`,
+  getGroups: (id, start, end) =>
+  start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
+  getAllGroups: `${SERVER_URL}/groups`,
+  addGroup: `${SERVER_URL}/groups`,
+  updateGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
+  deleteGroup: (groupID) => `${SERVER_URL}/groups/${groupID}`,
 };
 export default routes;
 export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });
