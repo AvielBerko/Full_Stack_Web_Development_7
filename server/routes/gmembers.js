@@ -5,8 +5,8 @@ const {v4: uuidv4} = require('uuid');
 
 router.get("/", async (req, res) => {
     try {
-        const group_id = req.query.groupchat_id;//currently supporting only gmembers of 1 group
-        const gmembers = await gmembers_db.getGroupMembers(group_id);
+        const groupchat_id = req.locals.groupchat_id;
+        const gmembers = await gmembers_db.getGroupMembers(groupchat_id);
         res.send(gmembers);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
@@ -45,8 +45,6 @@ router.post("/", async (req, res) => {
     try {
         const groupchat_id = req.locals.groupchat_id;
         const user_id = req.params.user_id;
-        console.log(groupchat_id);
-        console.log(user_id);
         const result = await gmembers_db.deleteGroupMember(groupchat_id, user_id);
         if (result.changedRows === 0) res.status(404).send({error: 'Group member to delete was not found!'});
         res.status(204).end();

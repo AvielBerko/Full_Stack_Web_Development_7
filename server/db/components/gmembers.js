@@ -19,7 +19,6 @@ async function addGroupMember(new_gmember){
 
 async function deleteGroupMember(groupchat_id, user_id){
     const deleted = {valid: false}
-    //return generic.update(tables.GROUP_MEMBERS, deleted, {groupchat_id:groupchat_id, user_id:user_id});
     return new Promise((resolve, reject) => {
         db_connection.getConnection(con => {
             con.query(`

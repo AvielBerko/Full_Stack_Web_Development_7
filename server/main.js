@@ -24,9 +24,11 @@ app.use('/users', users);
 app.use('/contacts', contacts);
 app.use('/dmessages', dmessages);
 app.use('/groups', groups);
-app.use('/gmessages', gmessages);
+app.use('/groups/:id/messages', (req, res, next) => {
+  req.locals = { groupchat_id: req.params.id };
+  next();
+}, gmessages);
 app.use('/groups/:id/members', (req, res, next) => {
-    // Pass the 'id' parameter to the request locals
     req.locals = { groupchat_id: req.params.id };
     next();
   }, gmembers);
