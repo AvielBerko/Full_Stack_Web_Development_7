@@ -7,11 +7,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => res.send({data: "hello world!"}));
-
 // Routes
-const users = require('./routes/Users');
+const users = require('./routes/users');
 const auth = require('./routes/user_auth');
 const contacts = require('./routes/contacts');
 const dmessages = require('./routes/dmessages');
@@ -19,7 +16,7 @@ const groups = require('./routes/groups');
 const gmessages = require('./routes/gmessages');
 const gmembers = require('./routes/gmembers');
 
-app.use('/', auth)
+app.use('/', auth);
 app.use('/users', users);
 app.use('/contacts', contacts);
 app.use('/dmessages', dmessages);

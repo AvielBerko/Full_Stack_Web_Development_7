@@ -33,7 +33,6 @@ router.post("/", async (req, res) => {
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_dmessage = req.body;
-        //TODO - add a check it is from group member(?)
         new_dmessage.id = uuidv4();
         new_dmessage.edited = false;
         new_dmessage.time_sent = new Date(new_dmessage.time_sent);//creating date object from received string
@@ -48,7 +47,6 @@ router.put("/:id", async (req, res) => {
     const { error } = dmessages_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
-        //TODO - check only for saver id changes?
         const dmessages_id = req.params.id;
         const updated_dmessage = {...req.body, id:dmessages_id};
         updated_dmessage.edited = true;

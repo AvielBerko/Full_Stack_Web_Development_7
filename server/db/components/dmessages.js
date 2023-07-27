@@ -7,13 +7,11 @@ async function getDirectMessages(sender_id, receiver_id){
 }
 
 async function addDirectMessage(new_dmessage){
-    //TODO validate new dmessage
     new_dmessage.valid = true;
     return generic.create(tables.DIRECT_MESSAGES, new_dmessage);
 }
 
 async function updateDirectMessage(updated_dmessage){
-    //TODO validate new dmessage
     return generic.update(tables.DIRECT_MESSAGES, updated_dmessage, {id: updated_dmessage.id});
 }
 
