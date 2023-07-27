@@ -2,6 +2,11 @@ const express = require("express");
 const gmembers_db = require('../db/components/gmembers.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
+
+const gmembers_schema = Joi.object({
+  user_id: Joi.string().guid({ version: ['uuidv4']}).required(),
+})
 
 router.get("/", async (req, res) => {
     try {
@@ -14,6 +19,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const { error } = gmembers_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_gmember = req.body;
         new_gmember.groupchat_id = req.locals.groupchat_id;
