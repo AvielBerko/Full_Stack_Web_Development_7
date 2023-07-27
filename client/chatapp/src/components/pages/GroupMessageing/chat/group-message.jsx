@@ -7,7 +7,7 @@ import { useContextMenu } from "../../../../custom-hooks/use-context-menu"; // I
 import { deleteMessage } from "../../../../api/dmessges";
 import UpdateMessageModal from "./update-message/update-message-modal";
 
-export default function Message({ message, user, contact_id }) {
+export default function GroupMessage({ message, user }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
   const queryClient = useQueryClient();
   const isSentByUser = message.sender_id === user.id;
