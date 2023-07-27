@@ -14,30 +14,29 @@ import {
   Container,
 } from "react-bootstrap";
 import GroupItem from "./group-item";
-import { addGroup, getAllGroups } from "../../../../../api/groups";
+import { joinGroup, getAllGroups } from "../../../../../api/groups";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-export default function AddGroupModal({
-  group,
+export default function JoinGroupModal({
+  user,
   showState,
-  groups,
+  userGroups,
   refetchGroups,
 }) {
-  const [name, setName] = useState("");
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
   const groupsQuery = useQuery({
     queryKey: ["groups"],
+    enabled: show,
     queryFn: () => {
       return getAllGroups();
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const addGroupMutation = useMutation({
-    mutationFn: (group) => addGroup(group),
+  const joinGroupMutation = useMutation({
+    mutationFn: (groupID) => joinGroup(groupID, {user_id: user.id }),
     onSuccess: (results) => {
         refetchGroups();
         setShow(false);
@@ -48,23 +47,14 @@ export default function AddGroupModal({
   });
 
   const create = () => {
-    if (!name) {
-      setAlert("Please write a name.");
-      return;
-    }
     if (!selectedGroup) {
       setAlert("Please select a group.");
       return;
     }
-    addGroupMutation.mutate({
-      name,
-      group_id: selectedGroup,
-      saver_id: group.id,
-    });
+    joinGroupMutation.mutate(selectedGroup);
   };
 
   const resetModal = () => {
-    setName("");
     setAlert("");
     setSelectedGroup(null);
   };
@@ -73,17 +63,15 @@ export default function AddGroupModal({
     resetModal();
   }, [show]);
 
-  if (groupsQuery.isLoading) return <>Loading</>;
+  if (groupsQuery.isLoading) return <></>;
   if (groupsQuery.isError) return <>Error: {error.message}</>;
   if (!groupsQuery.data.length) return <>No data</>;
   // add a filter to remove the groups that are already groups
   // filter also the current group
-  const groupsDOM = groupsQuery?.data
-    ?.filter((u) => {
-      // filter the groups that are already groups
-      return !groups.some((group) => group.group_id === u.id);
-    })
-    .map((group) => {
+  const groupsDOM = groupsQuery?.data.filter((group) => {
+    // Check if the group's id is not present in the userGroups array
+    return !userGroups.some((userGroup) => userGroup.id === group.id);
+  }).map((group) => {
       return (
         <GroupItem
           key={group.id}
@@ -109,7 +97,7 @@ export default function AddGroupModal({
       <Container fluid>
         <Row className="text-center">
           <Col>
-            <h3>Add Group</h3>
+            <h3>Join Group</h3>
           </Col>
         </Row>
         <Row>
@@ -117,26 +105,17 @@ export default function AddGroupModal({
         </Row>
       </Container>{" "}
       <ModalBody>
-        <FormLabel><h4>Groups Name:</h4></FormLabel>
-        <InputGroup>
-          <FormControl
-            placeholder="Write here the Name..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </InputGroup>
         <div style={{ maxHeight: "520px", overflowY: "auto" }}>
           {groupsDOM}
         </div>
-
       </ModalBody>
       <ModalFooter>
         <Button
-          disabled={selectedGroup == null || name === ""}
-          variant={selectedGroup != null && name != "" ? "success" : "dark"}
+          disabled={selectedGroup == null}
+          variant={selectedGroup != null ? "success" : "dark"}
           onClick={create}
         >
-          Add Group
+          Join
         </Button>
         <Button variant="danger" onClick={() => setShow(false)}>
           Cancel

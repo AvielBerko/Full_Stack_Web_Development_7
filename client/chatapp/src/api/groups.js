@@ -49,6 +49,30 @@ export function deleteGroup(groupID) {
     });
 }
 
+export function joinGroup(groupID, data) {
+  return axios
+    .post(routes.joinGroup(groupID), data)
+    .then((res) => res.data)
+    .catch((err) => {
+      if(err.response.data){
+        throw new Error(err.response.data.error);
+      }
+      throw new Error(err.message);
+    });
+}
+
+export function leaveGroup(groupID, userID) {
+  return axios
+    .delete(routes.leaveGroup(groupID, userID))
+    .then((res) => res.data)
+    .catch((err) => {
+      if(err.response.data){
+        throw new Error(err.response.data.error);
+      }
+      throw new Error(err.message);
+    });
+}
+
 export function addGroup(group) {
   return axios
     .post(routes.addGroup, group)

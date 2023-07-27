@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ListGroupItem, Card, Button, ListGroup } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteGroup } from "../../../../api/groups";
+import { deleteGroup, leaveGroup } from "../../../../api/groups";
 import { createPortal } from "react-dom";
 import UpdateGroupModal from "./update-group/update-group-modal";
 import { useContextMenu } from "../../../../custom-hooks/use-context-menu";
@@ -9,6 +9,7 @@ import ContextMenu from "../../../common/ContextMenu/context-menu";
 
 export default function GroupsItem({
   group,
+  user,
   selectedGroup,
   setSelectedGroup,
   setAlert,
@@ -55,8 +56,24 @@ export default function GroupsItem({
     },
   });
 
+  const leaveGroupMutation = useMutation({
+    mutationFn: (data) => leaveGroup(data.groupID, data.userID),
+    onSuccess: (results) => {
+      if (results === "") {
+        queryClient.invalidateQueries(["groups", user.id]);
+      } else {
+        setAlert(results);
+      }
+    },
+    onError: (error) => {
+      //setAlert("An unexpected error occurred. Please try again later.");
+      setAlert(error.message);
+    },
+  });
+
   const handleDelete = () => {
-    deleteGroupMutation.mutate();
+    //deleteGroupMutation.mutate();
+    leaveGroupMutation.mutate({ groupID: group.id, userID: user.id });
   };
 
   const updateGroupModalDOM = (
@@ -73,7 +90,7 @@ export default function GroupsItem({
       <ListGroupItem>
         <div
           onClick={() => {
-            setSelectedGroup(group.user_id);
+            setSelectedGroup(group.id);
           }}
         >
           <Card>

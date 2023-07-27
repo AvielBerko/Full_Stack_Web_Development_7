@@ -1,18 +1,18 @@
 import React from "react";
 import { ListGroupItem, Card } from "react-bootstrap";
 
-export default function GroupItem({ user, selectedUser, setSelectedUser }) {
-  if (!user) return <></>;
+export default function GroupItem({ group , selectedGroup, setSelectedGroup }) {
+  if (!group) return <></>;
 
-  const selected = selectedUser === user.id;
+  const selected = selectedGroup === group.id;
 
   return (
     <ListGroupItem>
-      <div onClick={() => setSelectedUser(user.id)}>
+      <div onClick={() => setSelectedGroup(group.id)}>
         <Card>
           <Card.Body style={{background: selected ? "pink" : ""}}>
             <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
-              {user.username}
+              {group.name}
             </Card.Title>
             {/* TODO - add participants */}
           </Card.Body>
