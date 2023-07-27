@@ -6,14 +6,17 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Row, Col, Alert, Container
+  Row,
+  Col,
+  Alert,
+  Container,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
 import { updateGroup } from "../../../../../api/groups";
 import { useMutation } from "@tanstack/react-query";
 
-export default function UpdateGroupModal({ group, showState }) {
+export default function UpdateGroupModal({ group, user, showState }) {
   const [newName, setNewName] = useState(group.name || "");
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
@@ -22,20 +25,18 @@ export default function UpdateGroupModal({ group, showState }) {
   const updateGroupMutetion = useMutation({
     mutationFn: (group) => updateGroup(group),
     onSettled: (results) => {
-      if (typeof results === "string") {
-        setAlert(results);
-      } else {
-        //groupsQuery.refetch();
-        queryClient.setQueriesData(["groups"], (oldData) => {
-          const newData = oldData.map((group) => {
-              if (group.id === results.id) {
-                return { ...group, ...results };
-              }
-              return group;
-            });
-          });
-        //queryClient.invalidateQueries(["groups"])
-      }
+      //groupsQuery.refetch();
+      // queryClient.setQueryData(["groups"], (oldData) => {
+      //   const newData = oldData.map((group) => {
+      //     if (group.id === results.id) {
+      //       return { ...group, ...results };
+      //     } else {
+      //       return group;
+      //     }
+      //   });
+      //   return newData;
+      // });
+      queryClient.invalidateQueries(["groups", user.id])
     },
     onError: (error) => {
       setAlert(error.message);
@@ -47,10 +48,9 @@ export default function UpdateGroupModal({ group, showState }) {
       setAlert("Please write a name.");
       return;
     }
-    if (newName !== group.name) 
+    if (newName !== group.name)
       updateGroupMutetion.mutate({ id: group.id, name: newName });
-    else
-      resetModal();
+    else resetModal();
     //setShow(false);
   };
 
@@ -63,7 +63,6 @@ export default function UpdateGroupModal({ group, showState }) {
   useEffect(() => {
     resetModal();
   }, [group]);
-
 
   const alertDOM = (
     <Row>
@@ -79,16 +78,14 @@ export default function UpdateGroupModal({ group, showState }) {
     <Modal show={show}>
       <ModalHeader>
         <Container fluid>
-        <Row className="text-center">
-          <Col>
-            <h3>Update Group</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {alert && alertDOM}
-          </Col>
-        </Row>
+          <Row className="text-center">
+            <Col>
+              <h3>Update Group</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col>{alert && alertDOM}</Col>
+          </Row>
         </Container>
       </ModalHeader>
       <ModalBody>
