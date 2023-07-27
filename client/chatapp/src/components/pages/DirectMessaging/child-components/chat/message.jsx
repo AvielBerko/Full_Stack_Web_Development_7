@@ -54,8 +54,8 @@ export default function Message({ message, user, contact_id }) {
         setAlert(results);
       }
     },
-    onError: () => {
-      setAlert("An unexpected error occurred. Please try again later.");
+    onError: (error) => {
+      setAlert(error.message);
     },
   });
 

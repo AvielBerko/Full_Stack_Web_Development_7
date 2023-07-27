@@ -1,97 +1,150 @@
-import React, { useState } from "react";
-import { Button, FormControl, FormLabel, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  Col,
+  Alert,
+  Container,
+} from "react-bootstrap";
 import UserItem from "./user-item";
 import { addContact } from "../../../../../../api/contacts";
 import { getUsers } from "../../../../../../api/users";
-import { useQuery, useMutation} from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
-export default function AddContactModal({ user, showState, contacts, refetchContacts/*setAlert*/}) {
-    const [name, setName] = useState("");
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [show, setShow] = showState;
-  
-    const usersQuery = useQuery({
-        queryKey: ["users"],
-        queryFn: () => {
-          return getUsers();
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-      });
+export default function AddContactModal({
+  user,
+  showState,
+  contacts,
+  refetchContacts,
+}) {
+  const [name, setName] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [alert, setAlert] = useState("");
+  const [show, setShow] = showState;
 
-      const addContactMutation = useMutation({
-        mutationFn: (contact) => addContact(contact),
-        onSuccess: (results) => {
-          if (typeof results === "string") {
-            window.alert(results);
-          } else {
-            refetchContacts();
-          }
-        },
-        onError: (error) => {
-          alert("Unexpected error occurred. Please try again later.");
-        },
-      });
+  const usersQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: () => {
+      return getUsers();
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 
-      const create = () => {
-        if (!name) {
-          alert("Please write a name.")
-          return;
-        }
-        if (!selectedUser) {
-          alert("Please select a user.")
-          //setAlert("Please select a user.");
-          return;
-        }
-        addContactMutation.mutate({ name, user_id: selectedUser, saver_id: user.id });
-        setName("");
-        setSelectedUser(null);
+  const addContactMutation = useMutation({
+    mutationFn: (contact) => addContact(contact),
+    onSuccess: (results) => {
+        refetchContacts();
         setShow(false);
-      };
+    },
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
 
-      if (usersQuery.isLoading) return <>Loading</>;
-      if (usersQuery.isError) return <>Error</>;
-      if (!usersQuery.data.length) return <>No data</>;
-      // add a filter to remove the users that are already contacts
-      // filter also the current user
-      const usersDOM = usersQuery?.data?.filter((u) => {
-        // filter the current user
-        if (u.id === user.id) return false;
-        // filter the users that are already contacts
-        return !contacts.some((contact) => contact.user_id === u.id);
+  const create = () => {
+    if (!name) {
+      setAlert("Please write a name.");
+      return;
+    }
+    if (!selectedUser) {
+      setAlert("Please select a user.");
+      return;
+    }
+    addContactMutation.mutate({
+      name,
+      user_id: selectedUser,
+      saver_id: user.id,
+    });
+  };
 
-      }).map((user) => {
-          return (
-            <UserItem
-              key={user.id}
-              user={user}
-              selectedUser={selectedUser}
-              setSelectedUser={setSelectedUser}
-            />
-          );
-        });
-    
-    return (
-      <Modal show={show}>
-        <ModalHeader>Add Contact</ModalHeader>
-        <ModalBody>
-          <FormLabel>Name</FormLabel>
-          <InputGroup>
-            <FormControl
-              placeholder="Write here the Name..."
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </InputGroup>
-        {usersDOM}
-        </ModalBody>
-        <ModalFooter>
-          <Button disabled={selectedUser == null || name === ""} variant={selectedUser != null && name != "" ? "success" : "dark"} onClick={create}>
-            Add Contact
-          </Button>
-          <Button variant="danger" onClick={() => setShow(false)}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
-    );
+  const resetModal = () => {
+    setName("");
+    setAlert("");
+    setSelectedUser(null);
+  };
+
+  useEffect(() => {
+    resetModal();
+  }, [show]);
+
+  if (usersQuery.isLoading) return <>Loading</>;
+  if (usersQuery.isError) return <>Error: {error.message}</>;
+  if (!usersQuery.data.length) return <>No data</>;
+  // add a filter to remove the users that are already contacts
+  // filter also the current user
+  const usersDOM = usersQuery?.data
+    ?.filter((u) => {
+      // filter the current user
+      if (u.id === user.id) return false;
+      // filter the users that are already contacts
+      return !contacts.some((contact) => contact.user_id === u.id);
+    })
+    .map((user) => {
+      return (
+        <UserItem
+          key={user.id}
+          user={user}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
+      );
+    });
+
+  const alertDOM = (
+    <Row>
+      <Col>
+        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+          {alert}
+        </Alert>
+      </Col>
+    </Row>
+  );
+
+  return (
+    <Modal show={show}>
+      <Container fluid>
+        <Row className="text-center">
+          <Col>
+            <h3>Add Contact</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col>{alert && alertDOM}</Col>
+        </Row>
+      </Container>{" "}
+      <ModalBody>
+        <FormLabel><h4>Contacts Name:</h4></FormLabel>
+        <InputGroup>
+          <FormControl
+            placeholder="Write here the Name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </InputGroup>
+        <div style={{ maxHeight: "520px", overflowY: "auto" }}>
+          {usersDOM}
+        </div>
+
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          disabled={selectedUser == null || name === ""}
+          variant={selectedUser != null && name != "" ? "success" : "dark"}
+          onClick={create}
+        >
+          Add Contact
+        </Button>
+        <Button variant="danger" onClick={() => setShow(false)}>
+          Cancel
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
 }

@@ -1,10 +1,12 @@
 import React, { useState, useRef} from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getMessages, sendMessage } from "../../../../../api/direct_messaging";
+import { Alert, Row, Col } from "react-bootstrap";
 import Message from "./message";
 
 export default function SingleChat({ user, contact_id }) {
   const [newMessage, setNewMessage] = useState("");
+  const [alert, setAlert] = useState("");
   const buttonRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -21,20 +23,16 @@ export default function SingleChat({ user, contact_id }) {
   const sendMessageMutation = useMutation({
     mutationFn: (message) => sendMessage(message),
     onSuccess: (results) => {
-      if (typeof results === "string") {
-        window.alert(results);
-      } else {
         messagesQuery.refetch();
-      }
     },
     onError: (error) => {
-      alert("Unexpected error occurred. Please try again later.");
+      setAlert(error.message)
     },
   });
 
   const handleSendMessage = () => {
     if (!newMessage) {
-      alert("Please write a message.");
+      setAlert("Please write a message.");
       return;
     }
     sendMessageMutation.mutate({
@@ -66,10 +64,21 @@ export default function SingleChat({ user, contact_id }) {
       inputRef.current.focus();
       inputRef.current.value += event.key;
     }
-
   };
 
+  const alertDOM = (
+    <Row>
+      <Col>
+        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+          {alert}
+        </Alert>
+      </Col>
+    </Row>
+  );
+
   return (
+    <>
+    {alert && alertDOM}
     <div
       style={{
         maxWidth: "90%",
@@ -116,5 +125,6 @@ export default function SingleChat({ user, contact_id }) {
         </button>
       </div>
     </div>
+    </>
   );
 }
