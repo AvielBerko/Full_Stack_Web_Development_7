@@ -27,14 +27,11 @@ console.log('hi!')
 const user_schema = Joi.object({
   username: Joi.string().min(3).max(30).alphanum().required(),
   email: Joi.string().email().required(),
-  phoneNumber: Joi.string().min(10)
+  phoneNumber: Joi.string().min(10).when('method', {is: 'POST', then: Joi.required()})
 })
-const userData = {username: 't', 'email': 'test@gmail.com', phoneNumber: '0503812813'}
+const userData = {username: 't123', 'email': 'test@gmail.com'}
 
-const { error } = user_schema.validate(userData)
-
-
-
+const { error } = user_schema.validate(userData, {context: {method:'POST'}})
 
 
 if (error) console.log(error.details[0].message)
