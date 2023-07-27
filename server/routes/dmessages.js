@@ -2,6 +2,16 @@ const express = require("express");
 const dmessages_db = require('../db/components/dmessages.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
+
+const dmessages_schema = Joi.object({
+  new: Joi.boolean(),
+  sender_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  receiver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  message: Joi.string().min(1).required(),
+  type: Joi.string().min(3).max(5).when('new', {is: true, then: Joi.required()}),
+  time_sent: Joi.string().isoDate().when('new', {is: true, then: Joi.required()}),
+})
 
 router.get("/", async (req, res) => {
     try {
@@ -18,6 +28,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const { error } = dmessages_schema.validate({...req.body, new: true})
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_dmessage = req.body;
         //TODO - add a check it is from group member(?)
@@ -32,6 +44,8 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const { error } = dmessages_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         //TODO - check only for saver id changes?
         const dmessages_id = req.params.id;
