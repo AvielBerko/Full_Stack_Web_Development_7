@@ -26,12 +26,14 @@ router.post("/", async (req, res) => {
       else res.status(500).send({error: 'Internal server error'});
     }
   });
+  
 //TODO - decide if delete or enable here and in db
 // router.put("/:id", async (req, res) => {
 //     try {
 //         const gmembers_id = req.params.id;
 //         const updated_gmember = {...req.body, id:gmembers_id};
-//         await gmembers_db.updateGroupMember(updated_gmember);
+//         const result = await gmembers_db.updateGroupMember(updated_gmember);
+//         if (result.changedRows === 0) res.status(404).send({error: 'Group member to update was not found!'});
 //         res.send(updated_gmember);
 //     } catch (err) {
 //       res.status(400).send(err);
@@ -41,7 +43,8 @@ router.post("/", async (req, res) => {
   router.delete("/:id", async (req, res) => {
     try {
         const gmember_id = req.params.id;
-        await gmembers_db.deleteGroupMember(gmember_id);
+        const result = await gmembers_db.deleteGroupMember(gmember_id);
+        if (result.changedRows === 0) res.status(404).send({error: 'Group member to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

@@ -34,10 +34,12 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
     try {
+        //TODO - check only for saver id changes?
         const dmessages_id = req.params.id;
         const updated_dmessage = {...req.body, id:dmessages_id};
         updated_dmessage.edited = true;
-        await dmessages_db.updateDirectMessage(updated_dmessage);
+        const result = await dmessages_db.updateDirectMessage(updated_dmessage);
+        if (result.changedRows === 0) res.status(404).send({error: 'Direct message to update was not found!'});
         res.send(updated_dmessage);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
@@ -47,7 +49,8 @@ router.put("/:id", async (req, res) => {
   router.delete("/:id", async (req, res) => {
     try {
         const dmessage_id = req.params.id;
-        await dmessages_db.deleteDirectMessage(dmessage_id);
+        const result = await dmessages_db.deleteDirectMessage(dmessage_id);
+        if (result.changedRows === 0) res.status(404).send({error: 'Direct message to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

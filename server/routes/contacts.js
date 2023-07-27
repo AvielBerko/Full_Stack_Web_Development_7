@@ -31,7 +31,8 @@ router.put("/:id", async (req, res) => {
     try {
         const contact_id = req.params.id;
         const updated_contact = {name:req.body.name, id:contact_id};
-        await contacts_db.updateContact(updated_contact);
+        const result = await contacts_db.updateContact(updated_contact);
+        if (result.changedRows === 0) res.status(404).send({error: 'Contact to update was not found!'});
         res.send(updated_contact);
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
@@ -44,7 +45,8 @@ router.put("/:id", async (req, res) => {
   router.delete("/:id", async (req, res) => {
     try {
         const contact_id = req.params.id;
-        await contacts_db.deleteContact(contact_id);
+        const result = await contacts_db.deleteContact(contact_id);
+        if (result.changedRows === 0) res.status(404).send({error: 'Contact to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
