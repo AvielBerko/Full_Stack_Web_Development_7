@@ -53,7 +53,7 @@ router.put("/:id", async (req, res) => {
         const updated_dmessage = {...req.body, id:dmessages_id};
         updated_dmessage.edited = true;
         const result = await dmessages_db.updateDirectMessage(updated_dmessage);
-        if (result.changedRows === 0) res.status(404).send({error: 'Direct message to update was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Direct message to update was not found!'});
         res.send(updated_dmessage);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
@@ -64,7 +64,7 @@ router.put("/:id", async (req, res) => {
     try {
         const dmessage_id = req.params.id;
         const result = await dmessages_db.deleteDirectMessage(dmessage_id);
-        if (result.changedRows === 0) res.status(404).send({error: 'Direct message to delete was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Direct message to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

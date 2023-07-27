@@ -49,7 +49,7 @@ router.put("/:id", async (req, res) => {
         const updated_gmessage = {...req.body, id:gmessages_id};
         updated_gmessage.edited = true;
         const result = await gmessages_db.updateGroupMessage(updated_gmessage);
-        if (result.changedRows === 0) res.status(404).send({error: 'Group message to update was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Group message to update was not found!'});
         res.send(updated_gmessage);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
@@ -60,7 +60,7 @@ router.put("/:id", async (req, res) => {
     try {
         const gmessage_id = req.params.id;
         const result = await gmessages_db.deleteGroupMessage(gmessage_id);
-        if (result.changedRows === 0) res.status(404).send({error: 'Group message to delete was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Group message to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

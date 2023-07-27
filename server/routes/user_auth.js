@@ -5,7 +5,7 @@ const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
 
 const new_user_schema = Joi.object({
-  username: Joi.string().min(3).max(30).alphanum().required(),
+  username: Joi.string().min(3).max(30).alphanum().allow(' ').required(),
   email: Joi.string().email().required(),
   phone_number: Joi.string().min(10).max(15), 
   password: Joi.string().min(4).required()

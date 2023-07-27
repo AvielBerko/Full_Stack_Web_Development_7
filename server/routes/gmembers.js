@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
         const groupchat_id = req.locals.groupchat_id;
         const user_id = req.params.user_id;
         const result = await gmembers_db.deleteGroupMember(groupchat_id, user_id);
-        if (result.changedRows === 0) res.status(404).send({error: 'Group member to delete was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Group member to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

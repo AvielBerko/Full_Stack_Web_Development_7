@@ -9,7 +9,7 @@ const contact_schema = Joi.object({
   id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   saver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   user_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
-  name: Joi.string().min(3).max(30).alphanum().required(),
+  name: Joi.string().min(3).max(30).alphanum().allow(' ').required(),
 })
 
 router.get("/", async (req, res) => {
@@ -45,7 +45,7 @@ router.put("/:id", async (req, res) => {
         const contact_id = req.params.id;
         const updated_contact = {name:req.body.name, id:contact_id};
         const result = await contacts_db.updateContact(updated_contact);
-        if (result.changedRows === 0) res.status(404).send({error: 'Contact to update was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Contact to update was not found!'});
         res.send(updated_contact);
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
@@ -59,7 +59,7 @@ router.put("/:id", async (req, res) => {
     try {
         const contact_id = req.params.id;
         const result = await contacts_db.deleteContact(contact_id);
-        if (result.changedRows === 0) res.status(404).send({error: 'Contact to delete was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Contact to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
