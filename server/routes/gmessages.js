@@ -2,6 +2,16 @@ const express = require("express");
 const gmessages_db = require('../db/components/gmessages.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
+
+const gmessages_schema = Joi.object({
+  new: Joi.boolean(),
+  sender_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  receiver_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  message: Joi.string().min(1).required(),
+  type: Joi.string().min(3).max(5).when('new', {is: true, then: Joi.required()}),
+  time_sent: Joi.string().isoDate().when('new', {is: true, then: Joi.required()}),
+})
 
 router.get("/", async (req, res) => {
     try {
@@ -16,6 +26,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const { error } = gmessages_schema.validate({...req.body, new: true})
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_gmessage = req.body;
         new_gmessage.id = uuidv4();
@@ -30,6 +42,8 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const { error } = dmessages_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const gmessages_id = req.params.id;
         const updated_gmessage = {...req.body, id:gmessages_id};

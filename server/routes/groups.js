@@ -2,6 +2,13 @@ const express = require("express");
 const groups_db = require('../db/components/groups.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
+
+const groups_schema = Joi.object({
+  new: Joi.boolean(),
+  name: Joi.string().min(1).required(),
+  time_created: Joi.string().isoDate().when('new', {is: true, then: Joi.required()}),
+})
 
 router.get("/", async (req, res) => {
     try {
@@ -19,6 +26,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const { error } = groups_schema.validate({...req.body, new: true})
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_group = req.body;
         new_group.id = uuidv4();
@@ -34,6 +43,8 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const { error } = groups_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const group_id = req.params.id;
         const updated_group = {...req.body, id:group_id};
