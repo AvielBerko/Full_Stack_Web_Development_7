@@ -6,7 +6,7 @@ const Joi = require('joi');
 
 const gmessages_schema = Joi.object({
   new: Joi.boolean(),
-  id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  id: Joi.string().guid({ version: ['uuidv4']}),
   sender_id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
   message: Joi.string().min(1).required(),
   type: Joi.string().min(3).max(5).when('new', {is: true, then: Joi.required()}),
