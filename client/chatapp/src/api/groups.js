@@ -29,39 +29,42 @@ export function getGroups(id, start, end) {
 }
 
 export function updateGroup(group) {
-  return axios
-    .put(routes.updateGroup(group.id), group)
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return update(routes.updateGroup(group.id), group);
+  // return axios
+  //   .put(routes.updateGroup(group.id), group)
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function deleteGroup(groupID) {
-  return axios
-    .delete(routes.deleteGroup(groupID))
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return remove(routes.deleteGroup(groupID));
+  // return axios
+  //   .delete(routes.deleteGroup(groupID))
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function joinGroup(groupID, data) {
-  return axios
-    .post(routes.joinGroup(groupID), data)
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return add(routes.joinGroup(groupID), data);
+  // return axios
+  //   .post(routes.joinGroup(groupID), data)
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function leaveGroup(groupID, userID) {
@@ -78,13 +81,14 @@ export function leaveGroup(groupID, userID) {
 }
 
 export function addGroup(group) {
-  return axios
-    .post(routes.addGroup, group)
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return add(routes.addGroup, group);
+  // return axios
+  //   .post(routes.addGroup, group)
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
