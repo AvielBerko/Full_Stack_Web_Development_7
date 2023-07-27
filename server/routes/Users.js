@@ -5,7 +5,7 @@ const Joi = require('joi');
 
 const updated_user_schema = Joi.object({
   id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
-  username: Joi.string().min(3).max(30).alphanum(),
+  username: Joi.string().min(3).max(30).alphanum().allow(' '),
   phone_number: Joi.string().min(10).max(15)
 })
 
