@@ -17,9 +17,23 @@ async function addGroupMember(new_gmember){
 //     return generic.update(tables.GROUP_MEMBERS, updated_gmember, {id: updated_gmember.id});
 // }
 
-async function deleteGroupMember(gmember_id){
+async function deleteGroupMember(groupchat_id, user_id){
     const deleted = {valid: false}
-    return generic.update(tables.GROUP_MEMBERS, deleted, {id: gmember_id});
+    //return generic.update(tables.GROUP_MEMBERS, deleted, {groupchat_id:groupchat_id, user_id:user_id});
+    return new Promise((resolve, reject) => {
+        db_connection.getConnection(con => {
+            con.query(`
+                UPDATE ${tables.GROUP_MEMBERS}
+                SET valid = false
+                WHERE groupchat_id = ? AND user_id = ?
+                ;`,
+                [groupchat_id, user_id],
+            (error, result) => {
+                if (error) reject(error);
+                resolve(result);
+            })
+        });
+    });
 }
 
 module.exports = {getGroupMembers, addGroupMember, deleteGroupMember};

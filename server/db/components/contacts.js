@@ -20,7 +20,6 @@ async function getUserContacts(user_id){
             })
         });
     });
-    //return generic.read(tables.CONTACTS, {saver_id: user_id, valid: true});
 }
 
 async function addContact(new_contact){
