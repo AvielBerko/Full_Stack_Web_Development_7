@@ -2,6 +2,11 @@ const express = require("express");
 const users_db = require('../db/components/users.js');
 const router = express.Router();
 
+const updated_user_schema = Joi.object({
+  username: Joi.string().min(3).max(30).alphanum(),
+  phone_number: Joi.string().min(10).max(15)
+})
+
 router.get("/", async (req, res) => {
   try {
     const users = await users_db.getCurrentUsers();
@@ -12,6 +17,9 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
+  const { error } = updated_user_schema.validate(req.body)
+  if (error) return res.status(400).send({error: error.details[0].message});
+
   try {
     const user_id = req.params.id;
     const updated_user = {...req.body, id:user_id};

@@ -5,8 +5,9 @@ const {v4: uuidv4} = require('uuid');
 
 router.get("/", async (req, res) => {
     try {
-        const group_id = req.query.groupchat_id;//currently supporting only gmsgs of 1 group
+        const group_id = req.locals.groupchat_id;
         const gmessages = await gmessages_db.getGroupMessages(group_id);
+        //TODO - sort in sql
         const sorted_messages = gmessages.slice().sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
         res.send(sorted_messages);
     } catch (err) {
@@ -18,6 +19,7 @@ router.post("/", async (req, res) => {
     try {
         const new_gmessage = req.body;
         new_gmessage.id = uuidv4();
+        new_gmessage.groupchat_id = req.locals.groupchat_id;
         new_gmessage.edited = false;
         new_gmessage.time_sent = new Date(new_gmessage.time_sent);//creating date object from received string
         await gmessages_db.addGroupMessage(new_gmessage);

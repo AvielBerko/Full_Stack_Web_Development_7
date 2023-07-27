@@ -27,7 +27,6 @@ router.post("/", async (req, res) => {
         await dmessages_db.addDirectMessage(new_dmessage);
         res.send(new_dmessage);
     } catch (err) {
-      console.log(err)
       res.status(500).send({error: 'Internal server error'});
     }
   });

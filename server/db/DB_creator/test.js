@@ -23,16 +23,27 @@ const users = require('../components/users.js');
 
 const Joi = require('joi');
 
-
-const user_schema = {
+console.log('hi!')
+const user_schema = Joi.object({
   username: Joi.string().min(3).max(30).alphanum().required(),
-  email: Joi.string().email().required()
-  //phone_number
-}
+  email: Joi.string().email().required(),
+  phoneNumber: Joi.string().min(10)
+})
+const userData = {username: 't', 'email': 'test@gmail.com', phoneNumber: '0503812813'}
+
+const { error } = user_schema.validate(userData)
 
 
 
-// const userData = {username: 'test', 'email': 'test@gmail.com'}
-// const { error, value } = user_schema.validate(userData);
-// console.log(error);
-// console.log(value);
+
+
+if (error) console.log(error.details[0].message)
+//console.log(value)
+
+
+
+// const schema = Joi.string().guid({
+//   version: [
+//       'uuidv4',
+//       'uuidv5'
+//   ]string.isoDate()

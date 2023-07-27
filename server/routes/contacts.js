@@ -3,6 +3,13 @@ const contacts_db = require('../db/components/contacts.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 
+// const contact_schema = Joi.object({
+//   username: Joi.string().min(3).max(30).alphanum().required(),
+//   email: Joi.string().email().required(),
+//   phone_number: Joi.string().min(10).max(15), 
+//   password: Joi.string().min(4).required()
+// })
+
 router.get("/", async (req, res) => {
     try {
         const user_id = req.query.saver_id;//currently supporting only contact of user
