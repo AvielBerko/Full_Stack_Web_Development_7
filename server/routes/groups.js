@@ -31,7 +31,8 @@ router.put("/:id", async (req, res) => {
     try {
         const group_id = req.params.id;
         const updated_group = {...req.body, id:group_id};
-        await groups_db.updateGroup(updated_group);
+        const result = await groups_db.updateGroup(updated_group);
+        if (result.changedRows === 0) res.status(404).send({error: 'Group to update was not found!'});
         res.send(updated_group);
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
@@ -44,7 +45,8 @@ router.put("/:id", async (req, res) => {
   router.delete("/:id", async (req, res) => {
     try {
         const group_id = req.params.id;
-        await groups_db.deleteGroup(group_id);
+        const result = await groups_db.deleteGroup(group_id);
+        if (result.changedRows === 0) res.status(404).send({error: 'Group to delete was not found!'});
         res.status(204).end();
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
