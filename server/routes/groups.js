@@ -6,7 +6,7 @@ const Joi = require('joi');
 
 const groups_schema = Joi.object({
   new: Joi.boolean(),
-  id: Joi.string().guid({ version: ['uuidv4']}).when('new', {is: true, then: Joi.required()}),
+  id: Joi.string().guid({ version: ['uuidv4']}),
   name: Joi.string().min(1).required(),
   time_created: Joi.string().isoDate().when('new', {is: true, then: Joi.required()}),
 })
