@@ -60,10 +60,6 @@ export default function SingleChat({ user, contact_id }) {
       // When the "Enter" key is pressed, trigger the button click event
       buttonRef.current.click();
     }
-    else {
-      inputRef.current.focus();
-      inputRef.current.value += event.key;
-    }
   };
 
   const alertDOM = (

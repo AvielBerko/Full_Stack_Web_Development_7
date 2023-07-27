@@ -20,9 +20,9 @@ const routes = {
   deleteMessage: (id) => `${SERVER_URL}/dmessages/${id}`,
   updateMessage: (id) => `${SERVER_URL}/dmessages/${id}`,
   getGroupMessages: (id) => `${SERVER_URL}/groups/${id}/messages`,
-  sendGroupMessage: `${SERVER_URL}/gmessages`,
-  deleteGroupMessage: (messageId) => `${SERVER_URL}/gmessages/${messageId}`,
-  updateGroupMessage: (id) => `${SERVER_URL}/gmessages/${id}`,
+  sendGroupMessage: (id) => `${SERVER_URL}/groups/${id}/messages`,
+  deleteGroupMessage: (groupID, messageID) => `${SERVER_URL}/groups/${groupID}/messages/${messageID}`,
+  updateGroupMessage: (groupID, messageID) => `${SERVER_URL}/groups/${groupID}/messages/${messageID}`,
   getGroups: (id, start, end) =>
   start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
   getAllGroups: `${SERVER_URL}/groups`,

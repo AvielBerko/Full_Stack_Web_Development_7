@@ -21,12 +21,12 @@ export default function GroupChat({ user, groupID }) {
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (message) => sendGroupMessage(message),
+    mutationFn: (message) => sendGroupMessage(groupID, message),
     onSuccess: (results) => {
         messagesQuery.refetch();
     },
     onError: (error) => {
-      setAlert(error.message)
+      setAlert(error.message);
     },
   });
 
@@ -58,10 +58,6 @@ export default function GroupChat({ user, groupID }) {
     if (event.key === "Enter") {
       // When the "Enter" key is pressed, trigger the button click event
       buttonRef.current.click();
-    }
-    else {
-      inputRef.current.focus();
-      inputRef.current.value += event.key;
     }
   };
 
