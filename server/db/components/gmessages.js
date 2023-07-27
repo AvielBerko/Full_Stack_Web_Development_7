@@ -3,7 +3,6 @@ const generic = require('../crud.js');
 const tables = require('../table_names.js');
 
 async function getGroupMessages(group_id){
-    //return generic.read(tables.GROUP_MESSAGES, {groupchat_id: group_id, valid: true});
     return new Promise((resolve, reject) => {
         db_connection.getConnection(con => {
             con.query(`

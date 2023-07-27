@@ -82,6 +82,9 @@ const gmessages_values = [
     [uuidv4(), g2_id, users[3].id, 'this is boring group message from david', 'text', new Date(), false, true], 
     [uuidv4(), g2_id, users[4].id, 'this is boring group message from yossi', 'text', new Date(), false, true], 
 ]
+for (let i = 0; i < 5; i++) {
+    gmessages_values[i][5].setSeconds(i);
+  }
 
 
 //filling all data

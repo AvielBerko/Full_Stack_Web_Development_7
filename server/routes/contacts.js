@@ -2,6 +2,7 @@ const express = require("express");
 const contacts_db = require('../db/components/contacts.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
+const Joi = require('joi');
 
 // const contact_schema = Joi.object({
 //   username: Joi.string().min(3).max(30).alphanum().required(),
