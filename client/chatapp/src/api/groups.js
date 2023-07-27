@@ -1,28 +1,31 @@
 import axios from "axios";
 import routes from "../env.js";
+import {getList, add, remove, update} from "./axios_api.js"
 
 export function getAllGroups() {
-  return axios
-    .get(routes.getAllGroups)
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return getList(routes.getAllGroups);
+  // return axios
+  //   .get(routes.getAllGroups)
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function getGroups(id, start, end) {
-  return axios
-    .get(routes.getGroups(id, start, end))
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return getList(routes.getGroups(id, start, end));
+  // return axios
+  //   .get(routes.getGroups(id, start, end))
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function updateGroup(group) {
@@ -62,15 +65,16 @@ export function joinGroup(groupID, data) {
 }
 
 export function leaveGroup(groupID, userID) {
-  return axios
-    .delete(routes.leaveGroup(groupID, userID))
-    .then((res) => res.data)
-    .catch((err) => {
-      if(err.response.data){
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
+  return remove(routes.leaveGroup(groupID, userID));
+  // return axios
+  //   .delete(routes.leaveGroup(groupID, userID))
+  //   .then((res) => res.data)
+  //   .catch((err) => {
+  //     if(err.response.data){
+  //       throw new Error(err.response.data.error);
+  //     }
+  //     throw new Error(err.message);
+  //   });
 }
 
 export function addGroup(group) {
