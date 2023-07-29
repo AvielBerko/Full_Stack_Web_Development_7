@@ -30,7 +30,8 @@ const routes = {
   leaveGroup: (groupID, userID) => `${SERVER_URL}/groups/${groupID}/members/${userID}`,
   updateGroup: (id) => `${SERVER_URL}/groups/${id}`,
   deleteGroup: (id) => `${SERVER_URL}/groups/${id}`,
-  sendFile: `${SERVER_URL}/files`
+  sendFile: `${SERVER_URL}/files`,
+  getFile: (id) => `${SERVER_URL}/files/${id}`,
 };
 export default routes;
 export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });

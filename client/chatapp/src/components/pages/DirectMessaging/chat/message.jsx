@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { ListGroupItem } from "react-bootstrap";
 import { createPortal } from "react-dom";
-import { useMutation, useQueryClient} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ContextMenu from "../../../common/ContextMenu/context-menu";
 import { useContextMenu } from "../../../../custom-hooks/use-context-menu"; // Import the custom hook
 import { deleteMessage } from "../../../../api/dmessges";
 import UpdateMessageModal from "./update-message/update-message-modal";
+import routes from "../../../../env";
 
 export default function Message({ message, user, contact_id }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
@@ -47,7 +48,7 @@ export default function Message({ message, user, contact_id }) {
   const deleteMessageMutation = useMutation({
     mutationFn: () => deleteMessage(contact_id, message.id),
     onSuccess: (results) => {
-        queryClient.refetchQueries(["messages", user?.id, contact_id]);
+      queryClient.refetchQueries(["messages", user?.id, contact_id]);
     },
     onError: (error) => {
       setAlert(error.message);
@@ -59,10 +60,10 @@ export default function Message({ message, user, contact_id }) {
   };
 
   const updateMessageModalDOM = (
-      <UpdateMessageModal
-        message={message}
-        showState={[showUpdateMessageModal, setShowUpdateMessageModal]}
-      />
+    <UpdateMessageModal
+      message={message}
+      showState={[showUpdateMessageModal, setShowUpdateMessageModal]}
+    />
   );
 
   return (
@@ -79,14 +80,35 @@ export default function Message({ message, user, contact_id }) {
         }}
       >
         <div key={message.id}>
-         {Boolean(message.edited) && (<div style={{ fontSize: "10px", textAlign: "right" }}>
-            edited
-          </div>)}
-          <div style={{ marginBottom: "4px"}}>{message.message}</div>
+          {message.type === "text" && (
+            <>
+              {Boolean(message.edited) && (
+                <div style={{ fontSize: "10px", textAlign: "right" }}>
+                  edited
+                </div>
+              )}
+              <div style={{ marginBottom: "4px" }}>{message.message}</div>
+            </>
+          )}
+          {message.type === "image" && (
+            <img
+              src={routes.getFile(message.message)}
+              style={{ maxWidth: "100%", maxHeight: "200px" }}
+            />
+          )}
+          {message.type === "video" && (
+            <video
+              src={routes.getFile(message.message)}
+              style={{ maxWidth: "100%", maxHeight: "200px" }}
+              controls
+            />
+          )}
+
           <div style={{ fontSize: "10px", textAlign: "right" }}>
             {new Date(message.time_sent).toLocaleString()}
           </div>
         </div>
+
         {isContextMenuOpen &&
           createPortal(
             <ContextMenu

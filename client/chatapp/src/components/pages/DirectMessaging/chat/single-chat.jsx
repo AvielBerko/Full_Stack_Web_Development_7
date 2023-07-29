@@ -1,7 +1,7 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getMessages, sendMessage } from "../../../../api/dmessges";
-import { sendFile } from "../../../../api/upload"
+import { sendFile } from "../../../../api/upload";
 import { Alert, Row, Col } from "react-bootstrap";
 import Message from "./message";
 
@@ -22,31 +22,28 @@ export default function SingleChat({ user, contact_id }) {
   const sendMessageMutation = useMutation({
     mutationFn: (message) => sendMessage(contact_id, message),
     onSuccess: (results) => {
-        messagesQuery.refetch();
+      messagesQuery.refetch();
     },
     onError: (error) => {
-      setAlert(error.message)
+      setAlert(error.message);
     },
   });
 
   const sendFileMutation = useMutation({
     mutationFn: (file) => sendFile(file),
-    onMutate: (file) => {
-      return file;
-    },
-    onSuccess: (data, variables, context) => {
-        setAlert("SUCCESS");
-        sendMessageMutation.mutate({
-          message: results.data,
-          sender_id: user.id,
-          time_send: new Date(),
-          type: file.type.split("/")[0],
-        })
-        setFile(null);
-        //messagesQuery.refetch();
+    onSuccess: (results) => {
+      setAlert("SUCCESS");
+      sendMessageMutation.mutate({
+        message: results.data,
+        sender_id: user.id,
+        time_sent: new Date(),
+        type: file.type.split("/")[0],
+      });
+      setFile(null);
+      //messagesQuery.refetch();
     },
     onError: (error) => {
-      setAlert(error.message)
+      setAlert(error.message); // TODO hadle errors
     },
   });
 
@@ -58,7 +55,7 @@ export default function SingleChat({ user, contact_id }) {
     sendMessageMutation.mutate({
       message: newMessage,
       sender_id: user.id,
-//      receiver_id: contact_id,
+      //      receiver_id: contact_id,
       time_sent: new Date(),
       type: "text",
     });
@@ -74,17 +71,15 @@ export default function SingleChat({ user, contact_id }) {
   const handleSend = () => {
     if (file) {
       handleSendFile();
-    }
-    else {
+    } else {
       handleSendMessage();
     }
-  }
+  };
 
   const handleSelectFile = (event) => {
     setFile(event.target.files[0]);
   };
 
-  
   const { data: messages, isLoading, isError } = messagesQuery;
 
   if (isLoading) return <></>;
@@ -114,73 +109,67 @@ export default function SingleChat({ user, contact_id }) {
 
   return (
     <>
-    {alert && alertDOM}
-    <div
-      style={{
-        maxWidth: "90%",
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+      {alert && alertDOM}
       <div
         style={{
-          height: "800px",
-          overflowY: "scroll",
-          border: "1px solid #ccc",
+          maxWidth: "90%",
+          margin: "0 auto",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        {messages.map((message) => {
-          return (
-            <Message
-              key={message.id}
-              message={message}
-              user={user}
-              contact_id={contact_id}
-            />
-          );
-        })}
-      </div>
-      <div style={{ display: "flex", marginTop: "8px" }}>
-      {file ? (
-        <p>{file.name}</p>
-      ) : (
-        <input
-          onKeyDown={handleKeyDown}
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          style={{ flex: 1, marginRight: "8px" }}
-        />
-      )}
-         <button
-        tabIndex="1"
-        onClick={() => { // Separate handler for selecting a file
-          // Using a hidden input element to trigger the file selection
-          const fileInput = document.createElement("input");
-          fileInput.type = "file";
-          fileInput.onchange = handleSelectFile;
-          fileInput.click();
-        }}
-    >
-      Select File
-    </button>
-        {/* <input type="file" onChange={handleSelectFile} />
-        <button
-        tabIndex="1"
-        onClick={handleFileUpload}>
-          Upload File
-        </button> */}
-        <button
-          tabIndex="0"
-          onClick={handleSend}
+        <div
+          style={{
+            height: "800px",
+            overflowY: "scroll",
+            border: "1px solid #ccc",
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          Send
-        </button>
+          {messages.map((message) => {
+            return (
+              <Message
+                key={message.id}
+                message={message}
+                user={user}
+                contact_id={contact_id}
+              />
+            );
+          })}
+        </div>
+        <div style={{ display: "flex", marginTop: "8px" }}>
+          {file ? (
+            <p>{file.name}</p>
+          ) : (
+            <input
+              onKeyDown={handleKeyDown}
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              style={{ flex: 1, marginRight: "8px" }}
+            />
+          )}
+          <button
+            tabIndex="1"
+            onClick={() => {
+              // Separate handler for selecting a file
+              // Using a hidden input element to trigger the file selection
+              const fileInput = document.createElement("input");
+              fileInput.type = "file";
+              // accept only images and videos
+              fileInput.accept = "image/*,video/*";
+              fileInput.onchange = handleSelectFile;
+              fileInput.click();
+            }}
+          >
+            Select File
+          </button>
+          <button tabIndex="0" onClick={handleSend}>
+            Send
+          </button>
+        </div>
       </div>
-    </div>
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function Login() {
       console.log(user);
       if (user) {
         setAuth(user);
-        navigate("/dmessages", { replace: true });
+        navigate("/direct_messages", { replace: true });
       } else {
         setAlert("Something went wrong... Please try again later.");
       }
