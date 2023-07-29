@@ -43,9 +43,9 @@ export default function Register() {
       return "Password is required.";
     }
 
-    if (!passwordRegex.test(password)) {
-      return "Password must contain a letter, a number, a special character, and be between 6 and 16 characters long.";
-    }
+    // if (!passwordRegex.test(password)) {
+    //   return "Password must contain a letter, a number, a special character, and be between 6 and 16 characters long.";
+    // }
 
     if (!passwordConfirm) {
       return "Confirm Password is required.";

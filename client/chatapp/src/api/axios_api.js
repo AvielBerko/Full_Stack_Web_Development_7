@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function getList(path) {
+export function get(path) {
   return axios
     .get(path)
     .then((res) => res.data)

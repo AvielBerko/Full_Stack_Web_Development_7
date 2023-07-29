@@ -5,7 +5,7 @@ import {
   getContacts,
 } from "../../../../api/contacts";
 import {
-  useInfiniteQuery,
+  useQuery,
 } from "@tanstack/react-query";
 import AddContactModal from "./add-contact/add-contact-modal";
 import BlockButton from "../../../common/BlockButton/block-button";
@@ -17,28 +17,16 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
   const [alert, setAlert] = useState("");
 
   if (!user?.id) return <></>;
-  const contactsQuery = useInfiniteQuery({
+  const contactsQuery = useQuery({
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
-    queryFn: ({ pageParam = 0 }) => {
-      const start = pageParam;
-      //TODO return getContacts(user.id, start, start + CONTACTS_PER_PAGE);
+    queryFn: () => {
       return getContacts(user.id);
     },
-    getNextPageParam: (lastPage, allPages) => {
-      if (allPages.length >= 2 && lastPage.length == 0) {
-        return undefined;
-      }
-      const allPagesCount = allPages.reduce(
-        (prev, cur) => prev + cur.length,
-        0
-      );
-      return allPagesCount;
-    },
+
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       setAlert(error.message);
-      // console.error("Error occurred during contacts query:", error);
     }
   });
 
@@ -92,9 +80,8 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
   if (contactsQuery.isLoading) return <>Loading</>;
   if (contactsQuery.isError) return <>Error</>;
   let contactsDOM = null;
-  if (contactsQuery.data?.pages[0]?.length) {
-    contactsDOM = contactsQuery.data.pages
-      ?.reduce((prev, cur) => [...prev, ...cur], [])
+  if (contactsQuery.data?.length) {
+    contactsDOM = contactsQuery.data
       .map((contact) => (
         <ContactsItem
           key={contact.id}
@@ -120,7 +107,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
       <AddContactModal
         user={user}
         showState={[showAddContactModal, setShowAddContactModal]}
-        contacts={contactsQuery.data.pages[0]}
+        contacts={contactsQuery.data}
         refetchContacts={contactsQuery.refetch}
         //setAlert={setAlert}
       />

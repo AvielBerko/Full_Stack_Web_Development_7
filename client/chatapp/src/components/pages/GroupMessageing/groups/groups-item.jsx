@@ -79,6 +79,7 @@ export default function GroupsItem({
   const updateGroupModalDOM = (
       <UpdateGroupModal
         group={group}
+        user={user}
         showState={[showUpdateGroupModal, setShowUpdateGroupModal]}
         setAlert={setAlert}
       />
