@@ -24,28 +24,16 @@ export default function Register() {
    */
   const validateForm = () => {
     // Add your validation logic here
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex =
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
     const englishRegex = /^[A-Za-z0-9\s]+$/;
-    const phoneNumberRegex = /^\d{10}$/;
     const userNameMaxLength = 16;
 
     if (!email) {
       return "Email is required.";
     }
 
-    if (!emailRegex.test(email)) {
-      return "Email is not valid.";
-    }
-
     if (!password) {
       return "Password is required.";
     }
-
-    // if (!passwordRegex.test(password)) {
-    //   return "Password must contain a letter, a number, a special character, and be between 6 and 16 characters long.";
-    // }
 
     if (!passwordConfirm) {
       return "Confirm Password is required.";
@@ -67,10 +55,6 @@ export default function Register() {
       return "Username can only contain English letters and numbers.";
     }
 
-    if (!phoneNumberRegex.test(phoneNumber)) {
-        return "Phone number must be 10 digits long.";
-    }
-
     return ""; // Empty string indicates the form is valid
   };
 
@@ -86,7 +70,7 @@ export default function Register() {
         phone_number: phoneNumber,
       };
       register(newUser).then((res) => {
-        setAuth(res); // TODO change to res.token
+        setAuth(res);
         navigate("/profile", { replace: true });
       }).catch((error) => setAlert(error.message));;
     }

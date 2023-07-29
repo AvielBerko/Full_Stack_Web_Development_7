@@ -6,14 +6,17 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Row, Col, Alert, Container
+  Row,
+  Col,
+  Alert,
+  Container,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
 import { updateContact } from "../../../../../api/contacts";
 import { useMutation } from "@tanstack/react-query";
 
-export default function UpdateContactModal({ contact, showState }) {
+export default function UpdateContactModal({ contact, user, showState }) {
   const [newName, setNewName] = useState(contact.name || "");
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
@@ -21,24 +24,18 @@ export default function UpdateContactModal({ contact, showState }) {
   const queryClient = useQueryClient();
   const updateContactMutetion = useMutation({
     mutationFn: (contact) => updateContact(contact),
-    onSettled: (results) => {
-      if (typeof results === "string") {
-        setAlert(results);
-      } else {
-        //contactsQuery.refetch();
-        queryClient.setQueriesData(["contacts"], (oldData) => {
-          const newData = oldData.pages.map((page) => {
-            return page.map((contact) => {
-              if (contact.id === results.id) {
-                return { ...contact, ...results };
-              }
-              return contact;
-            });
+    onSuccess: (results) => {
+
+      queryClient.setQueriesData(["contacts", user.id], (oldData) => {
+        const newData = oldData.map((contact) => {
+            if (contact.id === results.id) {
+              return { ...contact, ...results };
+            }
+            return contact;
           });
-          return { pages: newData };
-        });
-        //queryClient.invalidateQueries(["contacts"])
-      }
+        return newData ;
+      });
+      //queryClient.invalidateQueries(["contacts"])
     },
     onError: (error) => {
       setAlert(error.message);
@@ -50,10 +47,9 @@ export default function UpdateContactModal({ contact, showState }) {
       setAlert("Please write a name.");
       return;
     }
-    if (newName !== contact.name) 
+    if (newName !== contact.name)
       updateContactMutetion.mutate({ id: contact.id, name: newName });
-    else
-      resetModal();
+    else resetModal();
     //setShow(false);
   };
 
@@ -66,7 +62,6 @@ export default function UpdateContactModal({ contact, showState }) {
   useEffect(() => {
     resetModal();
   }, [contact]);
-
 
   const alertDOM = (
     <Row>
@@ -82,16 +77,14 @@ export default function UpdateContactModal({ contact, showState }) {
     <Modal show={show}>
       <ModalHeader>
         <Container fluid>
-        <Row className="text-center">
-          <Col>
-            <h3>Update Contact</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {alert && alertDOM}
-          </Col>
-        </Row>
+          <Row className="text-center">
+            <Col>
+              <h3>Update Contact</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col>{alert && alertDOM}</Col>
+          </Row>
         </Container>
       </ModalHeader>
       <ModalBody>
@@ -104,8 +97,8 @@ export default function UpdateContactModal({ contact, showState }) {
               value={newName}
               WrapperComponent={Card.Title}
             />
-              <Card.Text>Email: {contact.email}</Card.Text>
-              <Card.Text>Phone Number: {contact.phone_number}</Card.Text>
+            <Card.Text>Email: {contact.email}</Card.Text>
+            <Card.Text>Phone Number: {contact.phone_number}</Card.Text>
           </Card.Body>
         </Card>
       </ModalBody>

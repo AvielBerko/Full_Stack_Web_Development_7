@@ -24,19 +24,18 @@ export default function UpdateGroupModal({ group, user, showState }) {
   const queryClient = useQueryClient();
   const updateGroupMutetion = useMutation({
     mutationFn: (group) => updateGroup(group),
-    onSettled: (results) => {
-      //groupsQuery.refetch();
-      // queryClient.setQueryData(["groups"], (oldData) => {
-      //   const newData = oldData.map((group) => {
-      //     if (group.id === results.id) {
-      //       return { ...group, ...results };
-      //     } else {
-      //       return group;
-      //     }
-      //   });
-      //   return newData;
-      // });
-      queryClient.invalidateQueries(["groups", user.id])
+    onSuccess: (results) => {
+      queryClient.setQueryData(["groups", user.id], (oldData) => {
+        const newData = oldData.map((group) => {
+          if (group.id === results.id) {
+            return { ...group, ...results };
+          } else {
+            return group;
+          }
+        });
+        return newData;
+      });
+//      queryClient.invalidateQueries(["groups", user.id])
     },
     onError: (error) => {
       setAlert(error.message);

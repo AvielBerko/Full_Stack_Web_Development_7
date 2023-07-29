@@ -21,11 +21,7 @@ export default function UpdateMessageModal({ message, showState }) {
   const updateMessageMutetion = useMutation({
     mutationFn: (message) => updateMessage(message),
     onSettled: (results) => {
-      if (typeof results === "string") {
-        setAlert(results);
-      } else {
-        queryClient.invalidateQueries(["messages"])
-      }
+        queryClient.invalidateQueries(["messages"]);
     },
     onError: (error) => {
       setAlert(error.message);

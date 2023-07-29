@@ -28,7 +28,9 @@ export default function GroupMessage({ message, user, groupID }) {
     (contact) => contact.user_id === message.sender_id
   );
 
-  const nameOrAddress = isSentByUser ? "" : isSentByContact
+  const nameOrAddress = isSentByUser
+    ? ""
+    : isSentByContact
     ? contactsQuery.data?.find(
         (contact) => contact.user_id === message.sender_id
       )?.name
@@ -70,11 +72,7 @@ export default function GroupMessage({ message, user, groupID }) {
   const deleteMessageMutation = useMutation({
     mutationFn: () => deleteGroupMessage(groupID, message.id),
     onSuccess: (results) => {
-      if (results === "") {
-        queryClient.refetchQueries(["groups", groupID, "messages"]);
-      } else {
-        setAlert(results);
-      }
+      queryClient.refetchQueries(["groups", groupID, "messages"]);
     },
     onError: (error) => {
       setAlert(error.message);
@@ -111,11 +109,13 @@ export default function GroupMessage({ message, user, groupID }) {
             <div style={{ fontSize: "12px" }}>
               <b>{nameOrAddress}</b>
             </div>
-          {Boolean(message.edited) && (
-            <div style={{ fontSize: "10px", textAlign: "right" }}>edited</div>
-          )}
+            {Boolean(message.edited) && (
+              <div style={{ fontSize: "10px", textAlign: "right" }}>edited</div>
+            )}
           </div>
-          <div style={{ marginTop: "2px", marginBottom: "3px"}}>{message.message}</div>
+          <div style={{ marginTop: "2px", marginBottom: "3px" }}>
+            {message.message}
+          </div>
           <div style={{ fontSize: "10px", textAlign: "right" }}>
             {new Date(message.time_sent).toLocaleString()}
           </div>

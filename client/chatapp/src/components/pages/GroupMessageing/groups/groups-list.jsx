@@ -40,7 +40,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   //   enabled: user?.id != undefined,
   //   queryFn: ({ pageParam = 0 }) => {
   //     const start = pageParam;
-  //     //TODO return getGroups(user.id, start, start + CONTACTS_PER_PAGE);
+  //     return getGroups(user.id, start, start + CONTACTS_PER_PAGE);
   //     return getGroups(user.id);
   //   },
   //   getNextPageParam: (lastPage, allPages) => {
@@ -106,7 +106,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   // ));
 
   if (groupsQuery.isLoading) return <>Loading</>;
-  if (groupsQuery.isError) return <>Error</>;
+  //if (groupsQuery.isError) return <>Error</>;
   let groupsDOM = null;
   if (groupsQuery.data?.length) {
     groupsDOM = groupsQuery.data.map((group) => (
