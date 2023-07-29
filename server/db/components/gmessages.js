@@ -12,6 +12,7 @@ async function getGroupMessages(group_id){
                 ${tables.USERS}
                 ON ${tables.GROUP_MESSAGES}.sender_id = ${tables.USERS}.id
                 WHERE groupchat_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.GROUP_MESSAGES}.valid = 1
+                ORDER BY time_sent
                 ;`,
                 [group_id],
             (error, result) => {
@@ -23,13 +24,11 @@ async function getGroupMessages(group_id){
 }
 
 async function addGroupMessage(new_gmessage){
-    //TODO validate new gmessage
     new_gmessage.valid = true;
     return generic.create(tables.GROUP_MESSAGES, new_gmessage);
 }
 
 async function updateGroupMessage(updated_gmessage){
-    //TODO validate new gmessage
     return generic.update(tables.GROUP_MESSAGES, updated_gmessage, {id: updated_gmessage.id});
 }
 

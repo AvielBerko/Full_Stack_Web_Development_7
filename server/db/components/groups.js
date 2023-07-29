@@ -27,13 +27,11 @@ async function getUserGroups(user_id){
 }
 
 async function addGroup(new_group){
-    //TODO validate new group
     new_group.valid = true;
     return generic.create(tables.GROUPS, new_group);
 }
 
 async function updateGroup(updated_group){
-    //TODO validate new group
     return generic.update(tables.GROUPS, updated_group, {id: updated_group.id});
 }
 

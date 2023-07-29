@@ -25,7 +25,6 @@ router.put("/:id", async (req, res) => {
   try {
     const user_id = req.params.id;
     const updated_user = {...req.body, id:user_id};
-    //TODO - validate new user
     const result = await users_db.updateUser(updated_user);
     if (result.changedRows === 0) return res.status(404).send({error: 'User to update was not found!'});
     res.send(updated_user);

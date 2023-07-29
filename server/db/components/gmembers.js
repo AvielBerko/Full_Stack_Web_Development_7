@@ -7,13 +7,11 @@ async function getGroupMembers(group_id){
 }
 
 async function addGroupMember(new_gmember){
-    //TODO validate new gmember
     new_gmember.valid = true;
     return generic.create(tables.GROUP_MEMBERS, new_gmember);
 }
 
 // async function updateGroupMember(updated_gmember){
-//     //TODO validate new gmember
 //     return generic.update(tables.GROUP_MEMBERS, updated_gmember, {id: updated_gmember.id});
 // }
 

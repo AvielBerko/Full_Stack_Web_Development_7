@@ -35,7 +35,6 @@ router.post("/", async (req, res) => {
     }
   });
   
-//TODO - decide if delete or enable here and in db
 // router.put("/:id", async (req, res) => {
 //     try {
 //         const gmembers_id = req.params.id;

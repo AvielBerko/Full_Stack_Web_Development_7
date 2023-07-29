@@ -17,9 +17,7 @@ router.get("/", async (req, res) => {
     try {
         const group_id = req.locals.groupchat_id;
         const gmessages = await gmessages_db.getGroupMessages(group_id);
-        //TODO - sort in sql
-        const sorted_messages = gmessages.slice().sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
-        res.send(sorted_messages);
+        res.send(gmessages);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
     }

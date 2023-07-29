@@ -16,8 +16,9 @@ const dmessages_schema = Joi.object({
 
 router.get("/", async (req, res) => {
     try {
-        const id1 = req.query.id1;//currently supporting only dmsgs of conversation
-        const id2 = req.query.id2;
+
+        const id1 = req.query.saver_id;//currently supporting only dmsgs of conversation
+        const id2 = req.locals.user_id;
         const dmessages_from_id1 = await dmessages_db.getDirectMessages(id1, id2);
         const dmessages_from_id2 = await dmessages_db.getDirectMessages(id2, id1);
         const conversation = dmessages_from_id1.concat(dmessages_from_id2);
@@ -33,7 +34,7 @@ router.post("/", async (req, res) => {
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_dmessage = req.body;
-        //TODO - add a check it is from group member(?)
+        new_dmessage.receiver_id = req.locals.user_id;
         new_dmessage.id = uuidv4();
         new_dmessage.edited = false;
         new_dmessage.time_sent = new Date(new_dmessage.time_sent);//creating date object from received string
@@ -48,9 +49,9 @@ router.put("/:id", async (req, res) => {
     const { error } = dmessages_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
-        //TODO - check only for saver id changes?
         const dmessages_id = req.params.id;
         const updated_dmessage = {...req.body, id:dmessages_id};
+        updated_dmessage.receiver_id = req.locals.user_id;
         updated_dmessage.edited = true;
         const result = await dmessages_db.updateDirectMessage(updated_dmessage);
         if (result.changedRows === 0) return res.status(404).send({error: 'Direct message to update was not found!'});
