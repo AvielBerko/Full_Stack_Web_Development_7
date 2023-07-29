@@ -45,7 +45,7 @@ export default function Message({ message, user, contact_id }) {
   };
 
   const deleteMessageMutation = useMutation({
-    mutationFn: () => deleteMessage(message.id),
+    mutationFn: () => deleteMessage(contact_id, message.id),
     onSuccess: (results) => {
         queryClient.refetchQueries(["messages", user?.id, contact_id]);
     },

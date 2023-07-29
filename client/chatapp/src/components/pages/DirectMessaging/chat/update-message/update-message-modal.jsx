@@ -19,7 +19,7 @@ export default function UpdateMessageModal({ message, showState }) {
   const queryClient = useQueryClient();
 
   const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateMessage(message),
+    mutationFn: (message) => updateMessage(message.receiver_id, message),
     onSettled: (results) => {
         queryClient.invalidateQueries(["messages"]);
     },
