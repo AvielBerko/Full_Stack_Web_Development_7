@@ -1,5 +1,7 @@
 import axios from "axios";
 
+// TODO change error to check if it is an axios error or server error
+
 export function get(path) {
   return axios
     .get(path)
