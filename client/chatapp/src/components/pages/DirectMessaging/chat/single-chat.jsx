@@ -1,11 +1,13 @@
 import React, { useState} from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getMessages, sendMessage } from "../../../../api/dmessges";
+import { sendFile } from "../../../../api/upload"
 import { Alert, Row, Col } from "react-bootstrap";
 import Message from "./message";
 
 export default function SingleChat({ user, contact_id }) {
   const [newMessage, setNewMessage] = useState("");
+  const [file, setFile] = useState(null);
   const [alert, setAlert] = useState("");
 
   const messagesQuery = useQuery({
@@ -27,6 +29,17 @@ export default function SingleChat({ user, contact_id }) {
     },
   });
 
+  const sendFileMutation = useMutation({
+    mutationFn: (file) => sendFile(file),
+    onSuccess: (results) => {
+        setAlert("SUCCESS");
+        //messagesQuery.refetch();
+    },
+    onError: (error) => {
+      setAlert(error.message)
+    },
+  });
+
   const handleSendMessage = () => {
     if (!newMessage) {
       setAlert("Please write a message.");
@@ -42,6 +55,21 @@ export default function SingleChat({ user, contact_id }) {
     setNewMessage("");
   };
 
+  const handleFileUpload = () => {
+    if (!file) {
+      setAlert("Please select a file.");
+      return;
+    }
+    const fd = new FormData();
+    fd.append("file", file);
+    sendFileMutation.mutate(fd);
+  };
+
+  const handleSelectFile = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  
   const { data: messages, isLoading, isError } = messagesQuery;
 
   if (isLoading) return <></>;
@@ -108,6 +136,12 @@ export default function SingleChat({ user, contact_id }) {
           onChange={(e) => setNewMessage(e.target.value)}
           style={{ flex: 1, marginRight: "8px" }}
         />
+        <input type="file" onChange={handleSelectFile} />
+        <button
+        tabIndex="1"
+        onClick={handleFileUpload}>
+          Upload File
+        </button>
         <button
           tabIndex="0"
           onClick={handleSendMessage}
