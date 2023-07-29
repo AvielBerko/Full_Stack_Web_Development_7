@@ -14,8 +14,8 @@ export default function Router() {
       {/* <Route path="home" element={<Home />} /> */}
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="dmessages" element={<DirectMessaging />} />
-      <Route path="groups" element={<GroupMessaging />} />
+      <Route path="direct_messages" element={<DirectMessaging />} />
+      <Route path="group_messages" element={<GroupMessaging />} />
 
     </Routes>
   );
