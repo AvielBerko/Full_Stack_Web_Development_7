@@ -1,20 +1,20 @@
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
-const path = require('path');
+//const multer = require('multer');
+//const path = require('path');
 const app = express();  
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'files')
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-})
+//const storage = multer.diskStorage({
+//  destination: (req, file, cb) => {
+//    cb(null, 'files')
+//  },
+//  filename: (req, file, cb) => {
+//    cb(null, Date.now() + path.extname(file.originalname))
+//  }
+//})
 
-const upload = multer({storage: storage})
+//const upload = multer({storage: storage});
 
 
 // Middleware
@@ -30,6 +30,7 @@ const dmessages = require('./routes/dmessages');
 const groups = require('./routes/groups');
 const gmessages = require('./routes/gmessages');
 const gmembers = require('./routes/gmembers');
+const files = require('./routes/files');
 
 app.use('/', auth);
 app.use('/users', users);
@@ -47,12 +48,13 @@ app.use('/groups/:id/members', (req, res, next) => {
     req.locals = { groupchat_id: req.params.id };
     next();
   }, gmembers);
+app.use('/files', files);
 
 
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.send({data: req.file.filename});
-})
+//app.post('/upload', upload.single('file'), (req, res) => {
+//  res.send({data: req.file.filename});
+//})
 
 // Listen on port
 const port = process.env.PORT || 3000;
