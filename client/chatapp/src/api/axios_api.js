@@ -7,7 +7,7 @@ export function get(path) {
     .get(path)
     .then((res) => res.data)
     .catch((err) => {
-      if (err.response.data) {
+      if (err.response.data.error) {
         throw new Error(err.response.data.error);
       }
       throw new Error(err.message);
@@ -19,7 +19,7 @@ export function add(path, data) {
     .post(path, data)
     .then((res) => res.data)
     .catch((err) => {
-      if (err.response.data) {
+      if (err.response.data.error) {
         throw new Error(err.response.data.error);
       }
       throw new Error(err.message);
@@ -31,7 +31,7 @@ export function update(path, data) {
     .put(path, data)
     .then((res) => res.data)
     .catch((err) => {
-      if (err.response.data) {
+      if (err.response.data.error) {
         throw new Error(err.response.data.error);
       }
       throw new Error(err.message);
@@ -43,7 +43,7 @@ export function remove(path) {
     .delete(path)
     .then((res) => res.data)
     .catch((err) => {
-      if (err.response.data) {
+      if (err.response.data.error) {
         throw new Error(err.response.data.error);
       }
       throw new Error(err.message);

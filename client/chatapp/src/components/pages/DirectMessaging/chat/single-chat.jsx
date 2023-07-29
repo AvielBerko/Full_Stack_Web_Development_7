@@ -31,8 +31,18 @@ export default function SingleChat({ user, contact_id }) {
 
   const sendFileMutation = useMutation({
     mutationFn: (file) => sendFile(file),
-    onSuccess: (results) => {
+    onMutate: (file) => {
+      return file;
+    },
+    onSuccess: (data, variables, context) => {
         setAlert("SUCCESS");
+        sendMessageMutation.mutate({
+          message: results.data,
+          sender_id: user.id,
+          time_send: new Date(),
+          type: file.type.split("/")[0],
+        })
+        setFile(null);
         //messagesQuery.refetch();
     },
     onError: (error) => {
@@ -55,15 +65,20 @@ export default function SingleChat({ user, contact_id }) {
     setNewMessage("");
   };
 
-  const handleFileUpload = () => {
-    if (!file) {
-      setAlert("Please select a file.");
-      return;
-    }
+  const handleSendFile = () => {
     const fd = new FormData();
     fd.append("file", file);
     sendFileMutation.mutate(fd);
   };
+
+  const handleSend = () => {
+    if (file) {
+      handleSendFile();
+    }
+    else {
+      handleSendMessage();
+    }
+  }
 
   const handleSelectFile = (event) => {
     setFile(event.target.files[0]);
@@ -129,6 +144,9 @@ export default function SingleChat({ user, contact_id }) {
         })}
       </div>
       <div style={{ display: "flex", marginTop: "8px" }}>
+      {file ? (
+        <p>{file.name}</p>
+      ) : (
         <input
           onKeyDown={handleKeyDown}
           type="text"
@@ -136,15 +154,28 @@ export default function SingleChat({ user, contact_id }) {
           onChange={(e) => setNewMessage(e.target.value)}
           style={{ flex: 1, marginRight: "8px" }}
         />
-        <input type="file" onChange={handleSelectFile} />
+      )}
+         <button
+        tabIndex="1"
+        onClick={() => { // Separate handler for selecting a file
+          // Using a hidden input element to trigger the file selection
+          const fileInput = document.createElement("input");
+          fileInput.type = "file";
+          fileInput.onchange = handleSelectFile;
+          fileInput.click();
+        }}
+    >
+      Select File
+    </button>
+        {/* <input type="file" onChange={handleSelectFile} />
         <button
         tabIndex="1"
         onClick={handleFileUpload}>
           Upload File
-        </button>
+        </button> */}
         <button
           tabIndex="0"
-          onClick={handleSendMessage}
+          onClick={handleSend}
         >
           Send
         </button>
