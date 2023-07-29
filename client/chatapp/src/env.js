@@ -14,7 +14,7 @@ const routes = {
   addContact: `${SERVER_URL}/contacts`,
   updateContact: (id) => `${SERVER_URL}/contacts/${id}`,
   deleteContact: (id) => `${SERVER_URL}/contacts/${id}`,
-  getMessages: (contactID, options) => `${SERVER_URL}/contacts/${contactID}/?${new URLSearchParams(options).toString()}`,
+  getMessages: (contactID, options) => `${SERVER_URL}/contacts/${contactID}/messages/?${new URLSearchParams(options).toString()}`,
   sendMessage: (contactID) => `${SERVER_URL}/contacts/${contactID}/messages`,
   deleteMessage: (contactID, messageID) => `${SERVER_URL}/contacts/${contactID}/messages/${messageID}`,
   updateMessage: (contactID, messageID) => `${SERVER_URL}/contacts/${contactID}/messages/${messageID}`,
