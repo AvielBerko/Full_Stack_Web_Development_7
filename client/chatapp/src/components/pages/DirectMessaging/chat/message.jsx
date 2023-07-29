@@ -47,12 +47,7 @@ export default function Message({ message, user, contact_id }) {
   const deleteMessageMutation = useMutation({
     mutationFn: () => deleteMessage(message.id),
     onSuccess: (results) => {
-      if (results === "") {
-        //queryClient.invalidateQueries(['messages']);
         queryClient.refetchQueries(["messages", user?.id, contact_id]);
-      } else {
-        setAlert(results);
-      }
     },
     onError: (error) => {
       setAlert(error.message);
@@ -72,7 +67,6 @@ export default function Message({ message, user, contact_id }) {
 
   return (
     <>
-      {" "}
       {updateMessageModalDOM}
       <div
         onContextMenu={handleContextMenu}

@@ -28,7 +28,7 @@ export default function GroupsItem({
 
   const handleContextMenu = (event) => {
     openContextMenu(event);
-  
+
     // Trigger the click event programmatically (simulating a regular click)
     const clickEvent = new MouseEvent("click", {
       bubbles: true,
@@ -36,7 +36,7 @@ export default function GroupsItem({
       button: 0, // 0 for left click, 1 for middle click, 2 for right click
     });
     event.currentTarget.dispatchEvent(clickEvent);
-  };  
+  };
   const queryClient = useQueryClient();
 
   const selected = selectedGroup === group.id;
@@ -59,11 +59,7 @@ export default function GroupsItem({
   const leaveGroupMutation = useMutation({
     mutationFn: (data) => leaveGroup(data.groupID, data.userID),
     onSuccess: (results) => {
-      if (results === "") {
-        queryClient.invalidateQueries(["groups", user.id]);
-      } else {
-        setAlert(results);
-      }
+      queryClient.invalidateQueries(["groups", user.id]);
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");
@@ -77,12 +73,12 @@ export default function GroupsItem({
   };
 
   const updateGroupModalDOM = (
-      <UpdateGroupModal
-        group={group}
-        user={user}
-        showState={[showUpdateGroupModal, setShowUpdateGroupModal]}
-        setAlert={setAlert}
-      />
+    <UpdateGroupModal
+      group={group}
+      user={user}
+      showState={[showUpdateGroupModal, setShowUpdateGroupModal]}
+      setAlert={setAlert}
+    />
   );
 
   return (

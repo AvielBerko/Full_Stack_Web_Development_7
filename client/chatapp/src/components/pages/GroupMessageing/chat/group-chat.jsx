@@ -50,9 +50,9 @@ export default function GroupChat({ user, groupID }) {
   if (isError) return <>Error while fetching messages</>;
 
   // Sort the messages by time_sent in ascending order
-  const sortedMessages = messages
-    .slice()
-    .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
+  // const sortedMessages = messages
+  //   .slice()
+  //   .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -91,7 +91,7 @@ export default function GroupChat({ user, groupID }) {
           flexDirection: "column",
         }}
       >
-        {sortedMessages.map((message) => {
+        {messages.map((message) => {
           return (
             <GroupMessage
               key={message.id}

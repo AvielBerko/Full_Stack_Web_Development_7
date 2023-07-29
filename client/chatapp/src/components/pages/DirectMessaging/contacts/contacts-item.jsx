@@ -9,6 +9,7 @@ import ContextMenu from "../../../common/ContextMenu/context-menu";
 
 export default function ContactsItem({
   contact,
+  user,
   selectedContact,
   setSelectedContact,
   setAlert,
@@ -43,11 +44,7 @@ export default function ContactsItem({
   const deleteContactMutation = useMutation({
     mutationFn: () => deleteContact(contact.id),
     onSuccess: (results) => {
-      if (results === "") {
         queryClient.invalidateQueries(["contacts"]);
-      } else {
-        setAlert(results);
-      }
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");
@@ -62,6 +59,7 @@ export default function ContactsItem({
   const updateContactModalDOM = (
       <UpdateContactModal
         contact={contact}
+        user={user}
         showState={[showUpdateContactModal, setShowUpdateContactModal]}
         setAlert={setAlert}
       />

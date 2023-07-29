@@ -1,4 +1,4 @@
-import React, { useState, useRef} from "react";
+import React, { useState} from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getMessages, sendMessage } from "../../../../api/dmessges";
 import { Alert, Row, Col } from "react-bootstrap";
@@ -7,9 +7,6 @@ import Message from "./message";
 export default function SingleChat({ user, contact_id }) {
   const [newMessage, setNewMessage] = useState("");
   const [alert, setAlert] = useState("");
-  const buttonRef = useRef(null);
-  const inputRef = useRef(null);
-
 
   const messagesQuery = useQuery({
     queryKey: ["messages", user?.id, contact_id],
@@ -50,15 +47,15 @@ export default function SingleChat({ user, contact_id }) {
   if (isLoading) return <></>;
   if (isError) return <>Error while fetching messages</>;
 
-  // Sort the messages by time_sent in ascending order
-  const sortedMessages = messages
-    .slice()
-    .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
+  // // Sort the messages by time_sent in ascending order
+  // const sortedMessages = messages
+  //   .slice()
+  //   .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      // When the "Enter" key is pressed, trigger the button click event
-      buttonRef.current.click();
+      // When the "Enter" key is pressed send a message
+      handleSendMessage();
     }
   };
 
@@ -92,7 +89,7 @@ export default function SingleChat({ user, contact_id }) {
           flexDirection: "column",
         }}
       >
-        {sortedMessages.map((message) => {
+        {messages.map((message) => {
           return (
             <Message
               key={message.id}
@@ -105,7 +102,6 @@ export default function SingleChat({ user, contact_id }) {
       </div>
       <div style={{ display: "flex", marginTop: "8px" }}>
         <input
-          ref={inputRef}
           onKeyDown={handleKeyDown}
           type="text"
           value={newMessage}
@@ -113,7 +109,6 @@ export default function SingleChat({ user, contact_id }) {
           style={{ flex: 1, marginRight: "8px" }}
         />
         <button
-          ref={buttonRef}
           tabIndex="0"
           onClick={handleSendMessage}
         >

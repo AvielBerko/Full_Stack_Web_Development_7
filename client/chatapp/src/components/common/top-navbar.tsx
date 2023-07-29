@@ -17,7 +17,7 @@ export default function TopNavbar() {
     <Nav className="me-auto">
       <Nav.Link href="/profile">Profile</Nav.Link>
       <Nav.Link href="/dmessages">Direct Messages</Nav.Link>
-      <Nav.Link href="/gmessages">Groups</Nav.Link>
+      <Nav.Link href="/groups">Groups</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>
         Logout
       </Nav.Link>

@@ -30,34 +30,6 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
     }
   });
 
-  // const handleSort = () => {
-  //   // let sortedContacts;
-  //   // switch (sortBy) {
-  //   //   case SortBy.NAME:
-  //   //     sortedContacts = [...posts].sort((a, b) => {
-  //   //       if (a.title && b.title) {
-  //   //         return a.title.localeCompare(b.title);
-  //   //       }
-  //   //       return 0;
-  //   //     });
-  //   //     break;
-  //   //   case SortBy.ID:
-  //   //     sortedContacts = [...contactsQuery?.data].sort((a, b) => {
-  //   //       if (a.id && b.id) {
-  //   //         const idA = Number(a.id);
-  //   //         const idB = Number(b.id);
-  //   //         return idA - idB;
-  //   //       }
-  //   //       // Handle the case where either a.id or b.id is undefined
-  //   //       return 0;
-  //   //     });
-  //   //     break;
-  //   //   default:
-  //   //     sortedContacts = contactsQuery?.data;
-  //   //     break;
-  //   // }
-  //   // // setPosts(sortedPosts);
-  // };
 
   // useEffect(() => {
   //   handleSort();
@@ -78,7 +50,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
   // ));
 
   if (contactsQuery.isLoading) return <>Loading</>;
-  if (contactsQuery.isError) return <>Error</>;
+  //if (contactsQuery.isError) return <>Error</>;
   let contactsDOM = null;
   if (contactsQuery.data?.length) {
     contactsDOM = contactsQuery.data
@@ -86,6 +58,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
         <ContactsItem
           key={contact.id}
           contact={contact}
+          user={user}
           selectedContact={selectedContact}
           setSelectedContact={setSelectedContact}
           setAlert={setAlert}
