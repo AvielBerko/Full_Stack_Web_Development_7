@@ -6,6 +6,9 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
+  Col,
+  Alert,
 } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateMessage } from "../../../../../api/dmessges";
@@ -14,14 +17,18 @@ import Input from "../../../../common/Input/input";
 
 export default function UpdateMessageModal({ message, showState }) {
   const [newMessage, setNewMessage] = useState(message.message || "");
+  const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
-  const queryClient = useQueryClient();
+  const contactID = message.receiver_id;
 
+  const queryClient = useQueryClient();
+  
   const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateMessage(message.receiver_id, message),
-    onSettled: (results) => {
+    mutationFn: (message) => updateMessage(contactID, message),
+    onSuccess: (results) => {
         queryClient.invalidateQueries(["messages"]);
+        setShow(false);
     },
     onError: (error) => {
       setAlert(error.message);
@@ -31,20 +38,33 @@ export default function UpdateMessageModal({ message, showState }) {
   const update = () => {
     if (newMessage !== message.message)
       updateMessageMutetion.mutate({ id: message.id, message: newMessage });
-    setShow(false);
+    else
+      setShow(false);
   };
 
   const resetModal = () => {
     setNewMessage(message.message);
+    setAlert("");
   };
 
   useEffect(() => {
     resetModal();
   }, [show]);
 
+  const alertDOM = (
+    <Row>
+      <Col>
+        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+          {alert}
+        </Alert>
+      </Col>
+    </Row>
+  );
+
   return (
     <Modal show={show}>
       <ModalHeader>Update Message</ModalHeader>
+      {alert && alertDOM}
       <ModalBody>
         <Card>
           <Card.Body>
