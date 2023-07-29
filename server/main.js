@@ -19,7 +19,10 @@ const gmembers = require('./routes/gmembers');
 app.use('/', auth);
 app.use('/users', users);
 app.use('/contacts', contacts);
-app.use('/dmessages', dmessages);
+app.use('/contacts/:id/messages', (req, res, next) => {
+  req.locals = {user_id: req.params.id };
+  next()
+}, dmessages);
 app.use('/groups', groups);
 app.use('/groups/:id/messages', (req, res, next) => {
   req.locals = { groupchat_id: req.params.id };
