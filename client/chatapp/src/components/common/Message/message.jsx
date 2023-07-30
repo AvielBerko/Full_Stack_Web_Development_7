@@ -13,6 +13,7 @@ export default function Message({
   user,
   deleteMessageMutation,
   updateMessageMutation,
+  setAlert,
 }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
 
@@ -20,13 +21,24 @@ export default function Message({
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getContacts(user.id, user.token);
+      return getContacts({}, user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       setAlert(error.message);
     },
   });
+
+  const {
+    isContextMenuOpen,
+    contextMenuPosition,
+    contextMenuRef,
+    openContextMenu,
+    closeContextMenu,
+  } = useContextMenu(); // Use the custom hook
+
+  if (contactsQuery.isLoading) return <>Loading</>;
+  if (contactsQuery.isError) return <>Error</>;
 
   const isSentByUser = message.sender_id === user.id;
   const isSentByContact = contactsQuery.data?.some(
@@ -54,14 +66,6 @@ export default function Message({
         color: "#000",
         margin: "5px",
       };
-
-  const {
-    isContextMenuOpen,
-    contextMenuPosition,
-    contextMenuRef,
-    openContextMenu,
-    closeContextMenu,
-  } = useContextMenu(); // Use the custom hook
 
   const handleContextMenu = (event) => {
     if (!isSentByUser) return;
@@ -116,10 +120,9 @@ export default function Message({
             </>
           )}
           {message.type === "image" && (
-            <ImageMessage
-              src={routes.getFile(message.message)}
-            />)}
-            {/*  <img
+            <ImageMessage src={routes.getFile(message.message)} />
+          )}
+          {/*  <img
                src={routes.getFile(message.message)}
                style={{ maxWidth: "100%", maxHeight: "200px" }}
              /> */}

@@ -3,13 +3,4 @@ import routes from "../env.js";
 
 export function getUsers(token) {
   return get(routes.getUsers, token);
-  // return axios
-  // .get(routes.getUsers)
-  // .then((response) => {
-  //   if (response.status === 200) {
-  //     return response.data;
-  //   } else {
-  //     return null;
-  //   }
-  // });
 }

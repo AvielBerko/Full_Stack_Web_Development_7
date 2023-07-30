@@ -4,7 +4,6 @@ import routes from "../env.js";
 import jwtDecode from "jwt-decode";
 
 export function updateUser(newUser, token) {
-  //return update(routes.updateUser(newUser.id), newUser, token);
   return axios
     .put(
       routes.updateUser(newUser.id),

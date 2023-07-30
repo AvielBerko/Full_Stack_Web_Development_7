@@ -63,7 +63,6 @@ export default function GroupsItem({
       setSelectedGroup(null);
     },
     onError: (error) => {
-      //setAlert("An unexpected error occurred. Please try again later.");
       setAlert(error.message);
     },
   });
