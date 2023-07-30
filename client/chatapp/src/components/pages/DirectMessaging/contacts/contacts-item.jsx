@@ -42,7 +42,7 @@ export default function ContactsItem({
   const selected = selectedContact === contact.user_id;
 
   const deleteContactMutation = useMutation({
-    mutationFn: () => deleteContact(contact.id),
+    mutationFn: () => deleteContact(contact.id, user.token),
     onSuccess: (results) => {
       queryClient.invalidateQueries(["contacts"]);
     },

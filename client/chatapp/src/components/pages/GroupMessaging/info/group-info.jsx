@@ -13,7 +13,7 @@ export default function GroupInfo({ user, group_id }) {
     queryKey: ["groups", group_id, "members"],
     enabled: user?.id != null && group_id != null,
     queryFn: () => {
-      return getGroupMembers(group_id);
+      return getGroupMembers(group_id, user.token);
     },
     staleTime: 1000 * 60 * 5,
   });

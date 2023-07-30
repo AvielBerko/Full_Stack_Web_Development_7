@@ -4,7 +4,7 @@ import Login from "../pages/Login/login";
 import Register from "../pages/Register/register";
 import Profile from "../pages/Profile/profile";
 import DirectMessaging from "../pages/DirectMessaging/direct-messaging";
-import GroupMessaging from "../pages/GroupMessageing/group-messaging";
+import GroupMessaging from "../pages/GroupMessaging/group-messaging";
 
 export default function Router() {
   return (

@@ -6,10 +6,8 @@ export const SERVER_URL = `${DOMAIN}:${PORT}`;
 const routes = {
   login: `${SERVER_URL}/login`,
   register: `${SERVER_URL}/register`,
-  getUser: (id) => `${SERVER_URL}/users/${id}`,
   getUsers: `${SERVER_URL}/users`,
-  getUser: (id) => `${SERVER_URL}/users/${id}`,
-  updateUser: (id) => `${SERVER_URL}/users/${id}`,
+  updateUser: `${SERVER_URL}/users`,
   getContacts: (id, start, end) =>
   start ? `${SERVER_URL}/contacts?saver_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
   addContact: `${SERVER_URL}/contacts`,
@@ -37,4 +35,3 @@ const routes = {
   getFile: (id) => `${SERVER_URL}/files/${id}`,
 };
 export default routes;
-export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });

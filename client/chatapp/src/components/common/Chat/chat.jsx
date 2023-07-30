@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { sendFile } from "../../../api/upload";
+import { sendFile } from "../../../api/files";
 import Message from "../Message/message";
 
 export default function Chat({
@@ -14,7 +14,7 @@ export default function Chat({
   const [file, setFile] = useState(null);
 
   const sendFileMutation = useMutation({
-    mutationFn: (file) => sendFile(file),
+    mutationFn: (file) => sendFile(file, user.token),
     onSuccess: (results) => {
       sendMessageMutation.mutate({
         message: results.data,

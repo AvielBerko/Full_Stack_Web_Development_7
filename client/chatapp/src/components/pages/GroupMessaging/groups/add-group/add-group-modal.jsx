@@ -25,9 +25,9 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
     mutationFn: (
       async (group) => {
         try {
-          const addedGroup = await addGroup(group);
+          const addedGroup = await addGroup(group, user.token);
 
-          await joinGroup(addedGroup.id, {user_id: user.id });
+          await joinGroup(addedGroup.id, user.token);
           return addedGroup;
         } catch (error) {
           // Handle errors if needed

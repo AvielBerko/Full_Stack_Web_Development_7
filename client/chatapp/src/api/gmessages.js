@@ -1,8 +1,8 @@
 import {get, add, remove, update} from "./axios_api.js"
 import routes from "../env.js";
 
-export function getGroupMessages(groupID) {
-  return get(routes.getGroupMessages(groupID));
+export function getGroupMessages(groupID, token) {
+  return get(routes.getGroupMessages(groupID), token);
   // return axios
   //   .get(routes.getGroupMessages(groupID))
   //   .then((res) => res.data)
@@ -14,8 +14,8 @@ export function getGroupMessages(groupID) {
   //   });
 }
 
-export function sendGroupMessage(groupID, message) {
-  return add(routes.sendGroupMessage(groupID), message);
+export function sendGroupMessage(groupID, message, token) {
+  return add(routes.sendGroupMessage(groupID), message, token);
   // return axios
   //   .post(routes.sendGroupMessage(groupID), message)
   //   .then((res) => res.data)
@@ -27,8 +27,8 @@ export function sendGroupMessage(groupID, message) {
   //   });
 }
 
-export function deleteGroupMessage(groupID, messageId) {
-  return remove(routes.deleteGroupMessage(groupID, messageId));
+export function deleteGroupMessage(groupID, messageId, token) {
+  return remove(routes.deleteGroupMessage(groupID, messageId), token);
   // return axios
   //   .delete(routes.deleteGroupMessage(groupID, messageId))
   //   .then((res) => res.data)
@@ -40,8 +40,8 @@ export function deleteGroupMessage(groupID, messageId) {
   //   });
 }
 
-export function updateGroupMessage(groupID, message) {
-  return update(routes.updateGroupMessage(groupID, message.id), message);
+export function updateGroupMessage(groupID, message, token) {
+  return update(routes.updateGroupMessage(groupID, message.id), message, token);
   // return axios
   //   .put(routes.updateGroupMessage(groupID, message.id), message)
   //   .then((res) => res.data)

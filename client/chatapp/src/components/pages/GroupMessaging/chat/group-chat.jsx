@@ -16,13 +16,13 @@ export default function GroupChat({ user, group_id }) {
     queryKey: ["groups", group_id, "messages"],
     enabled: user?.id != null && group_id != null,
     queryFn: () => {
-      return getGroupMessages(group_id);
+      return getGroupMessages(group_id, user.token);
     },
     refetchInterval: 1000,
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (message) => sendGroupMessage(group_id, message),
+    mutationFn: (message) => sendGroupMessage(group_id, message, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
     },
@@ -32,7 +32,7 @@ export default function GroupChat({ user, group_id }) {
   });
 
   const deleteMessageMutation = useMutation({
-    mutationFn: (message) => deleteGroupMessage(group_id, message.id),
+    mutationFn: (message) => deleteGroupMessage(group_id, message.id, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
     },
@@ -42,7 +42,7 @@ export default function GroupChat({ user, group_id }) {
   });
 
   const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateGroupMessage(group_id, message),
+    mutationFn: (message) => updateGroupMessage(group_id, message, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
     },

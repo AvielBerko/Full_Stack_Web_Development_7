@@ -1,8 +1,8 @@
 import {get} from "./axios_api.js"
 import routes from "../env.js";
 
-export function getUsers() {
-  return get(routes.getUsers);
+export function getUsers(token) {
+  return get(routes.getUsers, token);
   // return axios
   // .get(routes.getUsers)
   // .then((response) => {
