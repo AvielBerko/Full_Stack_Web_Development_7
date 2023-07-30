@@ -11,7 +11,7 @@ const new_gmembers_schema = Joi.object({
 })
 
 const updated_gmembers_schema = Joi.object({
-  user_id: Joi.string().guid({ version: ['uuidv4']}).required(),
+  user_id: Joi.string().guid({ version: ['uuidv4']}),
   admin: Joi.boolean().required(),
 })
 
