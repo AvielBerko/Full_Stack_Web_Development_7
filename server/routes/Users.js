@@ -23,14 +23,13 @@ router.get("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const user = jwt.verifyJWT(req.headers.authorization);
-  if (!user) return wrapper.unauthorized_response(res);
+  const user_id = req.params.id;
+  if (!user || user_id !== user.id) return wrapper.unauthorized_response(res);
   
   const { error } = updated_user_schema.validate(req.body)
   if (error) return res.status(400).send({error: error.details[0].message});
 
   try {
-    const user_id = req.params.id;
-    if (user_id !== user.id) return wrapper.unauthorized_response(res);
     const updated_user = {...req.body, id:user_id};
     const result = await users_db.updateUser(updated_user);
     if (result.changedRows === 0) return res.status(404).send({error: 'User to update was not found!'});
