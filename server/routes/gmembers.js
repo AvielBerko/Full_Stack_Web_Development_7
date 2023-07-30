@@ -15,6 +15,11 @@ const updated_gmembers_schema = Joi.object({
   admin: Joi.boolean().required(),
 })
 
+async function is_admin(user_id, group_id){
+  const members = await gmembers_db.getGroupMembers(group_id);
+  return members.some(member => member.user_id === user_id && member.admin)
+}//TODO - move to sql
+
 router.get("/", async (req, res) => {
   if (!jwt.verifyJWT(req.headers.authorization)) 
     return wrapper.unauthorized_response(res);
@@ -28,9 +33,14 @@ router.get("/", async (req, res) => {
     }
   });
 
-router.post("/", async (req, res) => {//TODO - post other member possible if admin
+router.post("/", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
-    if (!user || req.body.user_id !== user.id) return wrapper.unauthorized_response(res);
+    if (!user) return wrapper.unauthorized_response(res);
+
+    if (user.id !== req.body.user_id){
+      const result = await is_admin(req.locals.groupchat_id, user.id);
+      if (!result) return wrapper.unauthorized_response(res);
+    }
 
     const { error } = new_gmembers_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
@@ -38,6 +48,7 @@ router.post("/", async (req, res) => {//TODO - post other member possible if adm
         const new_gmember = req.body;
         new_gmember.groupchat_id = req.locals.groupchat_id;
         new_gmember.id = uuidv4();
+        new_gmember.admin = false;
         await gmembers_db.addGroupMember(new_gmember);
         res.send(new_gmember);
     } catch (err) {
@@ -48,21 +59,28 @@ router.post("/", async (req, res) => {//TODO - post other member possible if adm
     }
   });
   
-// router.put("/:id", async (req, res) => {//TODO - enable, only if admin even on myself
-//     try {
-//         const gmembers_id = req.params.id;
-//         const updated_gmember = {...req.body, id:gmembers_id};
-//         const result = await gmembers_db.updateGroupMember(updated_gmember);
-//         if (result.changedRows === 0) res.status(404).send({error: 'Group member to update was not found!'});
-//         res.send(updated_gmember);
-//     } catch (err) {
-//       res.status(400).send(err);
-//     }
-//   });
-
-  router.delete("/:user_id", async (req, res) => {//TODO - delete other member possible if admin
+router.put("/:id", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
-    if (!user || req.params.user_id !== user.id) return wrapper.unauthorized_response(res);
+    if (!user) return wrapper.unauthorized_response(res);
+    const result = await is_admin(req.locals.groupchat_id, user.id);
+    if (!result) return wrapper.unauthorized_response(res); 
+
+    try {
+        const gmembers_id = req.params.id;
+        const updated_gmember = {...req.body, id:gmembers_id};
+        const result = await gmembers_db.updateGroupMember(updated_gmember);
+        if (result.changedRows === 0) res.status(404).send({error: 'Group member to update was not found!'});
+        res.send(updated_gmember);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  });
+
+  router.delete("/:user_id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+    const result = await is_admin(req.locals.groupchat_id, user.id);
+    if (!result) return wrapper.unauthorized_response(res); 
 
     try {
         const groupchat_id = req.locals.groupchat_id;

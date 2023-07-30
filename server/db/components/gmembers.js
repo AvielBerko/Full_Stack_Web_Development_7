@@ -29,13 +29,13 @@ async function addGroupMember(new_gmember){
     return generic.create(tables.GROUP_MEMBERS, new_gmember);
 }
 
-// async function updateGroupMember(updated_gmember){
-//     return generic.update(tables.GROUP_MEMBERS, updated_gmember, {id: updated_gmember.id});
-// }
+async function updateGroupMember(updated_gmember){
+    return generic.update(tables.GROUP_MEMBERS, updated_gmember, {id: updated_gmember.id});
+}
 
 async function deleteGroupMember(groupchat_id, user_id){
     const deleted = {valid: false}
     return generic.update(tables.GROUP_MEMBERS, deleted, {groupchat_id, user_id})
 }
 
-module.exports = {getGroupMembers, addGroupMember, deleteGroupMember};
+module.exports = {getGroupMembers, addGroupMember,updateGroupMember, deleteGroupMember};
