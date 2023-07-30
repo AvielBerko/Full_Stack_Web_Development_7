@@ -3,6 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const jwt = require('../jwt/jwt.js');
+const wrapper = require('./wrapper.js');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -16,6 +18,9 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 router.post("/", upload.single('file'), (req, res) => {
+    if (!jwt.verifyJWT(req.headers.authorization)) 
+      return wrapper.unauthorized_response(res);
+
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
@@ -23,6 +28,9 @@ router.post("/", upload.single('file'), (req, res) => {
 })
 
 router.get("/:filename", (req, res) => {
+    if (!jwt.verifyJWT(req.headers.authorization)) 
+      return wrapper.unauthorized_response(res);
+
     const file_name = req.params.filename;
     const file_path = path.join(__dirname, '../files', file_name);
 
