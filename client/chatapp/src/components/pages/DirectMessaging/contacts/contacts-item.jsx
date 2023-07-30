@@ -44,7 +44,8 @@ export default function ContactsItem({
   const deleteContactMutation = useMutation({
     mutationFn: () => deleteContact(contact.id, user.token),
     onSuccess: (results) => {
-      queryClient.invalidateQueries(["contacts"]);
+      queryClient.invalidateQueries(["contacts", user.id]);     
+      setSelectedContact(null); 
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");

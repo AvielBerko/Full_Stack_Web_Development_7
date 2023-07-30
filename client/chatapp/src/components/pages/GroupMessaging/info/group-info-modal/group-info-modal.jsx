@@ -12,14 +12,17 @@ import {
   Container,
 } from "react-bootstrap";
 import GroupInfoUser from "./group-info-user";
+import AddUserModal from "../add-user-modal/add-user-modal";
+import { joinGroup } from "../../../../../api/groups";
 
 export default function GroupInfoModal({
   user,
-  group,
+  group_id,
   groupMembersQuery,
   showState,
 }) {
 
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
@@ -41,6 +44,16 @@ export default function GroupInfoModal({
       );
     });
 
+  const addUserModalDOM = (
+    <AddUserModal
+      user={user}
+  group_id={group_id}
+  showState={[showAddUserModal, setShowAddUserModal]}
+  setFatherAlert={setAlert}
+  members={groupMembersQuery?.data}
+    />
+  );
+
   const alertDOM = (
     <Row>
       <Col>
@@ -52,6 +65,8 @@ export default function GroupInfoModal({
   );
 
   return (
+    <>
+    {addUserModalDOM}
     <Modal show={show}>
       <Container fluid>
         <Row className="text-center">
@@ -73,7 +88,7 @@ export default function GroupInfoModal({
               <Button
                 variant="success"
                 onClick={() => {
-                  //add user
+                  setShowAddUserModal(true);
                 }
               }
               >
@@ -84,5 +99,6 @@ export default function GroupInfoModal({
             </Button>
         </ModalFooter>
     </Modal>
+    </>
   );
 }

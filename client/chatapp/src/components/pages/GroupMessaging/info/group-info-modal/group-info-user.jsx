@@ -12,13 +12,14 @@ export default function GroupinfoUser({ user, member, setAlert}) {
   const removeUserMutation = useMutation({
     mutationFn: () => leaveGroup(member.groupchat_id, member.user_id, user.token),
     onSuccess: (results) => {
+      queryClient.invalidateQueries(["groups", member.groupchat_id, 'members']);
       // Remove the user from the local cache to reflect the updated list of members
-      queryClient.setQueryData(["groups", member.groupchat_id, 'members'], (oldData) => {
-        const newData = oldData.filter((member) => {
-          return member.user_id !== results.user_id;
-        });
-        return newData;
-      });
+      // queryClient.setQueryData(["groups", member.groupchat_id, 'members'], (oldData) => {
+      //   const newData = oldData.filter((member) => {
+      //     return member.user_id !== results.user_id;
+      //   });
+      //   return newData;
+      // });
       // if (results.user_id === user.id) {
       //   queryClient.invalidateQueries(["groups", 'user_id', user.id]);
       // }
