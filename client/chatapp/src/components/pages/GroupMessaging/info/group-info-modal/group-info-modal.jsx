@@ -23,6 +23,10 @@ export default function GroupInfoModal({
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
 
+  const admin = groupMembersQuery?.data?.find((member) => {
+    return member.user_id === user.id && member.admin;
+  });
+
   const resetModal = () => {
     setAlert("");
   };
@@ -33,7 +37,7 @@ export default function GroupInfoModal({
 
   const membersDOM = groupMembersQuery?.data?.map((member) => {
       return (
-        <GroupInfoUser key={member.id} member={member} />
+        <GroupInfoUser key={member.id} user={{...user, admin}} member={member} setAlert={setAlert} />
       );
     });
 
@@ -65,6 +69,16 @@ export default function GroupInfoModal({
         </div>
       </ModalBody>
         <ModalFooter>
+            {admin && (
+              <Button
+                variant="success"
+                onClick={() => {
+                  //add user
+                }
+              }
+              >
+                Add User
+              </Button>)}                
             <Button variant="danger" onClick={() => setShow(false)}>
                 Close
             </Button>

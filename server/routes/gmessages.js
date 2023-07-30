@@ -17,7 +17,7 @@ const gmessages_schema = Joi.object({
 })
 
 async function user_in_group(user_id, group_id){
-  const groups = await groups_db.getUserGroups(user_id);
+  let groups = await groups_db.getUserGroups(user_id);
   groups = groups.map(group => group.id);
   if (groups.includes(group_id)) return true;
   return false;
