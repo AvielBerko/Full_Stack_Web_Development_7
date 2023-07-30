@@ -18,9 +18,6 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 router.post("/", upload.single('file'), (req, res) => {
-    if (!jwt.verifyJWT(req.headers.authorization)) 
-      return wrapper.unauthorized_response(res);
-
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
@@ -28,9 +25,6 @@ router.post("/", upload.single('file'), (req, res) => {
 })
 
 router.get("/:filename", (req, res) => {
-    if (!jwt.verifyJWT(req.headers.authorization)) 
-      return wrapper.unauthorized_response(res);
-
     const file_name = req.params.filename;
     const file_path = path.join(__dirname, '../files', file_name);
 
