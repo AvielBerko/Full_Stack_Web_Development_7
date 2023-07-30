@@ -1,65 +1,88 @@
-import React, { useState, useRef} from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getGroupMessages, sendGroupMessage } from "../../../../api/gmessages";
+import {
+  getGroupMessages,
+  sendGroupMessage,
+  deleteGroupMessage,
+  updateGroupMessage,
+} from "../../../../api/gmessages";
 import { Alert, Row, Col } from "react-bootstrap";
-import GroupMessage from "./group-message";
+import Chat from "../../../common/Chat/chat";
 
-export default function GroupChat({ user, groupID }) {
-  const [newMessage, setNewMessage] = useState("");
+export default function GroupChat({ user, group_id }) {
   const [alert, setAlert] = useState("");
-  const buttonRef = useRef(null);
-  const inputRef = useRef(null);
-
 
   const messagesQuery = useQuery({
-    queryKey: ["groups", groupID, "messages"],
-    enabled: user?.id != null && groupID != null,
+    queryKey: ["groups", group_id, "messages"],
+    enabled: user?.id != null && group_id != null,
     queryFn: () => {
-      return getGroupMessages(groupID);
+      return getGroupMessages(group_id);
     },
     refetchInterval: 1000,
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (message) => sendGroupMessage(groupID, message),
+    mutationFn: (message) => sendGroupMessage(group_id, message),
     onSuccess: (results) => {
-        messagesQuery.refetch();
+      messagesQuery.refetch();
     },
     onError: (error) => {
       setAlert(error.message);
     },
   });
 
-  const handleSendMessage = () => {
-    if (!newMessage) {
-      setAlert("Please write a message.");
-      return;
-    }
-    sendMessageMutation.mutate({
-      message: newMessage,
-      sender_id: user.id,
-      time_sent: new Date(),
-      type: "text",
-    });
-    setNewMessage("");
-  };
+  const deleteMessageMutation = useMutation({
+    mutationFn: (message) => deleteGroupMessage(group_id, message.id),
+    onSuccess: (results) => {
+      //queryClient.refetchQueries(["groups", group_id, "messages"]);
+      messagesQuery.refetch();
+    },
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
 
-  const { data: messages, isLoading, isError } = messagesQuery;
+  const updateMessageMutetion = useMutation({
+    mutationFn: (message) => updateGroupMessage(group_id, message),
+    onSuccess: (results) => {
+      //    queryClient.invalidateQueries(["groups", group_id, "messages"])
+      messagesQuery.refetch();
+    },
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
 
-  if (isLoading) return <></>;
-  if (isError) return <>Error while fetching messages</>;
+  // const handleSendMessage = () => {
+  //   if (!newMessage) {
+  //     setAlert("Please write a message.");
+  //     return;
+  //   }
+  //   sendMessageMutation.mutate({
+  //     message: newMessage,
+  //     sender_id: user.id,
+  //     time_sent: new Date(),
+  //     type: "text",
+  //   });
+  //   setNewMessage("");
+  // };
+
+  // const { data: messages, isLoading, isError } = messagesQuery;
+
+  // if (isLoading) return <></>;
+  // if (isError) return <>Error while fetching messages</>;
 
   // Sort the messages by time_sent in ascending order
   // const sortedMessages = messages
   //   .slice()
   //   .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      // When the "Enter" key is pressed, trigger the button click event
-      buttonRef.current.click();
-    }
-  };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter") {
+  //     // When the "Enter" key is pressed, trigger the button click event
+  //     buttonRef.current.click();
+  //   }
+  // };
 
   const alertDOM = (
     <Row>
@@ -73,8 +96,8 @@ export default function GroupChat({ user, groupID }) {
 
   return (
     <>
-    {alert && alertDOM}
-    <div
+      {alert && alertDOM}
+      {/* <div
       style={{
         maxWidth: "90%",
         margin: "0 auto",
@@ -119,7 +142,14 @@ export default function GroupChat({ user, groupID }) {
           Send
         </button>
       </div>
-    </div>
+    </div> */}
+      <Chat
+        user={user}
+        messagesQuery={messagesQuery}
+        sendMessageMutation={sendMessageMutation}
+        deleteMessageMutation={deleteMessageMutation}
+        updateMessageMutation={updateMessageMutetion}
+      />
     </>
   );
 }

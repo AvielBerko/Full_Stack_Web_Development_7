@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getMessages, sendMessage } from "../../../../api/dmessges";
-import { sendFile } from "../../../../api/upload";
-import { Alert, Row, Col } from "react-bootstrap";
-import Message from "./message";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getMessages,
+  sendMessage,
+  updateMessage,
+  deleteMessage,
+} from "../../../../api/dmessges";
+import { Row, Col, Alert } from "react-bootstrap";
+import Chat from "../../../common/Chat/chat";
 
 export default function SingleChat({ user, contact_id }) {
-  const [newMessage, setNewMessage] = useState("");
-  const [file, setFile] = useState(null);
   const [alert, setAlert] = useState("");
+
+  //const queryClient = useQueryClient();
 
   const messagesQuery = useQuery({
     queryKey: ["messages", user?.id, contact_id],
@@ -29,73 +33,27 @@ export default function SingleChat({ user, contact_id }) {
     },
   });
 
-  const sendFileMutation = useMutation({
-    mutationFn: (file) => sendFile(file),
+  const deleteMessageMutation = useMutation({
+    mutationFn: (message) => deleteMessage(contact_id, message.id),
     onSuccess: (results) => {
-      setAlert("SUCCESS");
-      sendMessageMutation.mutate({
-        message: results.data,
-        sender_id: user.id,
-        time_sent: new Date(),
-        type: file.type.split("/")[0],
-      });
-      setFile(null);
-      //messagesQuery.refetch();
+      //queryClient.refetchQueries(["messages", user?.id, contact_id]);
+      messagesQuery.refetch();
     },
     onError: (error) => {
-      setAlert(error.message); // TODO hadle errors
+      setAlert(error.message);
     },
   });
 
-  const handleSendMessage = () => {
-    if (!newMessage) {
-      setAlert("Please write a message.");
-      return;
-    }
-    sendMessageMutation.mutate({
-      message: newMessage,
-      sender_id: user.id,
-      //      receiver_id: contact_id,
-      time_sent: new Date(),
-      type: "text",
-    });
-    setNewMessage("");
-  };
-
-  const handleSendFile = () => {
-    const fd = new FormData();
-    fd.append("file", file);
-    sendFileMutation.mutate(fd);
-  };
-
-  const handleSend = () => {
-    if (file) {
-      handleSendFile();
-    } else {
-      handleSendMessage();
-    }
-  };
-
-  const handleSelectFile = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const { data: messages, isLoading, isError } = messagesQuery;
-
-  if (isLoading) return <></>;
-  if (isError) return <>Error while fetching messages</>;
-
-  // // Sort the messages by time_sent in ascending order
-  // const sortedMessages = messages
-  //   .slice()
-  //   .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      // When the "Enter" key is pressed send a message
-      handleSendMessage();
-    }
-  };
+  const updateMessageMutetion = useMutation({
+    mutationFn: (message) => updateMessage(contact_id, message),
+    onSuccess: (results) => {
+      messagesQuery.refetch();
+      //queryClient.invalidateQueries(["messages"]);
+    },
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
 
   const alertDOM = (
     <Row>
@@ -110,66 +68,13 @@ export default function SingleChat({ user, contact_id }) {
   return (
     <>
       {alert && alertDOM}
-      <div
-        style={{
-          maxWidth: "90%",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div
-          style={{
-            height: "800px",
-            overflowY: "scroll",
-            border: "1px solid #ccc",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {messages.map((message) => {
-            return (
-              <Message
-                key={message.id}
-                message={message}
-                user={user}
-                contact_id={contact_id}
-              />
-            );
-          })}
-        </div>
-        <div style={{ display: "flex", marginTop: "8px" }}>
-          {file ? (
-            <p>{file.name}</p>
-          ) : (
-            <input
-              onKeyDown={handleKeyDown}
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              style={{ flex: 1, marginRight: "8px" }}
-            />
-          )}
-          <button
-            tabIndex="1"
-            onClick={() => {
-              // Separate handler for selecting a file
-              // Using a hidden input element to trigger the file selection
-              const fileInput = document.createElement("input");
-              fileInput.type = "file";
-              // accept only images and videos
-              fileInput.accept = "image/*,video/*";
-              fileInput.onchange = handleSelectFile;
-              fileInput.click();
-            }}
-          >
-            Select File
-          </button>
-          <button tabIndex="0" onClick={handleSend}>
-            Send
-          </button>
-        </div>
-      </div>
+      <Chat
+        user={user}
+        messagesQuery={messagesQuery}
+        sendMessageMutation={sendMessageMutation}
+        deleteMessageMutation={deleteMessageMutation}
+        updateMessageMutation={updateMessageMutetion}
+      />
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function GroupMessaging() {
        </Col>
        <Col md={8} style={{ padding: '16px' }}>
          {/* Replace 'selectedGroup' with the actual selected contact */}
-         <GroupChat user={user} groupID={selectedGroup} />
+         <GroupChat user={user} group_id={selectedGroup} />
        </Col>
      </Row>
     </Container>

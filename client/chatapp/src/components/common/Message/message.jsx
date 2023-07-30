@@ -1,17 +1,45 @@
 import React, { useState } from "react";
-import { ListGroupItem } from "react-bootstrap";
 import { createPortal } from "react-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import ContextMenu from "../../../common/ContextMenu/context-menu";
-import { useContextMenu } from "../../../../custom-hooks/use-context-menu"; // Import the custom hook
-import { deleteMessage } from "../../../../api/dmessges";
+import ContextMenu from "../../common/ContextMenu/context-menu";
+import { useContextMenu } from "../../../custom-hooks/use-context-menu"; // Import the custom hook
+import { useQuery } from "@tanstack/react-query";
+import { getContacts } from "../../../api/contacts";
 import UpdateMessageModal from "./update-message/update-message-modal";
-import routes from "../../../../env";
+import routes from "../../../env";
 
-export default function Message({ message, user, contact_id }) {
+export default function Message({
+  message,
+  user,
+  deleteMessageMutation,
+  updateMessageMutation,
+}) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
-  const queryClient = useQueryClient();
+
+  const contactsQuery = useQuery({
+    queryKey: ["contacts", user.id],
+    enabled: user?.id != undefined,
+    queryFn: () => {
+      return getContacts(user.id);
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
+
   const isSentByUser = message.sender_id === user.id;
+  const isSentByContact = contactsQuery.data?.some(
+    (contact) => contact.user_id === message.sender_id
+  );
+
+  const nameOrAddress = isSentByUser
+    ? ""
+    : isSentByContact
+    ? contactsQuery.data?.find(
+        (contact) => contact.user_id === message.sender_id
+      )?.name
+    : message.email;
+
   const senderStyle = isSentByUser
     ? {
         alignSelf: "flex-end",
@@ -45,23 +73,14 @@ export default function Message({ message, user, contact_id }) {
     event.currentTarget.dispatchEvent(clickEvent);
   };
 
-  const deleteMessageMutation = useMutation({
-    mutationFn: () => deleteMessage(contact_id, message.id),
-    onSuccess: (results) => {
-      queryClient.refetchQueries(["messages", user?.id, contact_id]);
-    },
-    onError: (error) => {
-      setAlert(error.message);
-    },
-  });
-
   const handleDelete = () => {
-    deleteMessageMutation.mutate();
+    deleteMessageMutation.mutate(message);
   };
 
   const updateMessageModalDOM = (
     <UpdateMessageModal
       message={message}
+      updateMessageMutation={updateMessageMutation}
       showState={[showUpdateMessageModal, setShowUpdateMessageModal]}
     />
   );
@@ -82,11 +101,16 @@ export default function Message({ message, user, contact_id }) {
         <div key={message.id}>
           {message.type === "text" && (
             <>
-              {Boolean(message.edited) && (
-                <div style={{ fontSize: "10px", textAlign: "right" }}>
-                  edited
+              <div className="d-flex justify-content-between gap-3 align-items-center">
+                <div style={{ fontSize: "12px" }}>
+                  <b>{nameOrAddress}</b>
                 </div>
-              )}
+                {Boolean(message.edited) && (
+                  <div style={{ fontSize: "10px", textAlign: "right" }}>
+                    edited
+                  </div>
+                )}
+              </div>
               <div style={{ marginBottom: "4px" }}>{message.message}</div>
             </>
           )}

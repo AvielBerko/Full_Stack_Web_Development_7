@@ -6,31 +6,24 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Row,
+  Col,
+  Alert,
 } from "react-bootstrap";
-import { useQueryClient } from "@tanstack/react-query";
-import { updateGroupMessage } from "../../../../../api/gmessages";
-import { useMutation } from "@tanstack/react-query";
-import Input from "../../../../common/Input/input";
+import Input from "../../../common/Input/input";
 
-export default function UpdateMessageModal({ message, showState, groupID }) {
+export default function UpdateMessageModal({
+  message,
+  showState,
+  updateMessageMutation,
+}) {
   const [newMessage, setNewMessage] = useState(message.message || "");
   const [show, setShow] = showState;
 
-  const queryClient = useQueryClient();
-
-  const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateGroupMessage(groupID, message),
-    onSettled: (results) => {
-        queryClient.invalidateQueries(["groups", groupID, "messages"])
-    },
-    onError: (error) => {
-      setAlert(error.message);
-    },
-  });
-
   const update = () => {
-    if (newMessage !== message.message)
-      updateMessageMutetion.mutate({ id: message.id, message: newMessage });
+    if (newMessage !== message.message) {
+      updateMessageMutation.mutate({ id: message.id, message: newMessage });
+    }
     setShow(false);
   };
 
@@ -49,7 +42,7 @@ export default function UpdateMessageModal({ message, showState, groupID }) {
         <Card>
           <Card.Body>
             <Card.Title>New Message:</Card.Title>
-              <Input inputType="text" value={newMessage} setter={setNewMessage} />
+            <Input inputType="text" value={newMessage} setter={setNewMessage} />
           </Card.Body>
         </Card>
       </ModalBody>
