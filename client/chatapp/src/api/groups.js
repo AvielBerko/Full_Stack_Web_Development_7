@@ -27,6 +27,10 @@ export function getGroups(id, start, end) {
   //   });
 }
 
+export function getGroupMembers(id) {
+  return get(routes.getGroupMembers(id));
+}
+
 export function updateGroup(group) {
   return update(routes.updateGroup(group.id), group);
   // return axios

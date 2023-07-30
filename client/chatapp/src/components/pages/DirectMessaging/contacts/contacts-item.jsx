@@ -28,7 +28,7 @@ export default function ContactsItem({
 
   const handleContextMenu = (event) => {
     openContextMenu(event);
-  
+
     // Trigger the click event programmatically (simulating a regular click)
     const clickEvent = new MouseEvent("click", {
       bubbles: true,
@@ -36,7 +36,7 @@ export default function ContactsItem({
       button: 0, // 0 for left click, 1 for middle click, 2 for right click
     });
     event.currentTarget.dispatchEvent(clickEvent);
-  };  
+  };
   const queryClient = useQueryClient();
 
   const selected = selectedContact === contact.user_id;
@@ -44,7 +44,7 @@ export default function ContactsItem({
   const deleteContactMutation = useMutation({
     mutationFn: () => deleteContact(contact.id),
     onSuccess: (results) => {
-        queryClient.invalidateQueries(["contacts"]);
+      queryClient.invalidateQueries(["contacts"]);
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");
@@ -57,12 +57,12 @@ export default function ContactsItem({
   };
 
   const updateContactModalDOM = (
-      <UpdateContactModal
-        contact={contact}
-        user={user}
-        showState={[showUpdateContactModal, setShowUpdateContactModal]}
-        setAlert={setAlert}
-      />
+    <UpdateContactModal
+      contact={contact}
+      user={user}
+      showState={[showUpdateContactModal, setShowUpdateContactModal]}
+      setAlert={setAlert}
+    />
   );
 
   return (
@@ -92,8 +92,10 @@ export default function ContactsItem({
             contextMenuRef={contextMenuRef}
             contextMenuPosition={contextMenuPosition}
             onClose={closeContextMenu}
-            onEdit={() => setShowUpdateContactModal(true)}
-            onDelete={handleDelete}
+            options={[
+              { Edit: () => setShowUpdateContactModal(true) },
+              { Delete: handleDelete },
+            ]}
           />,
           document.body
         )}

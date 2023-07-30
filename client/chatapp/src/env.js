@@ -8,6 +8,7 @@ const routes = {
   register: `${SERVER_URL}/register`,
   getUser: (id) => `${SERVER_URL}/users/${id}`,
   getUsers: `${SERVER_URL}/users`,
+  getUser: (id) => `${SERVER_URL}/users/${id}`,
   updateUser: (id) => `${SERVER_URL}/users/${id}`,
   getContacts: (id, start, end) =>
   start ? `${SERVER_URL}/contacts?saver_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
@@ -25,6 +26,8 @@ const routes = {
   getGroups: (id, start, end) =>
   start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
   getAllGroups: `${SERVER_URL}/groups`,
+  getGroup: (id) => `${SERVER_URL}/groups/${id}`,
+  getGroupMembers: (id) => `${SERVER_URL}/groups/${id}/members`,
   addGroup: `${SERVER_URL}/groups`,
   joinGroup: (id) => `${SERVER_URL}/groups/${id}/members`,
   leaveGroup: (groupID, userID) => `${SERVER_URL}/groups/${groupID}/members/${userID}`,

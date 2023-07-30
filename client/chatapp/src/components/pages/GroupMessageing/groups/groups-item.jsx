@@ -108,8 +108,10 @@ export default function GroupsItem({
             contextMenuRef={contextMenuRef}
             contextMenuPosition={contextMenuPosition}
             onClose={closeContextMenu}
-            onEdit={() => setShowUpdateGroupModal(true)}
-            onDelete={handleDelete}
+            options={[
+              { Edit: () => setShowUpdateGroupModal(true) },
+              { Delete: handleDelete },
+            ]}
           />,
           document.body
         )}

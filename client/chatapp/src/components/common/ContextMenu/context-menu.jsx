@@ -1,18 +1,18 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import { ListGroup, Button } from "react-bootstrap";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import { ThemeProvider, createTheme } from "@mui/material";
 
-const ContextMenu = ({ contextMenuRef, contextMenuPosition, onClose, onEdit, onDelete }) => {
-  const handleEdit = () => {
-    onClose();
-    onEdit();
-  };
-
-  const handleDelete = () => {
-    onClose();
-    onDelete();
-  };
-
+const ContextMenu = ({
+  contextMenuRef,
+  contextMenuPosition,
+  onClose,
+  options,
+}) => {
   return (
     <div
       ref={contextMenuRef}
@@ -28,18 +28,20 @@ const ContextMenu = ({ contextMenuRef, contextMenuPosition, onClose, onEdit, onD
       }}
       onClick={onClose}
     >
-      <ListGroup variant="flush">
-        <ListGroup.Item className="d-flex">
-          <Button variant="success" className="flex-grow-1" onClick={handleEdit}>
-            Edit
-          </Button>
-        </ListGroup.Item>
-        <ListGroup.Item className="d-flex">
-          <Button variant="danger" className="flex-grow-1" onClick={handleDelete}>
-            Delete
-          </Button>
-        </ListGroup.Item>
-      </ListGroup>
+      <ThemeProvider theme={createTheme({ palette: { mode: "dark" } })}>
+        <Paper sx={{ width: 100, maxWidth: "100%" }}>
+          <MenuList>
+            {options.map((option) => (
+              <MenuItem
+                key={Object.keys(option)[0]}
+                onClick={Object.values(option)[0]}
+              >
+                <ListItemText>{Object.keys(option)[0]}</ListItemText>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Paper>
+      </ThemeProvider>
     </div>
   );
 };
