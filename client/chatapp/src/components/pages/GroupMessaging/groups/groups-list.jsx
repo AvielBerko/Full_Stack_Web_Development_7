@@ -24,7 +24,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   if (!user?.id) return <></>;
 
   const groupsQuery = useQuery({
-    queryKey: ["groups", user.id],
+    queryKey: ["groups", "user_id", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
       return getGroups({user_id: user.id}, user.token);

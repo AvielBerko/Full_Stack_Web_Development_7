@@ -25,7 +25,7 @@ export default function UpdateGroupModal({ group, user, showState }) {
   const updateGroupMutetion = useMutation({
     mutationFn: (group) => updateGroup(group, user.token),
     onSuccess: (results) => {
-      queryClient.setQueryData(["groups", user.id], (oldData) => {
+      queryClient.setQueryData(["groups", 'user_id', user.id], (oldData) => {
         const newData = oldData.map((group) => {
           if (group.id === results.id) {
             return { ...group, ...results };

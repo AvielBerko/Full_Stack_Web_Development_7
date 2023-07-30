@@ -22,20 +22,7 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
   const [show, setShow] = showState;
 
   const addGroupMutation = useMutation({
-    mutationFn: (
-      async (group) => {
-        try {
-          const addedGroup = await addGroup(group, user.token);
-
-          await joinGroup(addedGroup.id, user.token);
-          return addedGroup;
-        } catch (error) {
-          // Handle errors if needed
-          throw new Error(error.message);
-        }
-      }),
-      // addGroup(group).then((group) =>
-      //   joinGroup({ groupchat_id: group.id, user_id: user.id })    );
+    mutationFn: (group) => addGroup(group, user.token),
     onSuccess: (results) => {
       refetchGroups();
       setShow(false);

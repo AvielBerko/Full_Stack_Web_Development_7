@@ -65,7 +65,7 @@ export default function JoinGroupModal({
 
   if (groupsQuery.isLoading) return <></>;
   //if (groupsQuery.isError) return <>Error: {error.message}</>;
-  if (!groupsQuery.data.length) return <>No data</>;
+  if (!groupsQuery?.data?.length) return <>No data</>;
   // add a filter to remove the groups that are already groups
   // filter also the current group
   const groupsDOM = groupsQuery?.data.filter((group) => {

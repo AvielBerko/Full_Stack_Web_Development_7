@@ -40,6 +40,7 @@ export default function GroupsItem({
   const queryClient = useQueryClient();
 
   const selected = selectedGroup === group.id;
+  const admin = Boolean(group.admin);
 
   const deleteGroupMutation = useMutation({
     mutationFn: () => deleteGroup(group.id, user.token),
@@ -59,7 +60,7 @@ export default function GroupsItem({
   const leaveGroupMutation = useMutation({
     mutationFn: (data) => leaveGroup(data.groupID, data.userID, user.token),
     onSuccess: (results) => {
-      queryClient.invalidateQueries(["groups", user.id]);
+      queryClient.invalidateQueries(["groups", "user_id", user.id]);
       setSelectedGroup(null);
     },
     onError: (error) => {
@@ -68,7 +69,10 @@ export default function GroupsItem({
   });
 
   const handleDelete = () => {
-    //deleteGroupMutation.mutate();
+    deleteGroupMutation.mutate();
+  };
+
+  const handleLeave = () => {
     leaveGroupMutation.mutate({ groupID: group.id, userID: user.id });
   };
 
@@ -83,7 +87,7 @@ export default function GroupsItem({
 
   return (
     <div onContextMenu={handleContextMenu}>
-      {updateGroupModalDOM}
+      {admin && updateGroupModalDOM}
       <ListGroupItem>
         <div
           onClick={() => {
@@ -108,10 +112,15 @@ export default function GroupsItem({
             contextMenuRef={contextMenuRef}
             contextMenuPosition={contextMenuPosition}
             onClose={closeContextMenu}
-            options={[
+            options={admin ? 
+            [
               { Edit: () => setShowUpdateGroupModal(true) },
-              { Leave: handleDelete },
-            ]}
+              { Delete: handleDelete },
+              { Leave: handleLeave },
+            ]
+            :
+              [ { Leave: handleLeave }]
+          }
           />,
           document.body
         )}
