@@ -12,6 +12,7 @@ const updated_user_schema = Joi.object({
 })
 
 router.get("/", async (req, res) => {
+  if (!jwt.verifyJWT(req.headers.authorization)) return wrapper.unauthorized_response(res);
   try {
     const users = await users_db.getCurrentUsers();
     res.send(users);
