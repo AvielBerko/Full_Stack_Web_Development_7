@@ -19,6 +19,9 @@ export default function GroupinfoUser({ user, member, setAlert}) {
         });
         return newData;
       });
+      // if (results.user_id === user.id) {
+      //   queryClient.invalidateQueries(["groups", 'user_id', user.id]);
+      // }
     },
     onError: (error) => {
       setAlert(error.message);
@@ -35,7 +38,7 @@ export default function GroupinfoUser({ user, member, setAlert}) {
               {member?.email}
               {Boolean(member?.admin) && (<span className="text-danger"> (Admin)</span>)}
             </Card.Title>
-            {admin && (
+            {admin && member.user_id != user.id && (
             <Button
               variant="danger"
               onClick={() => {removeUserMutation.mutate()}}
