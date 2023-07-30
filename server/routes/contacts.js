@@ -3,6 +3,8 @@ const contacts_db = require('../db/components/contacts.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
+const jwt = require('../jwt/jwt.js');
+const wrapper = require('./wrapper.js');
 
 const contact_schema = Joi.object({
   new: Joi.boolean(),
