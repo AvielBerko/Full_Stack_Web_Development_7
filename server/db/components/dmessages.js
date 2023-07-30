@@ -11,13 +11,13 @@ async function addDirectMessage(new_dmessage){
     return generic.create(tables.DIRECT_MESSAGES, new_dmessage);
 }
 
-async function updateDirectMessage(updated_dmessage){
-    return generic.update(tables.DIRECT_MESSAGES, updated_dmessage, {id: updated_dmessage.id});
+async function updateDirectMessage(updated_dmessage, user_id){
+    return generic.update(tables.DIRECT_MESSAGES, updated_dmessage, {id: updated_dmessage.id, sender_id: user_id});
 }
 
-async function deleteDirectMessage(dmessage_id){
+async function deleteDirectMessage(dmessage_id, user_id){
     const deleted = {valid: false}
-    return generic.update(tables.DIRECT_MESSAGES, deleted, {id: dmessage_id});
+    return generic.update(tables.DIRECT_MESSAGES, deleted, {id: dmessage_id, sender_id: user_id});
 }
 
 module.exports = {getDirectMessages, addDirectMessage, updateDirectMessage, deleteDirectMessage};
