@@ -8,7 +8,7 @@ const wrapper = require('./wrapper.js');
 const updated_user_schema = Joi.object({
   id: Joi.string().guid({ version: ['uuidv4']}),
   username: Joi.string().min(3).max(30),
-  phone_number: Joi.string().min(10).max(15)
+  phone_number: Joi.string().min(10).max(10)
 })
 
 router.get("/", async (req, res) => {

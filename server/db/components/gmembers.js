@@ -35,20 +35,7 @@ async function addGroupMember(new_gmember){
 
 async function deleteGroupMember(groupchat_id, user_id){
     const deleted = {valid: false}
-    return new Promise((resolve, reject) => {
-        db_connection.getConnection(con => {
-            con.query(`
-                UPDATE ${tables.GROUP_MEMBERS}
-                SET valid = false
-                WHERE groupchat_id = ? AND user_id = ?
-                ;`,
-                [groupchat_id, user_id],
-            (error, result) => {
-                if (error) reject(error);
-                resolve(result);
-            })
-        });
-    });
+    return generic.update(tables.GROUP_MEMBERS, deleted, {groupchat_id, user_id})
 }
 
 module.exports = {getGroupMembers, addGroupMember, deleteGroupMember};
