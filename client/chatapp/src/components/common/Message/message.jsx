@@ -139,8 +139,14 @@ export default function Message({
               contextMenuRef={contextMenuRef}
               contextMenuPosition={contextMenuPosition}
               onClose={closeContextMenu}
-              onEdit={() => setShowUpdateMessageModal(true)}
-              onDelete={handleDelete}
+              options={
+                message.type === "text"
+                  ? [
+                      { Edit: () => setShowUpdateMessageModal(true) },
+                      { Delete: handleDelete },
+                    ]
+                  : [{ Delete: handleDelete }]
+              }
             />,
             document.body
           )}
