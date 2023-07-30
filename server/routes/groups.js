@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
     try {
       if (req.query.user_id){
         if (user.id !== req.query.user_id) return wrapper.unauthorized_response(res);
-        const groups = await groups_db.getUserGroups(req.query.user_id);//TODO - get admin from group member as well
+        const groups = await groups_db.getUserGroups(req.query.user_id);
         res.send(groups)
       }
       else{
@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
     }
   });
 
-router.put("/:id", async (req, res) => {//TODO - omly if admin
+router.put("/:id", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user) return wrapper.unauthorized_response(res);
 
@@ -74,16 +74,19 @@ router.put("/:id", async (req, res) => {//TODO - omly if admin
     }
   });
 
-  // router.delete("/:id", async (req, res) => {//TODO - enable only on admin
-  //   try {
-  //       const group_id = req.params.id;
-  //       const result = await groups_db.deleteGroup(group_id);
-  //       if (result.changedRows === 0) return res.status(404).send({error: 'Group to delete was not found!'});
-  //       res.status(204).end();
-  //   } catch (err) {
-  //     res.status(500).send({error: 'Internal server error'});
-  //   }
-  // });
+  router.delete("/:id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+
+    try {
+        const group_id = req.params.id;
+        const result = await groups_db.deleteGroup(group_id. user.id);
+        if (result.changedRows === 0) return res.status(404).send({error: 'Group to delete was not found!'});
+        res.status(204).end();
+    } catch (err) {
+      res.status(500).send({error: 'Internal server error'});
+    }
+  });
 
 module.exports = router;
 
