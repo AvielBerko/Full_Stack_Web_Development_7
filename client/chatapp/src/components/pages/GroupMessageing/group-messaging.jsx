@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useState } from "react";
 import GroupsList from "./groups/groups-list";
 import GroupChat from "./chat/group-chat";
+import GroupInfo from "./info/group-info";
 import { useSession } from "../../../custom-hooks/use-session";
 
 export default function GroupMessaging() {
@@ -23,8 +24,10 @@ export default function GroupMessaging() {
          <GroupsList user={user} selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
        </Col>
        <Col md={8} style={{ padding: '16px' }}>
-         {/* Replace 'selectedGroup' with the actual selected contact */}
+        <Row>
+          <GroupInfo user={user} group_id={selectedGroup}/>
          <GroupChat user={user} group_id={selectedGroup} />
+        </Row>
        </Col>
      </Row>
     </Container>
