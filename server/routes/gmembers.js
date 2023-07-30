@@ -3,12 +3,17 @@ const gmembers_db = require('../db/components/gmembers.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
+const jwt = require('../jwt/jwt.js');
+const wrapper = require('./wrapper.js');
 
 const gmembers_schema = Joi.object({
   user_id: Joi.string().guid({ version: ['uuidv4']}).required(),
 })
 
 router.get("/", async (req, res) => {
+  if (!jwt.verifyJWT(req.headers.authorization)) 
+    return wrapper.unauthorized_response(res);
+
     try {
         const groupchat_id = req.locals.groupchat_id;
         const gmembers = await gmembers_db.getGroupMembers(groupchat_id);
@@ -19,6 +24,9 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user || req.body.user_id !== user.id) return wrapper.unauthorized_response(res);
+
     const { error } = gmembers_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
@@ -48,6 +56,9 @@ router.post("/", async (req, res) => {
 //   });
 
   router.delete("/:user_id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user || req.params.user_id !== user.id) return wrapper.unauthorized_response(res);
+
     try {
         const groupchat_id = req.locals.groupchat_id;
         const user_id = req.params.user_id;
