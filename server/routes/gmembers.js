@@ -65,6 +65,8 @@ router.put("/:id", async (req, res) => {
     const result = await is_admin(req.locals.groupchat_id, user.id);
     if (!result) return wrapper.unauthorized_response(res); 
 
+    const { error } = updated_gmembers_schema.validate(req.body)
+    if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const gmembers_id = req.params.id;
         const updated_gmember = {...req.body, id:gmembers_id};
