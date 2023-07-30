@@ -18,13 +18,13 @@ export default function SingleChat({ user, contact_id }) {
     queryKey: ["messages", user?.id, contact_id],
     enabled: user?.id != null && contact_id != null,
     queryFn: () => {
-      return getMessages(contact_id, { saver_id: user.id /*, limit: 1000*/ });
+      return getMessages(contact_id, { saver_id: user.id /*, limit: 1000*/ }, user.token);
     },
     refetchInterval: 1000,
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (message) => sendMessage(contact_id, message),
+    mutationFn: (message) => sendMessage(contact_id, message, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
     },
@@ -34,7 +34,7 @@ export default function SingleChat({ user, contact_id }) {
   });
 
   const deleteMessageMutation = useMutation({
-    mutationFn: (message) => deleteMessage(contact_id, message.id),
+    mutationFn: (message) => deleteMessage(contact_id, message.id, user.token),
     onSuccess: (results) => {
       //queryClient.refetchQueries(["messages", user?.id, contact_id]);
       messagesQuery.refetch();
@@ -45,7 +45,7 @@ export default function SingleChat({ user, contact_id }) {
   });
 
   const updateMessageMutetion = useMutation({
-    mutationFn: (message) => updateMessage(contact_id, message),
+    mutationFn: (message) => updateMessage(contact_id, message, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
       //queryClient.invalidateQueries(["messages"]);

@@ -39,7 +39,7 @@ export default function AddContactModal({
   });
 
   const addContactMutation = useMutation({
-    mutationFn: (contact) => addContact(contact),
+    mutationFn: (contact) => addContact(contact, user.token),
     onSuccess: (results) => {
         refetchContacts();
         setShow(false);

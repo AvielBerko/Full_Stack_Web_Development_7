@@ -36,7 +36,7 @@ export default function JoinGroupModal({
   });
 
   const joinGroupMutation = useMutation({
-    mutationFn: (groupID) => joinGroup(groupID, {user_id: user.id }),
+    mutationFn: (groupID) => joinGroup(groupID, user.token),
     onSuccess: (results) => {
         refetchGroups();
         setShow(false);

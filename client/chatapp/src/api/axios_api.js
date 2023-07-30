@@ -2,9 +2,11 @@ import axios from "axios";
 
 // TODO change error to check if it is an axios error or server error
 
-export function get(path) {
+export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });
+
+export function get(path, token) {
   return axios
-    .get(path)
+    .get(path, axiosHeader(token))
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data.error) {
@@ -14,9 +16,21 @@ export function get(path) {
     });
 }
 
-export function add(path, data) {
+export function add(path, data, token) {
   return axios
     .post(path, data)
+    .then((res) => res.data, axiosHeader(token))
+    .catch((err) => {
+      if (err.response.data.error) {
+        throw new Error(err.response.data.error);
+      }
+      throw new Error(err.message);
+    });
+}
+
+export function update(path, data, token) {
+  return axios
+    .put(path, data, axiosHeader(token))
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data.error) {
@@ -26,21 +40,9 @@ export function add(path, data) {
     });
 }
 
-export function update(path, data) {
+export function remove(path, token) {
   return axios
-    .put(path, data)
-    .then((res) => res.data)
-    .catch((err) => {
-      if (err.response.data.error) {
-        throw new Error(err.response.data.error);
-      }
-      throw new Error(err.message);
-    });
-}
-
-export function remove(path) {
-  return axios
-    .delete(path)
+    .delete(path, axiosHeader(token))
     .then((res) => res.data)
     .catch((err) => {
       if (err.response.data.error) {

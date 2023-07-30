@@ -27,7 +27,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
     queryKey: ["groups", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getGroups(user.id);
+      return getGroups({user_id: user.id}, user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
@@ -58,39 +58,6 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   //     setAlert(error.message);
   //   }
   // });
-
-  // const handleSort = () => {
-  //   // let sortedGroups;
-  //   // switch (sortBy) {
-  //   //   case SortBy.NAME:
-  //   //     sortedGroups = [...posts].sort((a, b) => {
-  //   //       if (a.title && b.title) {
-  //   //         return a.title.localeCompare(b.title);
-  //   //       }
-  //   //       return 0;
-  //   //     });
-  //   //     break;
-  //   //   case SortBy.ID:
-  //   //     sortedGroups = [...groupsQuery?.data].sort((a, b) => {
-  //   //       if (a.id && b.id) {
-  //   //         const idA = Number(a.id);
-  //   //         const idB = Number(b.id);
-  //   //         return idA - idB;
-  //   //       }
-  //   //       // Handle the case where either a.id or b.id is undefined
-  //   //       return 0;
-  //   //     });
-  //   //     break;
-  //   //   default:
-  //   //     sortedGroups = groupsQuery?.data;
-  //   //     break;
-  //   // }
-  //   // // setPosts(sortedPosts);
-  // };
-
-  // useEffect(() => {
-  //   handleSort();
-  // }, [sortBy]);
 
   // TODO:
   // const postsDOM = postsQuery?.data?.pages

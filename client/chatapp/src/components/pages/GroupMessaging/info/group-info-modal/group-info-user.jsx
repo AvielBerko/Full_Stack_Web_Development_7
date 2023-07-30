@@ -8,7 +8,7 @@ export default function GroupinfoUser({ member }) {
         <Card>
           <Card.Body>
             <Card.Title>
-              {member?.name}
+              {member?.email}
             </Card.Title>
           </Card.Body>
         </Card>

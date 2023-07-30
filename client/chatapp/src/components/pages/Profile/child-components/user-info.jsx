@@ -6,9 +6,8 @@ import { updateUser } from "../../../../api/profile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "../../../../custom-hooks/use-session";
 
-const UserInfo = ({ user, setUser }) => {
+const UserInfo = ({ user, setAuth }) => {
   // const { id, username, email, phoneNumber } = user;
-  const [_, setAuth] = useSession("auth", null);
 
   const [isEditable, setIsEditable] = useState(false);
   const [username, setUsername] = useState(user.username ?? "");
@@ -19,7 +18,8 @@ const UserInfo = ({ user, setUser }) => {
   const [succ, setSucc] = useState(false);
 
   // Mutation function using react-query's useMutation hook
-  const updateUserMutation = useMutation(updateUser, {
+  const updateUserMutation = useMutation({
+    mutationFn: (newUser) => updateUser(newUser,user.token),
     onSuccess: (data) => {
       // Update the user in the session
       setAuth(data);
@@ -56,9 +56,7 @@ const UserInfo = ({ user, setUser }) => {
       const newUser = {
         id: user.id,
         username,
-        email,
         phone_number: phoneNumber,
-        //token: user.token,
       };
       updateUserMutation.mutate(newUser);
     } else {

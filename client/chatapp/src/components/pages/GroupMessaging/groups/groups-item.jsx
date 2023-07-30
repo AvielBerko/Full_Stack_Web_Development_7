@@ -42,7 +42,7 @@ export default function GroupsItem({
   const selected = selectedGroup === group.id;
 
   const deleteGroupMutation = useMutation({
-    mutationFn: () => deleteGroup(group.id),
+    mutationFn: () => deleteGroup(group.id, user.token),
     onSuccess: (results) => {
       if (results === "") {
         queryClient.invalidateQueries(["groups"]);
@@ -57,9 +57,10 @@ export default function GroupsItem({
   });
 
   const leaveGroupMutation = useMutation({
-    mutationFn: (data) => leaveGroup(data.groupID, data.userID),
+    mutationFn: (data) => leaveGroup(data.groupID, data.userID, user.token),
     onSuccess: (results) => {
       queryClient.invalidateQueries(["groups", user.id]);
+      setSelectedGroup(null);
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");
@@ -110,7 +111,7 @@ export default function GroupsItem({
             onClose={closeContextMenu}
             options={[
               { Edit: () => setShowUpdateGroupModal(true) },
-              { Delete: handleDelete },
+              { Leave: handleDelete },
             ]}
           />,
           document.body

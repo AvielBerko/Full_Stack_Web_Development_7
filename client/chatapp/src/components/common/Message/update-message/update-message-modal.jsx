@@ -6,9 +6,6 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
-  Row,
-  Col,
-  Alert,
 } from "react-bootstrap";
 import Input from "../../../common/Input/input";
 

@@ -33,7 +33,7 @@ export default function GroupInfoModal({
 
   const membersDOM = groupMembersQuery?.data?.map((member) => {
       return (
-        <GroupInfoUser member={member} />
+        <GroupInfoUser key={member.id} member={member} />
       );
     });
 

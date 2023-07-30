@@ -5,6 +5,7 @@ import { useContextMenu } from "../../../custom-hooks/use-context-menu"; // Impo
 import { useQuery } from "@tanstack/react-query";
 import { getContacts } from "../../../api/contacts";
 import UpdateMessageModal from "./update-message/update-message-modal";
+import ImageMessage from "./image-message";
 import routes from "../../../env";
 
 export default function Message({
@@ -19,7 +20,7 @@ export default function Message({
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getContacts(user.id);
+      return getContacts(user.id, user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
@@ -115,11 +116,13 @@ export default function Message({
             </>
           )}
           {message.type === "image" && (
-            <img
+            <ImageMessage
               src={routes.getFile(message.message)}
-              style={{ maxWidth: "100%", maxHeight: "200px" }}
-            />
-          )}
+            />)}
+            {/*  <img
+               src={routes.getFile(message.message)}
+               style={{ maxWidth: "100%", maxHeight: "200px" }}
+             /> */}
           {message.type === "video" && (
             <video
               src={routes.getFile(message.message)}
