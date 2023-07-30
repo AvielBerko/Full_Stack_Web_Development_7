@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
     try {
       if (req.query.user_id){
-        const groups = await groups_db.getUserGroups(req.query.user_id);
+        const groups = await groups_db.getUserGroups(req.query.user_id);//TODO - get admin from group member as well
         res.send(groups)
       }
       else{
@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
     }
   });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res) => {//TODO - add as a member with admin = true
     if (!jwt.verifyJWT(req.headers.authorization)) 
       return wrapper.unauthorized_response(res);
 
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
         new_group.id = uuidv4();
         new_group.time_created = new Date(new_group.time_created);
         await groups_db.addGroup(new_group);
-        res.send(new_group);
+        res.send({...new_group, admin:true});
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
         res.status(400).send({error: 'Name already exists for another group!'})
@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
     }
   });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {//TODO - omly if admin
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user) return wrapper.unauthorized_response(res);
 
@@ -71,7 +71,7 @@ router.put("/:id", async (req, res) => {
     }
   });
 
-  // router.delete("/:id", async (req, res) => {
+  // router.delete("/:id", async (req, res) => {//TODO - enable only on admin
   //   try {
   //       const group_id = req.params.id;
   //       const result = await groups_db.deleteGroup(group_id);

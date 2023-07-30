@@ -3,8 +3,6 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const jwt = require('../jwt/jwt.js');
-const wrapper = require('./wrapper.js');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -34,6 +32,6 @@ router.get("/:filename", (req, res) => {
         }
         res.sendFile(file_path);
     })
-})
+})//TODO - add jwt
 
 module.exports = router;

@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
     }
   });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res) => {//TODO - post other member possible if admin
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user || req.body.user_id !== user.id) return wrapper.unauthorized_response(res);
 
@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
     }
   });
   
-// router.put("/:id", async (req, res) => {
+// router.put("/:id", async (req, res) => {//TODO - enable, only if admin even on myself
 //     try {
 //         const gmembers_id = req.params.id;
 //         const updated_gmember = {...req.body, id:gmembers_id};
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
 //     }
 //   });
 
-  router.delete("/:user_id", async (req, res) => {
+  router.delete("/:user_id", async (req, res) => {//TODO - delete other member possible if admin
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user || req.params.user_id !== user.id) return wrapper.unauthorized_response(res);
 

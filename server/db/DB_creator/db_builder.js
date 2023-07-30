@@ -35,18 +35,6 @@ const tables = {
             'UNIQUE (user_id, unarchived)',
         ]
     },
-    admins: {
-        columns: [
-            'id VARCHAR(36) PRIMARY KEY',
-            'user_id VARCHAR(36)',
-            'valid BOOLEAN',
-            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
-        ],
-        constraints: [
-            'FOREIGN KEY (user_id) REFERENCES users(id)',
-            'UNIQUE (user_id, unarchived)',
-        ]
-    },
     contacts: {
         columns: [
             'id VARCHAR(36) PRIMARY KEY',
@@ -98,6 +86,7 @@ const tables = {
             'id VARCHAR(36) PRIMARY KEY',
             'groupchat_id VARCHAR(36)',
             'user_id VARCHAR(36)',
+            'admin BOOLEAN',
             'valid BOOLEAN',
             'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
