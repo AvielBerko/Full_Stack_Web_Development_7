@@ -3,6 +3,8 @@ const groups_db = require('../db/components/groups.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
+const jwt = require('../jwt/jwt.js');
+const wrapper = require('./wrapper.js');
 
 const groups_schema = Joi.object({
   new: Joi.boolean(),
@@ -12,6 +14,9 @@ const groups_schema = Joi.object({
 })
 
 router.get("/", async (req, res) => {
+  const user = jwt.verifyJWT(req.headers.authorization);
+  if (!user || user.id !== req.query.user_id) return wrapper.unauthorized_response(res);
+
     try {
       if (req.query.user_id){
         const groups = await groups_db.getUserGroups(req.query.user_id);
@@ -27,6 +32,9 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    if (!jwt.verifyJWT(req.headers.authorization)) 
+      return wrapper.unauthorized_response(res);
+
     const { error } = groups_schema.validate({...req.body, new: true})
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
@@ -44,12 +52,15 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+
     const { error } = groups_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const group_id = req.params.id;
         const updated_group = {...req.body, id:group_id};
-        const result = await groups_db.updateGroup(updated_group);
+        const result = await groups_db.updateGroup(updated_group, user.id);
         if (result.changedRows === 0) return res.status(404).send({error: 'Group to update was not found!'});
         res.send(updated_group);
     } catch (err) {
@@ -60,16 +71,16 @@ router.put("/:id", async (req, res) => {
     }
   });
 
-  router.delete("/:id", async (req, res) => {
-    try {
-        const group_id = req.params.id;
-        const result = await groups_db.deleteGroup(group_id);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Group to delete was not found!'});
-        res.status(204).end();
-    } catch (err) {
-      res.status(500).send({error: 'Internal server error'});
-    }
-  });
+  // router.delete("/:id", async (req, res) => {
+  //   try {
+  //       const group_id = req.params.id;
+  //       const result = await groups_db.deleteGroup(group_id);
+  //       if (result.changedRows === 0) return res.status(404).send({error: 'Group to delete was not found!'});
+  //       res.status(204).end();
+  //   } catch (err) {
+  //     res.status(500).send({error: 'Internal server error'});
+  //   }
+  // });
 
 module.exports = router;
 
