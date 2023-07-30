@@ -34,8 +34,8 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
-    if (!jwt.verifyJWT(req.headers.authorization)) 
-      return wrapper.unauthorized_response(res);
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
 
     const { error } = groups_schema.validate({...req.body, new: true})
     if (error) return res.status(400).send({error: error.details[0].message});
@@ -50,7 +50,8 @@ router.post("/", async (req, res) => {
       if(err.code === 'ER_DUP_ENTRY'){
         res.status(400).send({error: 'Name already exists for another group!'})
       }
-      else res.status(500).send({error: 'Internal server error'});
+      
+      else{ res.status(500).send({error: 'Internal server error'});}
     }
   });
 
@@ -77,10 +78,9 @@ router.put("/:id", async (req, res) => {
   router.delete("/:id", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user) return wrapper.unauthorized_response(res);
-
     try {
         const group_id = req.params.id;
-        const result = await groups_db.deleteGroup(group_id. user.id);
+        const result = await groups_db.deleteGroup(group_id, user.id);
         if (result.changedRows === 0) return res.status(404).send({error: 'Group to delete was not found!'});
         res.status(204).end();
     } catch (err) {
