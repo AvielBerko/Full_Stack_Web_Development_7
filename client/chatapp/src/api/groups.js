@@ -57,8 +57,8 @@ export function deleteGroup(groupID, token) {
   //   });
 }
 
-export function joinGroup(groupID, token) {
-  return add(routes.joinGroup(groupID), token);
+export function joinGroup(groupID, data, token) {
+  return add(routes.joinGroup(groupID), data, token);
   // return axios
   //   .post(routes.joinGroup(groupID), data)
   //   .then((res) => res.data)

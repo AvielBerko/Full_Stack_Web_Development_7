@@ -21,7 +21,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getContacts({saver_id: user.id}, user.token);
+      return getContacts({}, user.token);
     },
 
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -80,6 +80,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
       <AddContactModal
         user={user}
         showState={[showAddContactModal, setShowAddContactModal]}
+        setFatherAlert={setAlert}
         contacts={contactsQuery.data}
         refetchContacts={contactsQuery.refetch}
         //setAlert={setAlert}
