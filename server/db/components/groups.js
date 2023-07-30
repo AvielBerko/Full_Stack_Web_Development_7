@@ -10,7 +10,7 @@ async function getUserGroups(user_id){
     return new Promise( (resolve, reject) => {
         db_connection.getConnection(con => {
             con.query(`
-            SELECT ${tables.GROUPS}.id, name, time_created FROM
+            SELECT ${tables.GROUPS}.id, name, time_created, admin FROM
             ${tables.GROUP_MEMBERS}
             INNER JOIN 
             ${tables.GROUPS}

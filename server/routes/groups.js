@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
     }
   });
 
-router.post("/", async (req, res) => {//TODO - add as a member with admin = true
+router.post("/", async (req, res) => {
     if (!jwt.verifyJWT(req.headers.authorization)) 
       return wrapper.unauthorized_response(res);
 
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {//TODO - add as a member with admin = true
         new_group.id = uuidv4();
         new_group.time_created = new Date(new_group.time_created);
         await groups_db.addGroup(new_group);
-        //await gmembers_db.addGroupMember({id: uuidv4(), groupchat_id: new_group.id});
+        await gmembers_db.addGroupMember({id: uuidv4(), groupchat_id: new_group.id, user_id: user.id, admin: true});
         res.send({...new_group, admin:true});
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
