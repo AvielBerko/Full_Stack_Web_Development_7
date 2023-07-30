@@ -1,21 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-//const multer = require('multer');
-//const path = require('path');
 const app = express();  
-
-
-//const storage = multer.diskStorage({
-//  destination: (req, file, cb) => {
-//    cb(null, 'files')
-//  },
-//  filename: (req, file, cb) => {
-//    cb(null, Date.now() + path.extname(file.originalname))
-//  }
-//})
-
-//const upload = multer({storage: storage});
-
 
 // Middleware
 app.use(cors());
@@ -49,12 +34,6 @@ app.use('/groups/:id/members', (req, res, next) => {
     next();
   }, gmembers);
 app.use('/files', files);
-
-
-
-//app.post('/upload', upload.single('file'), (req, res) => {
-//  res.send({data: req.file.filename});
-//})
 
 // Listen on port
 const port = process.env.PORT || 3000;
