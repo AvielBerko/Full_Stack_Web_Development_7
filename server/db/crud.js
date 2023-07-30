@@ -50,9 +50,18 @@ function read(table, condition = null, limits = null){
 
 function update(table, data, condition){
     return new Promise((resolve, reject) => {
+        
+        const columnsToUpdate = Object.keys(data).map(key => `${key} = ?`).join(', ');
+        const conditionColumns = Object.keys(condition).map(key => `${key} = ?`).join(' AND ');
+
+        const valuesToUpdate = Object.values(data);
+        const conditionValues = Object.values(condition);
+
+        const query = `UPDATE ${table} SET ${columnsToUpdate} WHERE ${conditionColumns}`;
+        const values = [...valuesToUpdate, ...conditionValues];
         db_connection.getConnection(con => {
-            con.query(`UPDATE ${table} SET ? WHERE ?;`, 
-            [data, condition],
+            con.query(query, 
+            values,
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);

@@ -15,9 +15,10 @@ const contact_schema = Joi.object({
 })
 
 router.get("/", async (req, res) => {
+  const user = jwt.verifyJWT(req.headers.authorization);
+  if (!user) return wrapper.unauthorized_response(res);
     try {
-        const user_id = req.query.saver_id;//currently supporting only contact of user
-        const contacts = await contacts_db.getUserContacts(user_id);
+        const contacts = await contacts_db.getUserContacts(user.id);
         res.send(contacts);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});
@@ -25,10 +26,14 @@ router.get("/", async (req, res) => {
   });
 
 router.post("/", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+
     const { error } = contact_schema.validate({...req.body, new: true})
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_contact = req.body;
+        new_contact.saver_id = user.id;
         new_contact.id = uuidv4();
         await contacts_db.addContact(new_contact);
         res.send(new_contact);
@@ -41,12 +46,15 @@ router.post("/", async (req, res) => {
   });
 
 router.put("/:id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+
     const { error } = contact_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const contact_id = req.params.id;
         const updated_contact = {name:req.body.name, id:contact_id};
-        const result = await contacts_db.updateContact(updated_contact);
+        const result = await contacts_db.updateContact(updated_contact, user.id);
         if (result.changedRows === 0) return res.status(404).send({error: 'Contact to update was not found!'});
         res.send(updated_contact);
     } catch (err) {
@@ -58,9 +66,12 @@ router.put("/:id", async (req, res) => {
   });
 
   router.delete("/:id", async (req, res) => {
+    const user = jwt.verifyJWT(req.headers.authorization);
+    if (!user) return wrapper.unauthorized_response(res);
+
     try {
         const contact_id = req.params.id;
-        const result = await contacts_db.deleteContact(contact_id);
+        const result = await contacts_db.deleteContact(contact_id, user.id);
         if (result.changedRows === 0) return res.status(404).send({error: 'Contact to delete was not found!'});
         res.status(204).end();
     } catch (err) {

@@ -27,13 +27,13 @@ async function addContact(new_contact){
     return generic.create(tables.CONTACTS, new_contact);
 }
 
-async function updateContact(updated_contact){
-    return generic.update(tables.CONTACTS, updated_contact, {id: updated_contact.id});
+async function updateContact(updated_contact, user_id){
+    return generic.update(tables.CONTACTS, updated_contact, {id: updated_contact.id, saver_id: user_id});
 }
 
-async function deleteContact(contact_id){
+async function deleteContact(contact_id, user_id){
     const deleted = {valid: false};
-    return generic.update(tables.CONTACTS, deleted, {id: contact_id});
+    return generic.update(tables.CONTACTS, deleted, {id: contact_id, saver_id: user_id});
 }
 
 module.exports = {getUserContacts, addContact, updateContact, deleteContact};

@@ -8,7 +8,7 @@ const jwt = require('../jwt/jwt.js');
 const new_user_schema = Joi.object({
   username: Joi.string().min(3).max(30).required(),
   email: Joi.string().email().required(),
-  phone_number: Joi.string().min(10).max(15), 
+  phone_number: Joi.string().min(10).max(10), 
   password: Joi.string().min(4).required()
 })
 
