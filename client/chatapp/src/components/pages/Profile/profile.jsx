@@ -18,7 +18,7 @@ export default function Profile() {
       {/* Profile Picrute */}
       <Row>
         <Col>
-          <UserInfo user={user} setUser={setUser}></UserInfo>
+          <UserInfo user={user} setAuth={setUser}></UserInfo>
         </Col>
       </Row>
     </Container>
