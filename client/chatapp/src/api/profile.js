@@ -1,12 +1,13 @@
-import { update, axiosHeader } from "./axios_api.js"
+import { axiosHeader } from "./axios_api.js"
 import axios from "axios";
 import routes from "../env.js";
+import jwtDecode from "jwt-decode";
 
 export function updateUser(newUser, token) {
   //return update(routes.updateUser(newUser.id), newUser, token);
   return axios
     .put(
-      routes.updateUser,
+      routes.updateUser(newUser.id),
       newUser,
       axiosHeader(token)
     )

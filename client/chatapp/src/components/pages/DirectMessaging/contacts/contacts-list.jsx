@@ -21,7 +21,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getContacts(user.id, user.token);
+      return getContacts({saver_id: user.id}, user.token);
     },
 
     staleTime: 1000 * 60 * 5, // 5 minutes

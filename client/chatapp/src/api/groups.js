@@ -14,8 +14,8 @@ export function getAllGroups(token) {
   //   });
 }
 
-export function getGroups(id, start, end, token) {
-  return get(routes.getGroups(id, start, end), token);
+export function getGroups(options, token) {
+  return get(routes.getGroups(options), token);
   // return axios
   //   .get(routes.getGroups(id, start, end))
   //   .then((res) => res.data)

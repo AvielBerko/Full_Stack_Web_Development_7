@@ -27,7 +27,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
     queryKey: ["groups", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getGroups(user.id, user.token);
+      return getGroups({user_id: user.id}, user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {

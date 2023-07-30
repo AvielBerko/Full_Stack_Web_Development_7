@@ -1,5 +1,7 @@
-import { add } from "./axios_api.js"
+// import { add } from "./axios_api.js"
+import axios from "axios";
 import routes from "../env.js";
+import jwtDecode from "jwt-decode";
 
 export default function register(user)  {
   // return add(routes.register, user);

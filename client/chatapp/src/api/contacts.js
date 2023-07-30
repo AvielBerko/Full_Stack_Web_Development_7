@@ -1,8 +1,8 @@
 import {get, add, remove, update} from "./axios_api.js"
 import routes from "../env.js";
 
-export function getContacts(id, start, end, token) {
-  return get(routes.getContacts(id, start, end, token));
+export function getContacts(id, options, token) {
+  return get(routes.getContacts(id, options), token);
   // return axios
   //   .get(routes.getContacts(id, start, end))
   //   .then((res) => res.data)

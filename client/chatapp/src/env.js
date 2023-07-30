@@ -7,9 +7,8 @@ const routes = {
   login: `${SERVER_URL}/login`,
   register: `${SERVER_URL}/register`,
   getUsers: `${SERVER_URL}/users`,
-  updateUser: `${SERVER_URL}/users`,
-  getContacts: (id, start, end) =>
-  start ? `${SERVER_URL}/contacts?saver_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/contacts?saver_id=${id}`,
+  updateUser: (id) => `${SERVER_URL}/users/${id}`,
+  getContacts: (options) => `${SERVER_URL}/contacts?${new URLSearchParams(options).toString()}`,
   addContact: `${SERVER_URL}/contacts`,
   updateContact: (id) => `${SERVER_URL}/contacts/${id}`,
   deleteContact: (id) => `${SERVER_URL}/contacts/${id}`,
@@ -21,8 +20,7 @@ const routes = {
   sendGroupMessage: (id) => `${SERVER_URL}/groups/${id}/messages`,
   deleteGroupMessage: (groupID, messageID) => `${SERVER_URL}/groups/${groupID}/messages/${messageID}`,
   updateGroupMessage: (groupID, messageID) => `${SERVER_URL}/groups/${groupID}/messages/${messageID}`,
-  getGroups: (id, start, end) =>
-  start ? `${SERVER_URL}/groups?user_id=${id}?start=${start},end=${end}` : `${SERVER_URL}/groups?user_id=${id}`,
+  getGroups: (options) =>`${SERVER_URL}/groups?${new URLSearchParams(options).toString()}`,
   getAllGroups: `${SERVER_URL}/groups`,
   getGroup: (id) => `${SERVER_URL}/groups/${id}`,
   getGroupMembers: (id) => `${SERVER_URL}/groups/${id}/members`,
