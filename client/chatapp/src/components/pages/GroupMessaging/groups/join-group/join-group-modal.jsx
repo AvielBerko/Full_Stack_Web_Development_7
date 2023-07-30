@@ -31,12 +31,12 @@ export default function JoinGroupModal({
     queryKey: ["groups"],
     enabled: show,
     queryFn: () => {
-      return getAllGroups();
+      return getAllGroups(user.token);
     },
   });
 
   const joinGroupMutation = useMutation({
-    mutationFn: (groupID) => joinGroup(groupID, user.token),
+    mutationFn: (groupID) => joinGroup(groupID, {user_id: user.id}, user.token),
     onSuccess: (results) => {
         refetchGroups();
         setShow(false);

@@ -18,8 +18,8 @@ export function get(path, token) {
 
 export function add(path, data, token) {
   return axios
-    .post(path, data)
-    .then((res) => res.data, axiosHeader(token))
+    .post(path, data, axiosHeader(token))
+    .then((res) => res.data)
     .catch((err) => {
       if (err.response.data.error) {
         throw new Error(err.response.data.error);

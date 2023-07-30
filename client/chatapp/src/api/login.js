@@ -1,10 +1,8 @@
-// import {add} from "./axios_api.js"
 import axios from "axios";
 import routes from "../env.js";
 import jwtDecode from "jwt-decode";
 
 export default function login(username, password) {
-  // return add(routes.login, { username, password });
   return axios
     .post(routes.login, { username, password })
     .then((response) => {

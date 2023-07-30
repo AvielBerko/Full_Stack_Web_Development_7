@@ -9,16 +9,16 @@ export default function Chat({
   sendMessageMutation,
   deleteMessageMutation,
   updateMessageMutation,
+  setAlert,
 }) {
   const [newMessage, setNewMessage] = useState("");
   const [file, setFile] = useState(null);
 
   const sendFileMutation = useMutation({
-    mutationFn: (file) => sendFile(file, user.token),
+    mutationFn: (file) => sendFile(file),
     onSuccess: (results) => {
       sendMessageMutation.mutate({
         message: results.data,
-        sender_id: user.id,
         time_sent: new Date(),
         type: file.type.split("/")[0],
       });
@@ -36,7 +36,6 @@ export default function Chat({
     }
     sendMessageMutation.mutate({
       message: newMessage,
-      sender_id: user.id,
       time_sent: new Date(),
       type: "text",
     });
@@ -100,6 +99,7 @@ export default function Chat({
                 user={user}
                 deleteMessageMutation={deleteMessageMutation}
                 updateMessageMutation={updateMessageMutation}
+                setAlert={setAlert}
               />
             );
           })}

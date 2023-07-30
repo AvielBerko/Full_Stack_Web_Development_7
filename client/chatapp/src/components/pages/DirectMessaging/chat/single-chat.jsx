@@ -74,6 +74,7 @@ export default function SingleChat({ user, contact_id }) {
         sendMessageMutation={sendMessageMutation}
         deleteMessageMutation={deleteMessageMutation}
         updateMessageMutation={updateMessageMutetion}
+        setAlert={setAlert}
       />
     </>
   );

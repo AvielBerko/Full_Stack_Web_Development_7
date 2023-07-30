@@ -21,6 +21,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 export default function AddContactModal({
   user,
   showState,
+  setFatherAlert,
   contacts,
   refetchContacts,
 }) {
@@ -33,9 +34,12 @@ export default function AddContactModal({
     queryKey: ["users"],
     enabled: show,
     queryFn: () => {
-      return getUsers();
+      return getUsers(user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
+    onError: (error) => {
+      setFatherAlert(error.message); // TODO set the alert of the father!!!
+    }
   });
 
   const addContactMutation = useMutation({
@@ -61,7 +65,6 @@ export default function AddContactModal({
     addContactMutation.mutate({
       name,
       user_id: selectedUser,
-      saver_id: user.id,
     });
   };
 
@@ -77,7 +80,7 @@ export default function AddContactModal({
 
   if (usersQuery.isLoading) return <></>;
   //if (usersQuery.isError) return <>Error: {error.message}</>;
-  if (!usersQuery.data.length) return <>No data</>;
+  if (!usersQuery?.data?.length) return <>No data</>;
   // add a filter to remove the users that are already contacts
   // filter also the current user
   const usersDOM = usersQuery?.data

@@ -71,6 +71,7 @@ export default function GroupChat({ user, group_id }) {
         sendMessageMutation={sendMessageMutation}
         deleteMessageMutation={deleteMessageMutation}
         updateMessageMutation={updateMessageMutetion}
+        setAlert={setAlert}
       />
     </>
   );
