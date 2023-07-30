@@ -26,6 +26,7 @@ const routes = {
   getGroupMembers: (id) => `${SERVER_URL}/groups/${id}/members`,
   addGroup: `${SERVER_URL}/groups`,
   joinGroup: (id) => `${SERVER_URL}/groups/${id}/members`,
+  setGroupAdmin: (groupID, userID) => `${SERVER_URL}/groups/${groupID}/members/${userID}`,
   leaveGroup: (groupID, userID) => `${SERVER_URL}/groups/${groupID}/members/${userID}`,
   updateGroup: (id) => `${SERVER_URL}/groups/${id}`,
   deleteGroup: (id) => `${SERVER_URL}/groups/${id}`,

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { ListGroupItem, Card, Button, Row, Col, Alert } from "react-bootstrap";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { leaveGroup } from "../../../../../api/groups";
+import { leaveGroup, setGroupAdmin } from "../../../../../api/groups";
 
 export default function GroupinfoUser({ user, member, setAlert}) {
   if (!member) return <></>;
@@ -29,6 +29,17 @@ export default function GroupinfoUser({ user, member, setAlert}) {
     },
   });
 
+  const updateAdminMutation = useMutation({
+    mutationFn: (data) => {
+      return setGroupAdmin(member.groupchat_id, member.id, data, user.token);
+    },
+    onSuccess: (results) => {
+      queryClient.invalidateQueries(["groups", member.groupchat_id, 'members']);
+    },
+    onError: (error) => {
+      setAlert(error.message);
+    },
+  });
 
   
   return (
@@ -39,6 +50,22 @@ export default function GroupinfoUser({ user, member, setAlert}) {
               {member?.email}
               {Boolean(member?.admin) && (<span className="text-danger"> (Admin)</span>)}
             </Card.Title>
+            {admin && Boolean(member?.admin) && member.user_id != user.id && (
+              <Button
+                variant="danger"
+                onClick={() => {updateAdminMutation.mutate({admin: false})}}
+              >
+                Remove Admin
+              </Button>
+            )}
+            {admin && !Boolean(member?.admin) && member.user_id != user.id && (
+              <Button
+                variant="success"
+                onClick={() => {updateAdminMutation.mutate({admin: true})}}
+              >
+                Make Admin
+              </Button>
+            )}
             {admin && member.user_id != user.id && (
             <Button
               variant="danger"
