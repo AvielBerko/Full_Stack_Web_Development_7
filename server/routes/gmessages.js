@@ -17,7 +17,8 @@ const gmessages_schema = Joi.object({
 })
 
 async function user_in_group(user_id, group_id){
-  const groups = await groups_db.getUserGroups(user_id).map(group => group.id);
+  const groups = await groups_db.getUserGroups(user_id);
+  groups = groups.map(group => group.id);
   if (groups.includes(group_id)) return true;
   return false;
 }//TODO - move to sql
@@ -38,7 +39,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user) return wrapper.unauthorized_response(res);
-  
+
     const result = await user_in_group(user.id, req.locals.groupchat_id);
     if (!result) return wrapper.unauthorized_response(res);
 
