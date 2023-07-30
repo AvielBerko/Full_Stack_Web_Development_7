@@ -34,7 +34,6 @@ export default function GroupChat({ user, group_id }) {
   const deleteMessageMutation = useMutation({
     mutationFn: (message) => deleteGroupMessage(group_id, message.id),
     onSuccess: (results) => {
-      //queryClient.refetchQueries(["groups", group_id, "messages"]);
       messagesQuery.refetch();
     },
     onError: (error) => {
@@ -45,44 +44,12 @@ export default function GroupChat({ user, group_id }) {
   const updateMessageMutetion = useMutation({
     mutationFn: (message) => updateGroupMessage(group_id, message),
     onSuccess: (results) => {
-      //    queryClient.invalidateQueries(["groups", group_id, "messages"])
       messagesQuery.refetch();
     },
     onError: (error) => {
       setAlert(error.message);
     },
   });
-
-  // const handleSendMessage = () => {
-  //   if (!newMessage) {
-  //     setAlert("Please write a message.");
-  //     return;
-  //   }
-  //   sendMessageMutation.mutate({
-  //     message: newMessage,
-  //     sender_id: user.id,
-  //     time_sent: new Date(),
-  //     type: "text",
-  //   });
-  //   setNewMessage("");
-  // };
-
-  // const { data: messages, isLoading, isError } = messagesQuery;
-
-  // if (isLoading) return <></>;
-  // if (isError) return <>Error while fetching messages</>;
-
-  // Sort the messages by time_sent in ascending order
-  // const sortedMessages = messages
-  //   .slice()
-  //   .sort((a, b) => new Date(a.time_sent) - new Date(b.time_sent));
-
-  // const handleKeyDown = (event) => {
-  //   if (event.key === "Enter") {
-  //     // When the "Enter" key is pressed, trigger the button click event
-  //     buttonRef.current.click();
-  //   }
-  // };
 
   const alertDOM = (
     <Row>
@@ -97,52 +64,7 @@ export default function GroupChat({ user, group_id }) {
   return (
     <>
       {alert && alertDOM}
-      {/* <div
-      style={{
-        maxWidth: "90%",
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div
-        style={{
-          height: "800px",
-          overflowY: "scroll",
-          border: "1px solid #ccc",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {messages.map((message) => {
-          return (
-            <GroupMessage
-              key={message.id}
-              message={message}
-              user={user}
-              groupID={groupID}
-            />
-          );
-        })}
-      </div>
-      <div style={{ display: "flex", marginTop: "8px" }}>
-        <input
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          style={{ flex: 1, marginRight: "8px" }}
-        />
-        <button
-          ref={buttonRef}
-          tabIndex="0"
-          onClick={handleSendMessage}
-        >
-          Send
-        </button>
-      </div>
-    </div> */}
+  
       <Chat
         user={user}
         messagesQuery={messagesQuery}
