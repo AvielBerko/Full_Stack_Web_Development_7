@@ -14,7 +14,7 @@ async function getGroupMessages(group_id, user_id){
                 INNER JOIN
                 ${tables.GROUP_MEMBERS}
                 ON ${tables.GROUP_MEMBERS}.groupchat_id = ${tables.GROUP_MESSAGES}.groupchat_id
-                WHERE ${tables.GROUP_MESSAGES}.groupchat_id = ? AND ${tables.GROUP_MEMBERS}.user_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.GROUP_MESSAGES}.valid = 1
+                WHERE ${tables.GROUP_MESSAGES}.groupchat_id = ? AND ${tables.GROUP_MEMBERS}.valid = 1 AND ${tables.GROUP_MEMBERS}.user_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.GROUP_MESSAGES}.valid = 1
                 ORDER BY time_sent
                 ;`,
                 [group_id, user_id],

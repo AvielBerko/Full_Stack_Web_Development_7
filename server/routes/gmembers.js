@@ -6,8 +6,13 @@ const Joi = require('joi');
 const jwt = require('../jwt/jwt.js');
 const wrapper = require('./wrapper.js');
 
-const gmembers_schema = Joi.object({
+const new_gmembers_schema = Joi.object({
   user_id: Joi.string().guid({ version: ['uuidv4']}).required(),
+})
+
+const updated_gmembers_schema = Joi.object({
+  user_id: Joi.string().guid({ version: ['uuidv4']}).required(),
+  admin: Joi.boolean().required(),
 })
 
 router.get("/", async (req, res) => {
@@ -27,7 +32,7 @@ router.post("/", async (req, res) => {//TODO - post other member possible if adm
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user || req.body.user_id !== user.id) return wrapper.unauthorized_response(res);
 
-    const { error } = gmembers_schema.validate(req.body)
+    const { error } = new_gmembers_schema.validate(req.body)
     if (error) return res.status(400).send({error: error.details[0].message});
     try {
         const new_gmember = req.body;
