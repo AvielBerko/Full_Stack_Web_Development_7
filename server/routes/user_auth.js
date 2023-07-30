@@ -3,6 +3,7 @@ const users_db = require('../db/components/users.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
+const jwt = require('../jwt/jwt.js');
 
 const new_user_schema = Joi.object({
   username: Joi.string().min(3).max(30).required(),
@@ -16,7 +17,7 @@ router.post("/login", async (req, res) => {
     const auth_data = req.body;
     const user = await users_db.login(auth_data);
     if (user.length === 0) res.status(401).send({error: 'Invalid credentials'})
-    else res.send(user[0]);
+    else res.send(jwt.generateJWT(user[0]));
   } catch (err) {
     res.status(500).send({error: 'Internal server error'});
   }
@@ -32,7 +33,7 @@ router.post("/register", async (req, res) => {
         await users_db.addUser(new_user);
         new_password = {id: uuidv4(), password:password}
         await users_db.addPassword(new_user, new_password);
-        res.send(new_user);
+        res.send(jwt.generateJWT(new_user));
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
         res.status(400).send({error: 'Username or Email already exists!'});
