@@ -33,7 +33,7 @@ router.put("/:id", async (req, res) => {
     const updated_user = {...req.body, id:user_id};
     const result = await users_db.updateUser(updated_user);
     if (result.changedRows === 0) return res.status(404).send({error: 'User to update was not found!'});
-    res.send(updated_user);
+    res.send(jwt.generateJWT(updated_user));
   } catch (err) {
     if(err.code === 'ER_DUP_ENTRY'){
       res.status(400).send({error: 'Username or Email already exists!'})
