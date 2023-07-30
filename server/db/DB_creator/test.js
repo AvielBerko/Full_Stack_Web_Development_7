@@ -12,30 +12,33 @@ const users = require('../components/users.js');
 //     console.log(result);
 // }
 
-// async function test(){
-//     result = await users.login({username: 'itamar', password: 'itamar8236'})
-//     console.log(result);
-//     console.log(result.length)
-// }
+async function test(){
+    const uid = 'fc2cbeba-ba2f-4aca-baa5-44ed6e2dda78'
+    result = await generic.read(tables.CONTACTS, {saver_id: uid}, {start: 0, length:0})//await users.login({username: 'itamar', password: 'itamar8236'})
+    //result = await generic.read(tables.CONTACTS, {saver_id: uid})
+    //console.log(result);
+    //console.log(result.length)
+    console.log(result.map(user=>user.name))
+}
 
-// test();
-
-
-const Joi = require('joi');
-
-console.log('hi!')
-const user_schema = Joi.object({
-  new: Joi.boolean(),
-  username: Joi.string().min(3).max(30).alphanum().required(),
-  email: Joi.string().email().required(),
-  phoneNumber: Joi.string().min(10).when('new', {is: true, then: Joi.required()})
-})
-const userData = {username: 't123', 'email': 'test@gmail.com', }
-
-const { error } = user_schema.validate({...userData, new:true})
+test();
 
 
-if (error) console.log(error.details[0].message)
+// const Joi = require('joi');
+
+// console.log('hi!')
+// const user_schema = Joi.object({
+//   new: Joi.boolean(),
+//   username: Joi.string().min(3).max(30).alphanum().required(),
+//   email: Joi.string().email().required(),
+//   phoneNumber: Joi.string().min(10).when('new', {is: true, then: Joi.required()})
+// })
+// const userData = {username: 't123', 'email': 'test@gmail.com', }
+
+// const { error } = user_schema.validate({...userData, new:true})
+
+
+// if (error) console.log(error.details[0].message)
 //console.log(value)
 
 

@@ -14,7 +14,7 @@ function create(table, data){
     });
 }
 
-function read(table, condition = null){
+function read(table, condition = null, limits = null){
     return new Promise((resolve, reject) => {
         db_connection.getConnection(con => {
             let query = `SELECT * FROM ${table}`;
@@ -28,6 +28,13 @@ function read(table, condition = null){
 
                   query += ` WHERE ${conditions.join(' AND ')}`;
             } 
+
+            query += ` ORDER BY id`;
+
+            if(limits){
+                query += ` LIMIT ?, ?`;
+                values.push(limits.start, limits.length)
+            }
 
             query += `;`;
             con.query(query, 
