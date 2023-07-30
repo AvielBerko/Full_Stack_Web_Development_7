@@ -62,6 +62,6 @@ function update(table, data, condition){
     });
 }
 
-//our db rely on updating valid=false as delete. 
+//our db rely on updating valid=false as delete (soft delete). 
 
 module.exports = {create, read, update};
