@@ -2,7 +2,7 @@ const db_connection = require('../db_connection');
 const generic = require('../crud.js');
 const tables = require('../table_names.js');
 
-async function getGroupMessages(group_id){
+async function getGroupMessages(group_id, user_id){
     return new Promise((resolve, reject) => {
         db_connection.getConnection(con => {
             con.query(`
@@ -11,10 +11,13 @@ async function getGroupMessages(group_id){
                 INNER JOIN
                 ${tables.USERS}
                 ON ${tables.GROUP_MESSAGES}.sender_id = ${tables.USERS}.id
-                WHERE groupchat_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.GROUP_MESSAGES}.valid = 1
+                INNER JOIN
+                ${tables.GROUP_MEMBERS}
+                ON ${tables.GROUP_MEMBERS}.groupchat_id = ${tables.GROUP_MESSAGES}.groupchat_id
+                WHERE ${tables.GROUP_MESSAGES}.groupchat_id = ? AND ${tables.GROUP_MEMBERS}.user_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.GROUP_MESSAGES}.valid = 1
                 ORDER BY time_sent
                 ;`,
-                [group_id],
+                [group_id, user_id],
             (error, result) => {
                 if (error) reject(error);
                 resolve(result);

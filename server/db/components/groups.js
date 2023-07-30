@@ -57,4 +57,4 @@ async function updateGroup(updated_group, user_id){
 //     return generic.update(tables.GROUPS, deleted, {id: group_id});
 // }
 
-module.exports = {getActiveGroups, addGroup, updateGroup, deleteGroup, getUserGroups};
+module.exports = {getActiveGroups, addGroup, updateGroup, getUserGroups};
