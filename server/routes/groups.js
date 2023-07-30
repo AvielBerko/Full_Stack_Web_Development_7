@@ -1,5 +1,6 @@
 const express = require("express");
 const groups_db = require('../db/components/groups.js');
+const gmembers_db = require('../db/components/gmembers.js');
 const router = express.Router();
 const {v4: uuidv4} = require('uuid');
 const Joi = require('joi');
@@ -15,10 +16,11 @@ const groups_schema = Joi.object({
 
 router.get("/", async (req, res) => {
   const user = jwt.verifyJWT(req.headers.authorization);
-  if (!user || user.id !== req.query.user_id) return wrapper.unauthorized_response(res);
+  if (!user) return wrapper.unauthorized_response(res);
 
     try {
       if (req.query.user_id){
+        if (user.id !== req.query.user_id) return wrapper.unauthorized_response(res);
         const groups = await groups_db.getUserGroups(req.query.user_id);//TODO - get admin from group member as well
         res.send(groups)
       }
@@ -42,6 +44,7 @@ router.post("/", async (req, res) => {//TODO - add as a member with admin = true
         new_group.id = uuidv4();
         new_group.time_created = new Date(new_group.time_created);
         await groups_db.addGroup(new_group);
+        //await gmembers_db.addGroupMember({id: uuidv4(), groupchat_id: new_group.id});
         res.send({...new_group, admin:true});
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
