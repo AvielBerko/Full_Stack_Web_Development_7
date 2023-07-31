@@ -81,9 +81,11 @@ router.put("/:id", async (req, res) => {
   router.delete("/:user_id", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
     if (!user) return wrapper.unauthorized_response(res);
-    const result = await is_admin(req.locals.groupchat_id, user.id);
-    if (!result) return wrapper.unauthorized_response(res); 
-
+    if (user.id !== req.params.user_id){
+      const result = await is_admin(req.locals.groupchat_id, user.id);
+      if (!result) return wrapper.unauthorized_response(res); 
+    }
+    
     try {
         const groupchat_id = req.locals.groupchat_id;
         const user_id = req.params.user_id;
