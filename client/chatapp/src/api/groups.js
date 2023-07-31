@@ -32,3 +32,7 @@ export function leaveGroup(groupID, userID, token) {
 export function addGroup(group, token) {
   return add(routes.addGroup, group, token);
 }
+
+export function setGroupAdmin(groupID, userID, data, token) {
+  return update(routes.setGroupAdmin(groupID, userID), data, token);
+}
