@@ -11,11 +11,7 @@ function verifyJWT(token){
     try {
         return jwt.verify(token, secret);
       } catch (err) {
-        if (err.name === "JsonWebTokenError") {
-          return false;
-        } else {
-          throw err;
-        }
+        return false;
     }
 }
 
