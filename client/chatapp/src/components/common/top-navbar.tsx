@@ -33,7 +33,12 @@ export default function TopNavbar() {
 
   return (
     <Navbar bg="light" expand="lg">
-      <Container>{auth ? loggedInLinks : loggedOutLinks}</Container>
+      <Container>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          {auth ? loggedInLinks : loggedOutLinks}
+        </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 }

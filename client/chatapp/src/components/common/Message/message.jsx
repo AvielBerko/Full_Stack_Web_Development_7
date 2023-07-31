@@ -116,7 +116,7 @@ export default function Message({
                   </div>
                 )}
               </div>
-              <div style={{ marginBottom: "4px" }}>{message.message}</div>
+              <p style={{ marginBottom: "4px", wordWrap: "break-word" }}>{message.message}</p>
             </>
           )}
           {message.type === "image" && (

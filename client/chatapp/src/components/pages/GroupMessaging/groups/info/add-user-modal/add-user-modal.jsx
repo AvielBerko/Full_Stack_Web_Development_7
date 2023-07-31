@@ -14,8 +14,8 @@ import {
   Container,
 } from "react-bootstrap";
 import UserItem from "./user-item";
-import { joinGroup } from "../../../../../api/groups";
-import { getUsers } from "../../../../../api/users";
+import { joinGroup } from "../../../../../../api/groups";
+import { getUsers } from "../../../../../../api/users";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function AddUserModal({
@@ -117,7 +117,7 @@ export default function AddUserModal({
         </Row>
       </Container>{" "}
       <ModalBody>
-        <div style={{ maxHeight: "520px", overflowY: "auto" }}>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
           {usersDOM}
         </div>
 
@@ -125,12 +125,12 @@ export default function AddUserModal({
       <ModalFooter>
         <Button
           disabled={selectedUser == null}
-          variant={selectedUser != null ? "success" : "dark"}
+          variant={selectedUser != null ? "primary" : "dark"}
           onClick={join}
         >
-          Add Contact
+          Add
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="secondary" onClick={() => setShow(false)}>
           Cancel
         </Button>
       </ModalFooter>

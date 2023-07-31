@@ -83,12 +83,12 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
       <ModalFooter>
         <Button
           disabled={name === ""}
-          variant={name === "" ? "success" : "dark"}
+          variant={name !== "" ? "primary" : "dark"}
           onClick={create}
         >
           Create
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="secondary" onClick={() => setShow(false)}>
           Cancel
         </Button>
       </ModalFooter>

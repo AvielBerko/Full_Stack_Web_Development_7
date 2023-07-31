@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-
   Modal,
   ModalBody,
   ModalFooter,
@@ -13,7 +12,6 @@ import {
 } from "react-bootstrap";
 import GroupInfoUser from "./group-info-user";
 import AddUserModal from "../add-user-modal/add-user-modal";
-import { joinGroup } from "../../../../../api/groups";
 
 export default function GroupInfoModal({
   user,
@@ -21,7 +19,6 @@ export default function GroupInfoModal({
   groupMembersQuery,
   showState,
 }) {
-
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
@@ -39,18 +36,23 @@ export default function GroupInfoModal({
   }, [show]);
 
   const membersDOM = groupMembersQuery?.data?.map((member) => {
-      return (
-        <GroupInfoUser key={member.id} user={{...user, admin}} member={member} setAlert={setAlert} />
-      );
-    });
+    return (
+      <GroupInfoUser
+        key={member.id}
+        user={{ ...user, admin }}
+        member={member}
+        setAlert={setAlert}
+      />
+    );
+  });
 
   const addUserModalDOM = (
     <AddUserModal
       user={user}
-  group_id={group_id}
-  showState={[showAddUserModal, setShowAddUserModal]}
-  setFatherAlert={setAlert}
-  members={groupMembersQuery?.data}
+      group_id={group_id}
+      showState={[showAddUserModal, setShowAddUserModal]}
+      setFatherAlert={setAlert}
+      members={groupMembersQuery?.data}
     />
   );
 
@@ -66,39 +68,39 @@ export default function GroupInfoModal({
 
   return (
     <>
-    {addUserModalDOM}
-    <Modal show={show}>
-      <Container fluid>
-        <Row className="text-center">
-          <Col>
-            <h3>Group Info</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>{alert && alertDOM}</Col>
-        </Row>
-      </Container>{" "}
-      <ModalBody>
-        <div style={{ maxHeight: "520px", overflowY: "auto" }}>
-          {membersDOM}
-        </div>
-      </ModalBody>
+      {addUserModalDOM}
+      <Modal show={show}>
+        <Container fluid>
+          <Row className="text-center">
+            <Col>
+              <h3>Group Info</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col>{alert && alertDOM}</Col>
+          </Row>
+        </Container>{" "}
+        <ModalBody>
+          <div style={{ maxHeight: "430px", overflowY: "auto" }}>
+            {membersDOM}
+          </div>
+        </ModalBody>
         <ModalFooter>
-            {admin && (
-              <Button
-                variant="success"
-                onClick={() => {
-                  setShowAddUserModal(true);
-                }
-              }
-              >
-                Add User
-              </Button>)}                
-            <Button variant="danger" onClick={() => setShow(false)}>
-                Close
+          {admin && (
+            <Button
+              variant="primary"
+              onClick={() => {
+                setShowAddUserModal(true);
+              }}
+            >
+              Add User
             </Button>
+          )}
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
         </ModalFooter>
-    </Modal>
+      </Modal>
     </>
   );
 }

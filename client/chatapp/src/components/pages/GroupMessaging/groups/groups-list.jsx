@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  ListGroup,
-  ListGroupItem,
   Row,
   Col,
   Alert,
   Container,
+  Card,
+  Button,
 } from "react-bootstrap";
 import GroupsItem from "./groups-item";
 import { getGroups } from "../../../../api/groups";
@@ -19,7 +19,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
 
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showJoinGroupModal, setShowJoinGroupModal] = useState(false);
-  const [alert, setAlert] = useState("");  
+  const [alert, setAlert] = useState("");
 
   if (!user?.id) return <></>;
 
@@ -27,7 +27,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
     queryKey: ["groups", "user_id", user.id],
     enabled: user?.id != undefined,
     queryFn: () => {
-      return getGroups({user_id: user.id}, user.token);
+      return getGroups({ user_id: user.id }, user.token);
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
@@ -99,52 +99,64 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   );
 
   const joinGroupModalDOM = (
-      <JoinGroupModal
-        user={user}
-        showState={[showJoinGroupModal, setShowJoinGroupModal]}
-        userGroups={groupsQuery.data}
-        refetchGroups={groupsQuery.refetch}
-        //setAlert={setAlert}
-      />
+    <JoinGroupModal
+      user={user}
+      showState={[showJoinGroupModal, setShowJoinGroupModal]}
+      userGroups={groupsQuery.data}
+      refetchGroups={groupsQuery.refetch}
+      //setAlert={setAlert}
+    />
   );
 
   const addGroupModalDOM = (
-      <AddGroupModal
-        user={user}
-        showState={[showAddGroupModal, setShowAddGroupModal]}
-        refetchGroups={groupsQuery.refetch}
-      />
+    <AddGroupModal
+      user={user}
+      showState={[showAddGroupModal, setShowAddGroupModal]}
+      refetchGroups={groupsQuery.refetch}
+    />
   );
 
-
   return (
-    <ListGroup>
+    <>
       {alert && alertDOM}
-      <Container>
-        <Row>
-          <Col>
-            <BlockButton
-              variant="success"
-              onClick={() => setShowAddGroupModal(true)}
+      {showJoinGroupModal && joinGroupModalDOM}
+      {showAddGroupModal && addGroupModalDOM}
+      <Card>
+        <Card.Header>
+          <Card.Title>My Groups:</Card.Title>
+        </Card.Header>
+      </Card>
+      <Card>
+        <Card.Header>
+          <Row className="d-flex gap-1">
+
+          <Button
+            variant="primary"
+            onClick={() => setShowAddGroupModal(true)}
             >
-              {" "}
-              New Group
-            </BlockButton>
-          </Col>
-          <Col>
-            <BlockButton
-              variant="success"
-              onClick={() => setShowJoinGroupModal(true)}
+            Create Group
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => setShowJoinGroupModal(true)}
             >
-              {" "}
-              Join Group
-            </BlockButton>
-          </Col>
+            Join Group
+          </Button>
         </Row>
-      </Container>
-      {joinGroupModalDOM}
-      {addGroupModalDOM}
-      {groupsDOM ?? <>No data</>}
-    </ListGroup>
+        </Card.Header>
+        <div
+          style={{
+            backgroundColor: "#fff",
+            height: "500px",
+            overflowY: "scroll",
+            border: "1px solid #ccc",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {groupsDOM ?? <>No data</>}
+        </div>
+      </Card>
+    </>
   );
 }

@@ -103,12 +103,12 @@ export default function UpdateGroupModal({ group, user, showState }) {
       <ModalFooter>
         <Button
           disabled={newName === ""}
-          variant={newName != "" ? "success" : "dark"}
+          variant={newName != "" ? "primary" : "dark"}
           onClick={update}
         >
           Save
         </Button>
-        <Button variant="danger" onClick={resetModal}>
+        <Button variant="secondary" onClick={resetModal}>
           Cancel
         </Button>
       </ModalFooter>

@@ -145,7 +145,7 @@ export default function AddContactModal({
         >
           Add Contact
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="secondary" onClick={() => setShow(false)}>
           Cancel
         </Button>
       </ModalFooter>

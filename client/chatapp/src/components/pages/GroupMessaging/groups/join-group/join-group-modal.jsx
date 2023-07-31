@@ -105,19 +105,19 @@ export default function JoinGroupModal({
         </Row>
       </Container>{" "}
       <ModalBody>
-        <div style={{ maxHeight: "520px", overflowY: "auto" }}>
+        <div style={{ maxHeight: "420px", overflowY: "auto" }}>
           {groupsDOM}
         </div>
       </ModalBody>
       <ModalFooter>
         <Button
           disabled={selectedGroup == null}
-          variant={selectedGroup != null ? "success" : "dark"}
+          variant={selectedGroup != null ? "primary" : "dark"}
           onClick={create}
         >
           Join
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="secondary" onClick={() => setShow(false)}>
           Cancel
         </Button>
       </ModalFooter>

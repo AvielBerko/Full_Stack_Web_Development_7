@@ -110,7 +110,7 @@ export default function UpdateContactModal({ contact, user, showState }) {
         >
           Save
         </Button>
-        <Button variant="danger" onClick={resetModal}>
+        <Button variant="secondary" onClick={resetModal}>
           Cancel
         </Button>
       </ModalFooter>

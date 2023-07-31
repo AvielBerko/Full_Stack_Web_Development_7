@@ -46,12 +46,12 @@ export default function UpdateMessageModal({
       <ModalFooter>
         <Button
           disabled={newMessage === ""}
-          variant={newMessage != "" ? "success" : "dark"}
+          variant={newMessage != "" ? "primary" : "dark"}
           onClick={update}
         >
           Save
         </Button>
-        <Button variant="danger" onClick={() => setShow(false)}>
+        <Button variant="secondary" onClick={() => setShow(false)}>
           Cancel
         </Button>
       </ModalFooter>
