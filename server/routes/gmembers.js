@@ -71,7 +71,7 @@ router.put("/:id", async (req, res) => {
         const gmembers_id = req.params.id;
         const updated_gmember = {...req.body, id:gmembers_id};
         const result = await gmembers_db.updateGroupMember(updated_gmember);
-        if (result.changedRows === 0) res.status(404).send({error: 'Group member to update was not found!'});
+        if (result.changedRows === 0) return res.status(404).send({error: 'Group member to update was not found!'});
         res.send(updated_gmember);
     } catch (err) {
       res.status(400).send(err);
