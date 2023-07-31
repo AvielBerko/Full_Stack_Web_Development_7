@@ -105,7 +105,7 @@ export default function UpdateContactModal({ contact, user, showState }) {
       <ModalFooter>
         <Button
           disabled={newName === ""}
-          variant={newName != "" ? "success" : "dark"}
+          variant={newName != "" ? "primary" : "dark"}
           onClick={update}
         >
           Save

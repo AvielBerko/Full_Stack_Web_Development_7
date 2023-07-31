@@ -1,4 +1,4 @@
-import { Card, Row, Col, Alert } from "react-bootstrap";
+import { Card, Row, Col, Alert, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import EdibaleLabel from "../../../common/edibaleLabel/edibale-label";
 import BlockButton from "../../../common/BlockButton/block-button";
@@ -19,7 +19,7 @@ const UserInfo = ({ user, setAuth }) => {
 
   // Mutation function using react-query's useMutation hook
   const updateUserMutation = useMutation({
-    mutationFn: (newUser) => updateUser(newUser,user.token),
+    mutationFn: (newUser) => updateUser(newUser, user.token),
     onSuccess: (data) => {
       // Update the user in the session
       setAuth(data);
@@ -67,12 +67,16 @@ const UserInfo = ({ user, setAuth }) => {
   return (
     <>
       {alert != "" && alertDOM}
-      <Card className="user-card">
-        <Card.Body>
+      <Card className="user-card">  
+      <Card.Header>
+        <Card.Title>
+          <h3>User Details:</h3>
+        </Card.Title>
+      </Card.Header>
+      <Card.Body>
           <EdibaleLabel
             isEditable={false}
             label="Email"
-            setter={setEmail}
             value={email}
             WrapperComponent={Card.Title}
           />
@@ -91,18 +95,21 @@ const UserInfo = ({ user, setAuth }) => {
             WrapperComponent={Card.Text}
           />
         </Card.Body>
+        <Card.Footer className="text-center">
+          <BlockButton
+            variant="primary"
+            onClick={() => {
+              if (isEditable) {
+                onSubmit();
+              } else {
+                setIsEditable(true);
+              }
+            }}
+          >
+            {isEditable ? "Save" : "Edit"}
+          </BlockButton>
+        </Card.Footer>
       </Card>
-      <BlockButton
-        onClick={() => {
-          if (isEditable) {
-            onSubmit();
-          } else {
-            setIsEditable(true);
-          }
-        }}
-      >
-        {isEditable ? "Save" : "Edit"}
-      </BlockButton>
     </>
   );
 };

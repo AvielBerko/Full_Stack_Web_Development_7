@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ListGroup, ListGroupItem, Row, Col, Alert } from "react-bootstrap";
+import { ListGroup, ListGroupItem, Row, Col, Alert, Card} from "react-bootstrap";
 import ContactsItem from "./contacts-item";
 import {
   getContacts,
@@ -88,17 +88,43 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
   );
 
   return (
-    <ListGroup>
+    <>
     {alert && alertDOM}
-    <BlockButton
-      variant="success"
-      onClick={() => setShowAddContactModal(true)}
-    >
-      {" "}
-      Add Contact
-    </BlockButton>
     {addContactModalDOM}
-    {contactsDOM ?? <>No data</>}
-  </ListGroup>
+    <Card>
+      <Card.Header>
+    <Card.Title>
+      My Contacts:
+    </Card.Title>
+    </Card.Header>
+    </Card>
+    <Card>
+      <Card.Header>
+      <BlockButton
+        variant="primary"
+        onClick={() => setShowAddContactModal(true)}
+        >
+        {" "}
+        Add Contact
+      </BlockButton>
+      </Card.Header>
+      {/* <Card.Body>
+        <Card.Title>My Contacts: </Card.Title>
+      </Card.Body> */}
+       <div
+        style={{
+          backgroundColor: "#fff",
+          height: "540px",
+          // height: "100%",
+          overflowY: "scroll",
+          border: "1px solid #ccc",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {contactsDOM ?? <>No data</>}
+        </div>
+      </Card>
+    </>
   );
 }

@@ -2,6 +2,17 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { sendFile } from "../../../api/files";
 import Message from "../Message/message";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faFileUpload } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  FormControl,
+  Button,
+} from "react-bootstrap";
 
 export default function Chat({
   user,
@@ -73,69 +84,77 @@ export default function Chat({
   };
 
   return (
-    <>
+    <div
+      style={{
+        maxWidth: "90%",
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <div
         style={{
-          maxWidth: "90%",
-          margin: "0 auto",
+          backgroundColor: "#fff",
+          height: "600px",
+          // height: "100%",
+          overflowY: "scroll",
+          border: "1px solid #ccc",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <div
-          style={{
-            height: "800px",
-            overflowY: "scroll",
-            border: "1px solid #ccc",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {messages.map((message) => {
-            return (
-              <Message
-                key={message.id}
-                message={message}
-                user={user}
-                deleteMessageMutation={deleteMessageMutation}
-                updateMessageMutation={updateMessageMutation}
-                setAlert={setAlert}
-              />
-            );
-          })}
-        </div>
-        <div style={{ display: "flex", marginTop: "8px" }}>
-          {file ? (
-            <p>{file.name}</p>
-          ) : (
-            <input
-              onKeyDown={handleKeyDown}
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              style={{ flex: 1, marginRight: "8px" }}
+        {messages.map((message) => {
+          return (
+            <Message
+              key={message.id}
+              message={message}
+              user={user}
+              deleteMessageMutation={deleteMessageMutation}
+              updateMessageMutation={updateMessageMutation}
+              setAlert={setAlert}
             />
-          )}
-          <button
-            tabIndex="1"
-            onClick={() => {
-              // Separate handler for selecting a file
-              // Using a hidden input element to trigger the file selection
-              const fileInput = document.createElement("input");
-              fileInput.type = "file";
-              // accept only images and videos
-              fileInput.accept = "image/*,video/*";
-              fileInput.onchange = handleSelectFile;
-              fileInput.click();
-            }}
-          >
-            Select File
-          </button>
-          <button tabIndex="0" onClick={handleSend}>
-            Send
-          </button>
+          );
+        })}
+      </div>
+      <div style={{ display: "flex", marginTop: "8px" }}>
+        {file ? (
+          <p>{file.name}</p>
+        ) : (
+          <input
+            onKeyDown={handleKeyDown}
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            style={{ flex: 1, marginRight: "8px" }}
+          />
+        )}
+        <div className="d-flex">
+          <Row>
+            <Col className="pl-1">
+              <Button
+                tabIndex="1"
+                onClick={() => {
+                  // Separate handler for selecting a file
+                  // Using a hidden input element to trigger the file selection
+                  const fileInput = document.createElement("input");
+                  fileInput.type = "file";
+                  // accept only images and videos
+                  fileInput.accept = "image/*,video/*";
+                  fileInput.onchange = handleSelectFile;
+                  fileInput.click();
+                }}
+              >
+              <FontAwesomeIcon icon={faFileUpload} />
+              </Button>
+            </Col>
+            <Col className="p-0">
+              <Button tabIndex="0" onClick={handleSend}>
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </Button>
+            </Col>
+          </Row>
         </div>
       </div>
-    </>
+    </div>
   );
 }

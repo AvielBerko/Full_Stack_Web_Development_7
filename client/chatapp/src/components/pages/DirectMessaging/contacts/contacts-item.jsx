@@ -44,8 +44,8 @@ export default function ContactsItem({
   const deleteContactMutation = useMutation({
     mutationFn: () => deleteContact(contact.id, user.token),
     onSuccess: (results) => {
-      queryClient.invalidateQueries(["contacts", user.id]);     
-      setSelectedContact(null); 
+      queryClient.invalidateQueries(["contacts", user.id]);
+      setSelectedContact(null);
     },
     onError: (error) => {
       //setAlert("An unexpected error occurred. Please try again later.");
@@ -75,16 +75,30 @@ export default function ContactsItem({
             setSelectedContact(contact.user_id);
           }}
         >
-          <Card>
+          <Card
+            style={{
+              border: selected ? "2px solid #007bff" : "1px solid #ced4da",
+              borderRadius: "8px",
+            }}
+          >
             <Card.Body>
+              <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
+                {contact.name}
+              </Card.Title>
+              <Card.Text style={{ fontSize: "12.5px" }}>{contact.email}</Card.Text>
+              <Card.Text style={{ fontSize: "12.5px" }}>
+                 {contact.phone_number}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+          {/* <>
               <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
                 {contact.name}
               </Card.Title>
               <Card.Text style={{ fontSize: "12.5px" }}>
                 Number: {contact.phone_number}
               </Card.Text>
-            </Card.Body>
-          </Card>
+          </> */}
         </div>
       </ListGroupItem>
       {isContextMenuOpen &&

@@ -132,7 +132,7 @@ export default function AddContactModal({
             onChange={(e) => setName(e.target.value)}
           />
         </InputGroup>
-        <div style={{ maxHeight: "520px", overflowY: "auto" }}>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
           {usersDOM}
         </div>
 
@@ -140,7 +140,7 @@ export default function AddContactModal({
       <ModalFooter>
         <Button
           disabled={selectedUser == null || name === ""}
-          variant={selectedUser != null && name != "" ? "success" : "dark"}
+          variant={selectedUser != null && name != "" ? "primary" : "dark"}
           onClick={create}
         >
           Add Contact

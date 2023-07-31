@@ -10,7 +10,7 @@ export default function UserItem({ user, selectedUser, setSelectedUser }) {
     <ListGroupItem>
       <div onClick={() => setSelectedUser(user.id)}>
         <Card>
-          <Card.Body style={{background: selected ? "pink" : ""}}>
+          <Card.Body style={{background: selected ? "Khaki" : ""}}>
             <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
               {user.username}
             </Card.Title>

@@ -13,12 +13,6 @@ export default function GroupMessaging() {
 
   return (
     <Container fluid>
-      <Row className="text-center">
-        <Col md={3}/>
-        <Col md={8}>
-          <h1>Group Messages</h1>
-        </Col>
-      </Row>
       <Row>
        <Col md={3} style={{ borderRight: '1px solid #ccc', padding: '16px' }}>
          <GroupsList user={user} selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />

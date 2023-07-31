@@ -58,7 +58,7 @@ export default function Register() {
     return ""; // Empty string indicates the form is valid
   };
 
-  const onSubmit = () => {
+  const handleRegister = () => {
     const errorMessage = validateForm();
     if (errorMessage) {
       setAlert(errorMessage);
@@ -81,9 +81,9 @@ export default function Register() {
   };
 
   const alertDOM = (
-    <Row>
+    <Row className="text-center">
       <Col>
-        <Alert variant="danger" onClose={closeAlert} dismissible>
+        <Alert variant={alert ? "danger" : ""} onAbort={() => setAlert("")}>
           {alert}
         </Alert>
       </Col>
@@ -91,59 +91,70 @@ export default function Register() {
   );
 
   return (
-    <Container>
-      <Row className="text-center">
-        <Col>
-          <h1>Register</h1>
-        </Col>
-      </Row>
-      {alert != "" && alertDOM}
-      <Row>
-        <Col>
-          <Input placeholder="Username" value={username} setter={setUsername} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+    <>
+    { alertDOM }
+    <div className="auth-wrapper">
+    <div className="auth-inner">
+      <div>
+        <h3>Register</h3>
+        <div className="mb-3">
+          <label>Username</label>
           <Input
-            placeholder="Password"
+            inputType="text"
+            className="form-control"
+            placeholder="Enter username"
+            value={username}
+            setter={setUsername}
+          />
+        </div>
+        <div className="mb-3">
+          <label>Password</label>
+          <Input
             inputType="password"
+            className="form-control"
+            placeholder="Enter password"
             value={password}
             setter={setPassword}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </div>
+        <div className="mb-3">
+          <label>Confirm Password</label>
           <Input
             inputType="password"
-            placeholder="Confirm Password"
+            className="form-control"
+            placeholder="Confirm your password"
             value={passwordConfirm}
             setter={setPasswordConfirm}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Input placeholder="Email" value={email} setter={setEmail} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
+        </div>
+        <div className="mb-3">
+          <label>Email</label>
           <Input
-            placeholder="Phone Number"
+            inputType="text"
+            className="form-control"
+            placeholder="Enter email"
+            value={email}
+            setter={setEmail}
+          />
+        </div>
+        <div className="mb-3">
+          <label>Phone Number</label>
+          <Input
+            inputType="text"
+            className="form-control"
+            placeholder="Enter phone number"
             value={phoneNumber}
             setter={setPhoneNumber}
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <BlockButton variant="success" onClick={onSubmit}>
-            Register
-          </BlockButton>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+        <div className="d-grid">
+          <button onClick={handleRegister} className="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </>
   );
 }
