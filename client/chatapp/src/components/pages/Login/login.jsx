@@ -20,7 +20,6 @@ export default function Login() {
     else
       login(username, password)
         .then((user) => {
-          console.log(user);
           if (user) {
             setAuth(user);
             navigate(`/${user.username}/contacts`, { replace: true });

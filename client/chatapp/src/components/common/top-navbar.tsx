@@ -1,19 +1,17 @@
-import React from 'react';
+import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useSession } from "../../custom-hooks/use-session";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function TopNavbar() {
   const [user, setAuth] = useSession("auth", null);
 
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate();
+
   const logOut = () => {
     setAuth(null);
     navigate("/login", { replace: true });
   };
-
-  // TODO - handle paths
 
   const loggedInLinks = (
     <Nav className="me-auto">
@@ -25,7 +23,6 @@ export default function TopNavbar() {
       </Nav.Link>
     </Nav>
   );
-
 
   const loggedOutLinks = (
     <Nav className="me-auto">

@@ -1,0 +1,8 @@
+.contacts-list {
+  background-color: #fff;
+  height: 540px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}

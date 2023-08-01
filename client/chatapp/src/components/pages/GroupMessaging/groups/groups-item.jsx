@@ -23,14 +23,12 @@ export default function GroupsItem({
   setAlert,
 }) {
   if (!group) return <></>;
+  const selected = selectedGroup === group.id;
+  const admin = Boolean(group.admin);
 
   const [showUpdateGroupModal, setShowUpdateGroupModal] = useState(false);
   const [showGroupInfoModal, setShowGroupInfoModal] = useState(false);
-
   const queryClient = useQueryClient();
-
-  const selected = selectedGroup === group.id;
-  const admin = Boolean(group.admin);
 
   const groupMembersQuery = useQuery({
     queryKey: ["groups", group.id, "members"],

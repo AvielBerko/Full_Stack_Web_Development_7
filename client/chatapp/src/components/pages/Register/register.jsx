@@ -69,10 +69,12 @@ export default function Register() {
         email,
         phone_number: phoneNumber,
       };
-      register(newUser).then((res) => {
-        setAuth(res);
-        navigate(`/${user.username}/profile`, { replace: true });
-      }).catch((error) => setAlert(error.message));;
+      register(newUser)
+        .then((res) => {
+          setAuth(res);
+          navigate(`/${user.username}/profile`, { replace: true });
+        })
+        .catch((error) => setAlert(error.message));
     }
   };
 
@@ -92,69 +94,69 @@ export default function Register() {
 
   return (
     <>
-    { alertDOM }
-    <div className="auth-wrapper">
-    <div className="auth-inner">
-      <div>
-        <h3>Register</h3>
-        <div className="mb-3">
-          <label>Username</label>
-          <Input
-            inputType="text"
-            className="form-control"
-            placeholder="Enter username"
-            value={username}
-            setter={setUsername}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Password</label>
-          <Input
-            inputType="password"
-            className="form-control"
-            placeholder="Enter password"
-            value={password}
-            setter={setPassword}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Confirm Password</label>
-          <Input
-            inputType="password"
-            className="form-control"
-            placeholder="Confirm your password"
-            value={passwordConfirm}
-            setter={setPasswordConfirm}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Email</label>
-          <Input
-            inputType="text"
-            className="form-control"
-            placeholder="Enter email"
-            value={email}
-            setter={setEmail}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Phone Number</label>
-          <Input
-            inputType="text"
-            className="form-control"
-            placeholder="Enter phone number"
-            value={phoneNumber}
-            setter={setPhoneNumber}
-          />
-        </div>
-        <div className="d-grid">
-          <button onClick={handleRegister} className="btn btn-primary">
-            Submit
-          </button>
+      {alertDOM}
+      <div className="auth-wrapper">
+        <div className="auth-inner">
+          <div>
+            <h3>Register</h3>
+            <div className="mb-3">
+              <label>Username</label>
+              <Input
+                inputType="text"
+                className="form-control"
+                placeholder="Enter username"
+                value={username}
+                setter={setUsername}
+              />
+            </div>
+            <div className="mb-3">
+              <label>Password</label>
+              <Input
+                inputType="password"
+                className="form-control"
+                placeholder="Enter password"
+                value={password}
+                setter={setPassword}
+              />
+            </div>
+            <div className="mb-3">
+              <label>Confirm Password</label>
+              <Input
+                inputType="password"
+                className="form-control"
+                placeholder="Confirm your password"
+                value={passwordConfirm}
+                setter={setPasswordConfirm}
+              />
+            </div>
+            <div className="mb-3">
+              <label>Email</label>
+              <Input
+                inputType="text"
+                className="form-control"
+                placeholder="Enter email"
+                value={email}
+                setter={setEmail}
+              />
+            </div>
+            <div className="mb-3">
+              <label>Phone Number</label>
+              <Input
+                inputType="text"
+                className="form-control"
+                placeholder="Enter phone number"
+                value={phoneNumber}
+                setter={setPhoneNumber}
+              />
+            </div>
+            <div className="d-grid">
+              <button onClick={handleRegister} className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  </>
+    </>
   );
 }

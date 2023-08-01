@@ -11,31 +11,31 @@ import {
   Alert,
   Container,
 } from "react-bootstrap";
-import { useQueryClient } from "@tanstack/react-query";
 import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
+import AlertComponent from "../../../../common/AlertComponent/alert-component";
 import { updateContact } from "../../../../../api/contacts";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+
 
 export default function UpdateContactModal({ contact, user, showState }) {
   const [newName, setNewName] = useState(contact.name || "");
   const [alert, setAlert] = useState("");
   const [show, setShow] = showState;
-
   const queryClient = useQueryClient();
+
+  // INTEREST
   const updateContactMutetion = useMutation({
     mutationFn: (contact) => updateContact(contact, user.token),
     onSuccess: (results) => {
-
       queryClient.setQueriesData(["contacts", user.id], (oldData) => {
         const newData = oldData.map((contact) => {
-            if (contact.id === results.id) {
-              return { ...contact, ...results };
-            }
-            return contact;
-          });
-        return newData ;
+          if (contact.id === results.id) {
+            return { ...contact, ...results };
+          }
+          return contact;
+        });
+        return newData;
       });
-      //queryClient.invalidateQueries(["contacts"])
     },
     onError: (error) => {
       setAlert(error.message);
@@ -50,7 +50,6 @@ export default function UpdateContactModal({ contact, user, showState }) {
     if (newName !== contact.name)
       updateContactMutetion.mutate({ id: contact.id, name: newName });
     else resetModal();
-    //setShow(false);
   };
 
   const resetModal = () => {
@@ -63,16 +62,6 @@ export default function UpdateContactModal({ contact, user, showState }) {
     resetModal();
   }, [contact]);
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <ModalHeader>
@@ -83,7 +72,7 @@ export default function UpdateContactModal({ contact, user, showState }) {
             </Col>
           </Row>
           <Row>
-            <Col>{alert && alertDOM}</Col>
+            <Col> {alert && <AlertComponent alert={alert} setAlert={setAlert} />}</Col>
           </Row>
         </Container>
       </ModalHeader>

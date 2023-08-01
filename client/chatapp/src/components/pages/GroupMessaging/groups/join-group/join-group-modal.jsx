@@ -16,6 +16,7 @@ import {
 import GroupItem from "./group-item";
 import { joinGroup, getAllGroups } from "../../../../../api/groups";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import AlertComponent from "../../../../common/AlertComponent/alert-component";
 
 export default function JoinGroupModal({
   user,
@@ -82,16 +83,6 @@ export default function JoinGroupModal({
       );
     });
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <Container fluid>
@@ -101,7 +92,7 @@ export default function JoinGroupModal({
           </Col>
         </Row>
         <Row>
-          <Col>{alert && alertDOM}</Col>
+          <Col>{alert && <AlertComponent alert={alert} setAlert={setAlert} />}</Col>
         </Row>
       </Container>{" "}
       <ModalBody>

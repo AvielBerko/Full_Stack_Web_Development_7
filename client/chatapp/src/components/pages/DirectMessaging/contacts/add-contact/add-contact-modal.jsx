@@ -17,6 +17,7 @@ import UserItem from "./user-item";
 import { addContact } from "../../../../../api/contacts";
 import { getUsers } from "../../../../../api/users";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import AlertComponent from "../../../../common/AlertComponent/alert-component";
 
 export default function AddContactModal({
   user,
@@ -39,14 +40,14 @@ export default function AddContactModal({
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       setFatherAlert(error.message);
-    }
+    },
   });
 
   const addContactMutation = useMutation({
     mutationFn: (contact) => addContact(contact, user.token),
     onSuccess: (results) => {
-        refetchContacts();
-        setShow(false);
+      refetchContacts();
+      setShow(false);
     },
     onError: (error) => {
       setAlert(error.message);
@@ -79,10 +80,7 @@ export default function AddContactModal({
   }, [show]);
 
   if (usersQuery.isLoading) return <></>;
-  //if (usersQuery.isError) return <>Error: {error.message}</>;
   if (!usersQuery?.data?.length) return <>No data</>;
-  // add a filter to remove the users that are already contacts
-  // filter also the current user
   const usersDOM = usersQuery?.data
     ?.filter((u) => {
       // filter the current user
@@ -101,16 +99,6 @@ export default function AddContactModal({
       );
     });
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <Container fluid>
@@ -120,11 +108,13 @@ export default function AddContactModal({
           </Col>
         </Row>
         <Row>
-          <Col>{alert && alertDOM}</Col>
+          <Col> {alert && <AlertComponent alert={alert} setAlert={setAlert} />}</Col>
         </Row>
       </Container>{" "}
       <ModalBody>
-        <FormLabel><h4>Contacts Name:</h4></FormLabel>
+        <FormLabel>
+          <h4>Contacts Name:</h4>
+        </FormLabel>
         <InputGroup>
           <FormControl
             placeholder="Write here the Name..."
@@ -132,10 +122,7 @@ export default function AddContactModal({
             onChange={(e) => setName(e.target.value)}
           />
         </InputGroup>
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-          {usersDOM}
-        </div>
-
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>{usersDOM}</div>
       </ModalBody>
       <ModalFooter>
         <Button

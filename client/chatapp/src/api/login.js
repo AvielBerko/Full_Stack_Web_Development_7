@@ -6,7 +6,7 @@ export default function login(username, password) {
   return axios
     .post(routes.login, { username, password })
     .then((response) => {
-        return response.data;
+      return response.data;
     })
     .then((token) => {
       return { ...jwtDecode(token), token };

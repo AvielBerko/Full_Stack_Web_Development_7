@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import GroupInfoUser from "./group-info-user";
 import AddUserModal from "../add-user-modal/add-user-modal";
+import AlertComponent from "../../../../../common/AlertComponent/alert-component";
 
 export default function GroupInfoModal({
   user,
@@ -56,16 +57,6 @@ export default function GroupInfoModal({
     />
   );
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <>
       {addUserModalDOM}
@@ -77,7 +68,9 @@ export default function GroupInfoModal({
             </Col>
           </Row>
           <Row>
-            <Col>{alert && alertDOM}</Col>
+            <Col>
+              {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
+            </Col>
           </Row>
         </Container>{" "}
         <ModalBody>
