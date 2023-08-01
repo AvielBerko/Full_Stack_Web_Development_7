@@ -16,7 +16,6 @@ export default function Message({
 }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
 
-  // INTEREST
   const contactsQuery = useQuery({
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,

@@ -23,7 +23,6 @@ export default function UpdateContactModal({ contact, user, showState }) {
   const [show, setShow] = showState;
   const queryClient = useQueryClient();
 
-  // INTEREST
   const updateContactMutetion = useMutation({
     mutationFn: (contact) => updateContact(contact, user.token),
     onSuccess: (results) => {

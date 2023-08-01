@@ -5,7 +5,7 @@ const Joi = require('joi');
 const jwt = require('../jwt/jwt.js');
 const wrapper = require('./wrapper.js');
 
-const updated_user_schema = Joi.object({//interest
+const updated_user_schema = Joi.object({
   id: Joi.string().guid({ version: ['uuidv4'] }),
   username: Joi.string().min(3).max(30),
   phone_number: Joi.string().length(10).pattern(/^\d+$/).message({ 'string.pattern.base': 'phone number must contain only numbers.' }),

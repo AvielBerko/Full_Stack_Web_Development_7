@@ -14,7 +14,7 @@ const tables = {
             'email VARCHAR(255)',
             'phone_number VARCHAR(10)',
             'valid BOOLEAN',
-            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',//interest
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
         ],
         constraints: [
             'UNIQUE (username, unarchived)',

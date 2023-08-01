@@ -20,7 +20,6 @@ export default function Chat({
   setAlert,
 }) {
 
-  // INTEREST
   const [newMessage, setNewMessage] = useState("");
   const [file, setFile] = useState(null);
 
@@ -116,8 +115,6 @@ export default function Chat({
               <Button
                 tabIndex="1"
                 onClick={() => {
-                  // Separate handler for selecting a file
-                  // Using a hidden input element to trigger the file selection
                   const fileInput = document.createElement("input");
                   fileInput.type = "file";
                   // accept only images and videos

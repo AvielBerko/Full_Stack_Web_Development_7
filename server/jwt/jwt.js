@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('./jwt_config.js');
 
-function generateJWT(data) {//interest
+function generateJWT(data) {
     return jwt.sign(data, config.SECRET, { expiresIn: config.DURATION, algorithm: config.ALG });
 }
 

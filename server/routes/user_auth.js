@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
     await users_db.addPassword(new_user, new_password);
     res.send(jwt.generateJWT(new_user));
   } catch (err) {
-    if (err.code === 'ER_DUP_ENTRY') {//interest ? error handling and status
+    if (err.code === 'ER_DUP_ENTRY') {
       res.status(400).send({ error: 'Username or Email already exists!' });
     }
     else res.status(500).send({ error: 'Internal server error' });

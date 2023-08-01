@@ -33,7 +33,7 @@ async function addGroup(new_group) {
 
 async function updateGroup(updated_group, user_id) {
     return new Promise((resolve, reject) => {
-        db_connection.getConnection(con => {//interest ? - join needed for validation of user in a group, same in delete below
+        db_connection.getConnection(con => {
             con.query(`
             UPDATE ${tables.GROUPS}
             INNER JOIN 
