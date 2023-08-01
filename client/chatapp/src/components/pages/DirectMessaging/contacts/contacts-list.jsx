@@ -30,27 +30,7 @@ export default function ContactsList({ user, selectedContact, setSelectedContact
     }
   });
 
-
-  // useEffect(() => {
-  //   handleSort();
-  // }, [sortBy]);
-
-
-  // TODO:
-  // const postsDOM = postsQuery?.data?.pages
-  // ?.reduce((prev, cur) => [...prev, ...cur], [])
-  // .map((post) => (
-  //   <PostItem
-  //     key={post.id}
-  //     post={post}
-  //     deletePost={handleDeletePost}
-  //     setAlert={setAlert}
-  //     updatePost={handleUpdatePost}
-  //   />
-  // ));
-
   if (contactsQuery.isLoading) return <>Loading</>;
-  //if (contactsQuery.isError) return <>Error</>;
   let contactsDOM = null;
   if (contactsQuery.data?.length) {
     contactsDOM = contactsQuery.data

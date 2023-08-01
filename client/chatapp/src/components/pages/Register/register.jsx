@@ -71,7 +71,7 @@ export default function Register() {
       };
       register(newUser).then((res) => {
         setAuth(res);
-        navigate("/profile", { replace: true });
+        navigate(`/${user.username}/profile`, { replace: true });
       }).catch((error) => setAlert(error.message));;
     }
   };

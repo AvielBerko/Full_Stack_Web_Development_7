@@ -4,7 +4,7 @@ import { sendFile } from "../../../api/files";
 import Message from "../Message/message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-
+import "../../../css/chat.css"
 import {
   Container,
   Row,
@@ -36,7 +36,7 @@ export default function Chat({
       setFile(null);
     },
     onError: (error) => {
-      setAlert(error.message); // TODO hadle errors
+      setAlert(error.message);
     },
   });
 
@@ -85,23 +85,10 @@ export default function Chat({
 
   return (
     <div
-      style={{
-        maxWidth: "90%",
-        margin: "0 auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
+    className="chat"
     >
       <div
-        style={{
-          backgroundColor: "#fff",
-          height: "600px",
-          // height: "100%",
-          overflowY: "scroll",
-          border: "1px solid #ccc",
-          display: "flex",
-          flexDirection: "column",
-        }}
+      className="chat-messages"
       >
         {messages.map((message) => {
           return (

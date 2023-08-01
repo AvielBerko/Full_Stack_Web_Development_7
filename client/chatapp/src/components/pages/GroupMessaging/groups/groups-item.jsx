@@ -52,7 +52,6 @@ export default function GroupsItem({
       }
     },
     onError: (error) => {
-      //setAlert("An unexpected error occurred. Please try again later.");
       setAlert(error.message);
     },
   });

@@ -11,9 +11,11 @@ export default function Router() {
       <Route index element={<Navigate to="/login" />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="direct_messages" element={<DirectMessaging />} />
-      <Route path="group_messages" element={<GroupMessaging />} />
+      <Route path=":name">
+        <Route path="profile" element={<Profile />} />
+        <Route path="contacts" element={<DirectMessaging />} />
+        <Route path="groups" element={<GroupMessaging />} />
+      </Route>
     </Routes>
   );
 }

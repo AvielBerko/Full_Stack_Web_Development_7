@@ -4,7 +4,7 @@ import { useSession } from "../../custom-hooks/use-session";
 import { useNavigate } from 'react-router-dom';
 
 export default function TopNavbar() {
-  const [auth, setAuth] = useSession("auth", null);
+  const [user, setAuth] = useSession("auth", null);
 
   const navigate = useNavigate(); 
   
@@ -17,9 +17,9 @@ export default function TopNavbar() {
 
   const loggedInLinks = (
     <Nav className="me-auto">
-      <Nav.Link href="/profile">Profile</Nav.Link>
-      <Nav.Link href="/direct_messages">Direct Messages</Nav.Link>
-      <Nav.Link href="/group_messages">Group Messages</Nav.Link>
+      <Nav.Link href={`/${user?.username}/profile`}>Profile</Nav.Link>
+      <Nav.Link href={`/${user?.username}/contacts`}>Direct Messages</Nav.Link>
+      <Nav.Link href={`/${user?.username}/groups`}>Group Messages</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>
         Logout
       </Nav.Link>
@@ -39,7 +39,7 @@ export default function TopNavbar() {
       <Container>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          {auth ? loggedInLinks : loggedOutLinks}
+          {user ? loggedInLinks : loggedOutLinks}
         </Navbar.Collapse>
       </Container>
     </Navbar>

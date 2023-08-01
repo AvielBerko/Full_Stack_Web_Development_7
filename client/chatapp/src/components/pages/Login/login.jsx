@@ -23,7 +23,7 @@ export default function Login() {
           console.log(user);
           if (user) {
             setAuth(user);
-            navigate("/direct_messages", { replace: true });
+            navigate(`/${user.username}/contacts`, { replace: true });
           } else {
             setAlert("Something went wrong... Please try again later.");
           }

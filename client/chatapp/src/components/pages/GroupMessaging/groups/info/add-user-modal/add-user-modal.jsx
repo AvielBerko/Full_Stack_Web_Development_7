@@ -39,7 +39,7 @@ export default function AddUserModal({
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
-      setFatherAlert(error.message); // TODO set the alert of the father!!!
+      setFatherAlert(error.message);
     }
   });
 
