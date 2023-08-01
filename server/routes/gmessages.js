@@ -73,7 +73,7 @@ router.put("/:id", async (req, res) => {
         const updated_gmessage = {...req.body, id:gmessages_id};
         updated_gmessage.edited = true;
         const result = await gmessages_db.updateGroupMessage(updated_gmessage, user.id);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Group message to update was not found!'});
+        if (result.changedRows === 0) return wrapper.no_Changes_response(res);
         res.send(updated_gmessage);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

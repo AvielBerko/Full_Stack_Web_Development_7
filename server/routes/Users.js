@@ -8,7 +8,7 @@ const wrapper = require('./wrapper.js');
 const updated_user_schema = Joi.object({
   id: Joi.string().guid({ version: ['uuidv4']}),
   username: Joi.string().min(3).max(30),
-  phone_number: Joi.string().length(10),
+  phone_number: Joi.string().length(10).pattern(/^\d+$/).message({'string.pattern.base':'phone number must contain only numbers.'}),
 })
 
 router.get("/", async (req, res) => {
@@ -32,7 +32,7 @@ router.put("/:id", async (req, res) => {
   try {
     const updated_user = {...req.body, id:user_id};
     const result = await users_db.updateUser(updated_user);
-    if (result.changedRows === 0) return res.status(404).send({error: 'User to update was not found!'});
+    if (result.changedRows === 0) return wrapper.no_Changes_response(res);
     res.send(jwt.generateJWT(updated_user));
   } catch (err) {
     if(err.code === 'ER_DUP_ENTRY'){

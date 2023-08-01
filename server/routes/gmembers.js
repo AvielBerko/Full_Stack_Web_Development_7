@@ -71,7 +71,7 @@ router.put("/:id", async (req, res) => {
         const gmembers_id = req.params.id;
         const updated_gmember = {...req.body, id:gmembers_id};
         const result = await gmembers_db.updateGroupMember(updated_gmember);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Group member to update was not found!'});
+        if (result.changedRows === 0) return wrapper.no_Changes_response(res);
         res.send(updated_gmember);
     } catch (err) {
       res.status(400).send(err);
@@ -80,14 +80,18 @@ router.put("/:id", async (req, res) => {
 
   router.delete("/:user_id", async (req, res) => {
     const user = jwt.verifyJWT(req.headers.authorization);
+    const groupchat_id = req.locals.groupchat_id;
     if (!user) return wrapper.unauthorized_response(res);
     if (user.id !== req.params.user_id){
-      const result = await is_admin(req.locals.groupchat_id, user.id);
+      const result = await is_admin(groupchat_id, user.id);
       if (!result) return wrapper.unauthorized_response(res); 
     }
-    
+
+    //cannot leave and make an empty group
+    const gmembers = await gmembers_db.getGroupMembers(groupchat_id);
+    if (gmembers.length === 1) return res.status(400).send({error: 'Cannot make an empty group, delete group instead!'})
+
     try {
-        const groupchat_id = req.locals.groupchat_id;
         const user_id = req.params.user_id;
         const result = await gmembers_db.deleteGroupMember(groupchat_id, user_id);
         if (result.changedRows === 0) return res.status(404).send({error: 'Group member to delete was not found!'});
