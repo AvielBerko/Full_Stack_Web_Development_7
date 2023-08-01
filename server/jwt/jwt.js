@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken');
-const secret = 'tX1f7d&$w3kD7a9JpS@0^cTzB*7sK';
-const alg = 'HS256';
-const duration = '1h';
+const config = require('./jwt_config.js');
 
-function generateJWT(data){
-    return jwt.sign(data, secret, { expiresIn: duration, algorithm: alg });
+function generateJWT(data) {//interest
+    return jwt.sign(data, config.SECRET, { expiresIn: config.DURATION, algorithm: config.ALG });
 }
 
-function verifyJWT(token){
+function verifyJWT(token) {
     try {
-        return jwt.verify(token, secret);
-      } catch (err) {
+        return jwt.verify(token, config.SECRET);
+    } catch (err) {
         return false;
     }
 }
 
-module.exports = {generateJWT, verifyJWT}
+module.exports = { generateJWT, verifyJWT }

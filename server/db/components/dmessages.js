@@ -2,22 +2,22 @@ const db_connection = require('../db_connection');
 const generic = require('../crud.js');
 const tables = require('../table_names.js');
 
-async function getDirectMessages(sender_id, receiver_id){
-    return generic.read(tables.DIRECT_MESSAGES, {sender_id: sender_id, receiver_id:receiver_id, valid: true});
+async function getDirectMessages(sender_id, receiver_id) {
+    return generic.read(tables.DIRECT_MESSAGES, { sender_id: sender_id, receiver_id: receiver_id, valid: true });
 }
 
-async function addDirectMessage(new_dmessage){
+async function addDirectMessage(new_dmessage) {
     new_dmessage.valid = true;
     return generic.create(tables.DIRECT_MESSAGES, new_dmessage);
 }
 
-async function updateDirectMessage(updated_dmessage, user_id){
-    return generic.update(tables.DIRECT_MESSAGES, updated_dmessage, {id: updated_dmessage.id, sender_id: user_id});
+async function updateDirectMessage(updated_dmessage, user_id) {
+    return generic.update(tables.DIRECT_MESSAGES, updated_dmessage, { id: updated_dmessage.id, sender_id: user_id });
 }
 
-async function deleteDirectMessage(dmessage_id, user_id){
-    const deleted = {valid: false}
-    return generic.update(tables.DIRECT_MESSAGES, deleted, {id: dmessage_id, sender_id: user_id});
+async function deleteDirectMessage(dmessage_id, user_id) {
+    const deleted = { valid: false }
+    return generic.update(tables.DIRECT_MESSAGES, deleted, { id: dmessage_id, sender_id: user_id });
 }
 
-module.exports = {getDirectMessages, addDirectMessage, updateDirectMessage, deleteDirectMessage};
+module.exports = { getDirectMessages, addDirectMessage, updateDirectMessage, deleteDirectMessage };

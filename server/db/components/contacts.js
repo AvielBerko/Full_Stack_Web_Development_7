@@ -2,7 +2,7 @@ const db_connection = require('../db_connection');
 const generic = require('../crud.js');
 const tables = require('../table_names.js');
 
-async function getUserContacts(user_id){
+async function getUserContacts(user_id) {
     return new Promise((resolve, reject) => {
         db_connection.getConnection(con => {
             con.query(`
@@ -14,26 +14,26 @@ async function getUserContacts(user_id){
                 WHERE saver_id = ? AND ${tables.USERS}.valid = 1 AND ${tables.CONTACTS}.valid = 1
                 ;`,
                 [user_id],
-            (error, result) => {
-                if (error) reject(error);
-                resolve(result);
-            })
+                (error, result) => {
+                    if (error) reject(error);
+                    resolve(result);
+                })
         });
     });
 }
 
-async function addContact(new_contact){
+async function addContact(new_contact) {
     new_contact.valid = true;
     return generic.create(tables.CONTACTS, new_contact);
 }
 
-async function updateContact(updated_contact, user_id){
-    return generic.update(tables.CONTACTS, updated_contact, {id: updated_contact.id, saver_id: user_id});
+async function updateContact(updated_contact, user_id) {
+    return generic.update(tables.CONTACTS, updated_contact, { id: updated_contact.id, saver_id: user_id });
 }
 
-async function deleteContact(contact_id, user_id){
-    const deleted = {valid: false};
-    return generic.update(tables.CONTACTS, deleted, {id: contact_id, saver_id: user_id});
+async function deleteContact(contact_id, user_id) {
+    const deleted = { valid: false };
+    return generic.update(tables.CONTACTS, deleted, { id: contact_id, saver_id: user_id });
 }
 
-module.exports = {getUserContacts, addContact, updateContact, deleteContact};
+module.exports = { getUserContacts, addContact, updateContact, deleteContact };

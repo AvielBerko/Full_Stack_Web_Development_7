@@ -5,12 +5,12 @@
 
 const mysql = require('mysql2');
 const {v4: uuidv4} = require('uuid');
+const dbConfig = require('../db_config.js')
 
-MYSQL_HOST = '127.0.0.1'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'itamar8236'
-
-db_name = 'fswd7db'
+MYSQL_HOST = dbConfig.HOST;
+MYSQL_USER = dbConfig.USER;
+MYSQL_PASSWORD = dbConfig.PASSWORD
+db_name = dbConfig.DB_NAME
 
 const connection = mysql.createConnection({
     host: MYSQL_HOST,

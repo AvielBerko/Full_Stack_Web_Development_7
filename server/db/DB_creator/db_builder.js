@@ -1,11 +1,10 @@
 const mysql = require('mysql2')
+const dbConfig = require('../db_config.js')
 
-
-MYSQL_HOST = '127.0.0.1'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'itamar8236'
-
-db_name = 'fswd7db'
+MYSQL_HOST = dbConfig.HOST;
+MYSQL_USER = dbConfig.USER;
+MYSQL_PASSWORD = dbConfig.PASSWORD
+db_name = dbConfig.DB_NAME
 
 const tables = {
     users: {
@@ -15,7 +14,7 @@ const tables = {
             'email VARCHAR(255)',
             'phone_number VARCHAR(10)',
             'valid BOOLEAN',
-            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',
+            'unarchived BOOLEAN AS (CASE WHEN valid = 1 THEN 1 ELSE NULL END) VIRTUAL',//interest
         ],
         constraints: [
             'UNIQUE (username, unarchived)',
