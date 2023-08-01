@@ -26,7 +26,6 @@ const users = [
     {id: uuidv4(), name: 'david', email: 'david@gmail.com', phone_number: '0505216630' }, 
     {id: uuidv4(), name: 'yossi', email: 'yossi@gmail.com', phone_number: '0504087980' }, 
     {id: uuidv4(), name: 'moshe', email: 'moshe@gmail.com', phone_number: '0548433630' }, 
-    {id: uuidv4(), name: 'a', email: 'a@gmail.com', phone_number: '111111111' }, 
 ]
 
 const users_values = users.map(user => [user.id, user.name, user.email, user.phone_number, true])
@@ -34,7 +33,6 @@ const users_values = users.map(user => [user.id, user.name, user.email, user.pho
 
 //passwords data section:
 const passwords_values = users.map(user=> [uuidv4(), user.id, 'itamar8236', true]);
-passwords_values[passwords_values.length - 1][2] = 'a';
 
 //contacts data section:
 const contacts_values = users.slice(1).map(user=> [uuidv4(), users[0].id, user.id, user.name + '1', true]).concat([[uuidv4(), users[1].id, users[0].id, 'itamar1', true]])
