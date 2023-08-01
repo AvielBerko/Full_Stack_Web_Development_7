@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Alert,
-  Container,
-  Card,
-  Button,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Row, Col, Alert, Card, Button } from "react-bootstrap";
 import GroupsItem from "./groups-item";
 import { getGroups } from "../../../../api/groups";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import JoinGroupModal from "./join-group/join-group-modal";
-import BlockButton from "../../../common/BlockButton/block-button";
 import AddGroupModal from "./add-group/add-group-modal";
+import AlertComponent from "../../../common/AlertComponent/alert-component";
+import "../../../../css/groups.css"
 
 export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
-  const GROUPS_PER_PAGE = 10;
+  if (!user?.id) return <></>;
 
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showJoinGroupModal, setShowJoinGroupModal] = useState(false);
   const [alert, setAlert] = useState("");
-
-  if (!user?.id) return <></>;
 
   const groupsQuery = useQuery({
     queryKey: ["groups", "user_id", user.id],
@@ -34,7 +26,6 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
       setAlert(error.message);
     },
   });
-
 
   if (groupsQuery.isLoading) return <>Loading</>;
   let groupsDOM = null;
@@ -50,16 +41,6 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
       />
     ));
   }
-
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
 
   const joinGroupModalDOM = (
     <JoinGroupModal
@@ -81,7 +62,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
 
   return (
     <>
-      {alert && alertDOM}
+      {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
       {showJoinGroupModal && joinGroupModalDOM}
       {showAddGroupModal && addGroupModalDOM}
       <Card>
@@ -92,33 +73,21 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
       <Card>
         <Card.Header>
           <Row className="d-flex gap-1">
-
-          <Button
-            variant="primary"
-            onClick={() => setShowAddGroupModal(true)}
+            <Button
+              variant="primary"
+              onClick={() => setShowAddGroupModal(true)}
             >
-            Create Group
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => setShowJoinGroupModal(true)}
+              Create Group
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => setShowJoinGroupModal(true)}
             >
-            Join Group
-          </Button>
-        </Row>
+              Join Group
+            </Button>
+          </Row>
         </Card.Header>
-        <div
-          style={{
-            backgroundColor: "#fff",
-            height: "500px",
-            overflowY: "scroll",
-            border: "1px solid #ccc",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {groupsDOM ?? <>No data</>}
-        </div>
+        <div className="groups-list">{groupsDOM ?? <>No data</>}</div>
       </Card>
     </>
   );

@@ -13,8 +13,9 @@ import {
   Alert,
   Container,
 } from "react-bootstrap";
-import { addGroup, joinGroup } from "../../../../../api/groups";
+import { addGroup } from "../../../../../api/groups";
 import { useMutation } from "@tanstack/react-query";
+import AlertComponent from "../../../../common/AlertComponent/alert-component";
 
 export default function AddGroupModal({ user, showState, refetchGroups }) {
   const [name, setName] = useState("");
@@ -48,16 +49,6 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
     resetModal();
   }, [show]);
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <Container fluid>
@@ -67,18 +58,22 @@ export default function AddGroupModal({ user, showState, refetchGroups }) {
           </Col>
         </Row>
         <Row>
-          <Col>{alert && alertDOM}</Col>
+          <Col>
+            {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
+          </Col>
         </Row>
       </Container>{" "}
       <ModalBody>
-        <FormLabel><h4>Group Name:</h4></FormLabel>
-          <InputGroup>
-            <FormControl
-              placeholder="Write here the Name..."
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </InputGroup>
+        <FormLabel>
+          <h4>Group Name:</h4>
+        </FormLabel>
+        <InputGroup>
+          <FormControl
+            placeholder="Write here the Name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </InputGroup>
       </ModalBody>
       <ModalFooter>
         <Button

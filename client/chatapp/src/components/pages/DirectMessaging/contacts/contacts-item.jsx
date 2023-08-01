@@ -18,12 +18,11 @@ export default function ContactsItem({
   setAlert,
 }) {
   if (!contact) return <></>;
+  const selected = selectedContact === contact.user_id;
+
 
   const [showUpdateContactModal, setShowUpdateContactModal] = useState(false);
-
   const queryClient = useQueryClient();
-
-  const selected = selectedContact === contact.user_id;
 
   const deleteContactMutation = useMutation({
     mutationFn: () => deleteContact(contact.id, user.token),
@@ -32,7 +31,6 @@ export default function ContactsItem({
       setSelectedContact(null);
     },
     onError: (error) => {
-      //setAlert("An unexpected error occurred. Please try again later.");
       setAlert(error.message);
     },
   });

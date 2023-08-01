@@ -1,0 +1,8 @@
+.groups-list {
+    background-color: #fff;
+    height: 500px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}

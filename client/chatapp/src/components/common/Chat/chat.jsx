@@ -3,14 +3,11 @@ import { useMutation } from "@tanstack/react-query";
 import { sendFile } from "../../../api/files";
 import Message from "../Message/message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import "../../../css/chat.css"
+import { faPaperPlane, faFileUpload } from "@fortawesome/free-solid-svg-icons";
+import "../../../css/chat.css";
 import {
-  Container,
   Row,
   Col,
-  InputGroup,
-  FormControl,
   Button,
 } from "react-bootstrap";
 
@@ -22,6 +19,8 @@ export default function Chat({
   updateMessageMutation,
   setAlert,
 }) {
+
+  // INTEREST
   const [newMessage, setNewMessage] = useState("");
   const [file, setFile] = useState(null);
 
@@ -84,12 +83,8 @@ export default function Chat({
   };
 
   return (
-    <div
-    className="chat"
-    >
-      <div
-      className="chat-messages"
-      >
+    <div className="chat">
+      <div className="chat-messages">
         {messages.map((message) => {
           return (
             <Message
@@ -103,7 +98,7 @@ export default function Chat({
           );
         })}
       </div>
-      <div style={{ display: "flex", marginTop: "8px" }}>
+      <div className="send-line">
         {file ? (
           <p>{file.name}</p>
         ) : (
@@ -131,7 +126,7 @@ export default function Chat({
                   fileInput.click();
                 }}
               >
-              <FontAwesomeIcon icon={faFileUpload} />
+                <FontAwesomeIcon icon={faFileUpload} />
               </Button>
             </Col>
             <Col className="p-0">

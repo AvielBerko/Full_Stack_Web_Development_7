@@ -17,6 +17,7 @@ import UserItem from "./user-item";
 import { joinGroup } from "../../../../../../api/groups";
 import { getUsers } from "../../../../../../api/users";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import AlertComponent from "../../../../../common/AlertComponent/alert-component";
 
 export default function AddUserModal({
   user,
@@ -40,11 +41,12 @@ export default function AddUserModal({
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
       setFatherAlert(error.message);
-    }
+    },
   });
 
   const joinUserMutation = useMutation({
-    mutationFn: () => joinGroup(group_id, {user_id: selectedUser}, user.token),
+    mutationFn: () =>
+      joinGroup(group_id, { user_id: selectedUser }, user.token),
     onSuccess: (results) => {
       queryClient.invalidateQueries("groups", group_id, "members");
       setShow(false);
@@ -72,10 +74,7 @@ export default function AddUserModal({
   }, [show]);
 
   if (usersQuery.isLoading) return <></>;
-  //if (usersQuery.isError) return <>Error: {error.message}</>;
   if (!usersQuery?.data?.length) return <>No data</>;
-  // add a filter to remove the users that are already member
-  // filter also the current user
   const usersDOM = usersQuery?.data
     ?.filter((u) => {
       // filter the current user
@@ -94,16 +93,6 @@ export default function AddUserModal({
       );
     });
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <Container fluid>
@@ -113,14 +102,13 @@ export default function AddUserModal({
           </Col>
         </Row>
         <Row>
-          <Col>{alert && alertDOM}</Col>
+          <Col>
+            {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
+          </Col>
         </Row>
       </Container>{" "}
       <ModalBody>
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-          {usersDOM}
-        </div>
-
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>{usersDOM}</div>
       </ModalBody>
       <ModalFooter>
         <Button

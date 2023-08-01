@@ -15,6 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import EdibaleLabel from "../../../../common/edibaleLabel/edibale-label";
 import { updateGroup } from "../../../../../api/groups";
 import { useMutation } from "@tanstack/react-query";
+import AlertComponent from "../../../../common/AlertComponent/alert-component";
 
 export default function UpdateGroupModal({ group, user, showState }) {
   const [newName, setNewName] = useState(group.name || "");
@@ -25,7 +26,7 @@ export default function UpdateGroupModal({ group, user, showState }) {
   const updateGroupMutetion = useMutation({
     mutationFn: (group) => updateGroup(group, user.token),
     onSuccess: (results) => {
-      queryClient.setQueryData(["groups", 'user_id', user.id], (oldData) => {
+      queryClient.setQueryData(["groups", "user_id", user.id], (oldData) => {
         const newData = oldData.map((group) => {
           if (group.id === results.id) {
             return { ...group, ...results };
@@ -35,7 +36,6 @@ export default function UpdateGroupModal({ group, user, showState }) {
         });
         return newData;
       });
-//      queryClient.invalidateQueries(["groups", user.id])
     },
     onError: (error) => {
       setAlert(error.message);
@@ -50,7 +50,6 @@ export default function UpdateGroupModal({ group, user, showState }) {
     if (newName !== group.name)
       updateGroupMutetion.mutate({ id: group.id, name: newName });
     else resetModal();
-    //setShow(false);
   };
 
   const resetModal = () => {
@@ -63,16 +62,6 @@ export default function UpdateGroupModal({ group, user, showState }) {
     resetModal();
   }, [group]);
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <Modal show={show}>
       <ModalHeader>
@@ -83,7 +72,9 @@ export default function UpdateGroupModal({ group, user, showState }) {
             </Col>
           </Row>
           <Row>
-            <Col>{alert && alertDOM}</Col>
+            <Col>
+              {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
+            </Col>
           </Row>
         </Container>
       </ModalHeader>

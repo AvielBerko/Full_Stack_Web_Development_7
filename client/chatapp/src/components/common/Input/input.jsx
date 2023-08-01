@@ -1,21 +1,14 @@
+import React from "react";
 import { Form, InputGroup } from "react-bootstrap";
-import { StateSetter } from "../../../src/types/react.types";
-
-type InputProps = Partial<{
-  inputType: string;
-  placeholder: string;
-  value: string;
-  setter: StateSetter<string>;
-}>;
 
 export default function Input({
   inputType,
   placeholder,
   value,
   setter,
-}: InputProps) {
+}) {
 
-  const setText = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const setText = (e) => {
     if(!setter){
       return;
     }

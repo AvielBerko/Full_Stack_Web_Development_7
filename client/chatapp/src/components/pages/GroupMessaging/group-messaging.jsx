@@ -17,17 +17,24 @@ export default function GroupMessaging() {
   return (
     <Container fluid>
       <Row>
-      {(!isMobile || !selectedGroup) &&
-       <Col md={3} style={{ borderRight: '1px solid #ccc', padding: '16px' }}>
-         <GroupsList user={user} selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
-       </Col>
-}
-       <Col md={8} style={{ padding: '16px' }}>
-        <Row>
-         <GroupChat user={user} group_id={selectedGroup} />
-        </Row>
-       </Col>
-     </Row>
+        {(!isMobile || !selectedGroup) && (
+          <Col
+            md={3}
+            style={{ borderRight: "1px solid #ccc", padding: "16px" }}
+          >
+            <GroupsList
+              user={user}
+              selectedGroup={selectedGroup}
+              setSelectedGroup={setSelectedGroup}
+            />
+          </Col>
+        )}
+        <Col md={8} style={{ padding: "16px" }}>
+          <Row>
+            <GroupChat user={user} group_id={selectedGroup} />
+          </Row>
+        </Col>
+      </Row>
     </Container>
   );
 }

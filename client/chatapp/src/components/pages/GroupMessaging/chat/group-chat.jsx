@@ -6,7 +6,7 @@ import {
   deleteGroupMessage,
   updateGroupMessage,
 } from "../../../../api/gmessages";
-import { Alert, Row, Col } from "react-bootstrap";
+import AlertComponent from "../../../common/AlertComponent/alert-component"
 import Chat from "../../../common/Chat/chat";
 
 export default function GroupChat({ user, group_id }) {
@@ -32,7 +32,8 @@ export default function GroupChat({ user, group_id }) {
   });
 
   const deleteMessageMutation = useMutation({
-    mutationFn: (message) => deleteGroupMessage(group_id, message.id, user.token),
+    mutationFn: (message) =>
+      deleteGroupMessage(group_id, message.id, user.token),
     onSuccess: (results) => {
       messagesQuery.refetch();
     },
@@ -51,20 +52,9 @@ export default function GroupChat({ user, group_id }) {
     },
   });
 
-  const alertDOM = (
-    <Row>
-      <Col>
-        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
-          {alert}
-        </Alert>
-      </Col>
-    </Row>
-  );
-
   return (
     <>
-      {alert && alertDOM}
-  
+      {alert && <AlertComponent alert={alert} setAlert={setAlert} />}
       <Chat
         user={user}
         messagesQuery={messagesQuery}

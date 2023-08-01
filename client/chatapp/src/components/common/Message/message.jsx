@@ -5,6 +5,7 @@ import UpdateMessageModal from "./update-message/update-message-modal";
 import ImageMessage from "./image-message";
 import routes from "../../../env";
 import { Dropdown } from "react-bootstrap";
+import "../../../css/message.css";
 
 export default function Message({
   message,
@@ -15,6 +16,7 @@ export default function Message({
 }) {
   const [showUpdateMessageModal, setShowUpdateMessageModal] = useState(false);
 
+  // INTEREST
   const contactsQuery = useQuery({
     queryKey: ["contacts", user.id],
     enabled: user?.id != undefined,
@@ -35,6 +37,8 @@ export default function Message({
     (contact) => contact.user_id === message.sender_id
   );
 
+  const senderStyle = isSentByUser ? "user-message" : "other-message";
+
   const nameOrAddress = isSentByUser
     ? ""
     : isSentByContact
@@ -43,19 +47,6 @@ export default function Message({
       )?.name
     : message.email;
 
-  const senderStyle = isSentByUser
-    ? {
-        alignSelf: "flex-end",
-        backgroundColor: "#007bff",
-        color: "#fff",
-        margin: "5px",
-      }
-    : {
-        alignSelf: "flex-start",
-        backgroundColor: "#b0b0b0",
-        color: "#000",
-        margin: "5px",
-      };
 
   const handleDelete = () => {
     deleteMessageMutation.mutate(message);
@@ -92,15 +83,7 @@ export default function Message({
   return (
     <>
       {updateMessageModalDOM}
-      <div
-        style={{
-          padding: "8px",
-          borderRadius: "8px",
-          marginBottom: "8px",
-          maxWidth: "50%",
-          ...senderStyle,
-        }}
-      >
+      <div className={`message ${senderStyle}`}>
         <div key={message.id}>
           {message.type === "text" && (
             <>
