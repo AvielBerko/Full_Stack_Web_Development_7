@@ -18,7 +18,7 @@ const updated_gmembers_schema = Joi.object({
 async function is_admin(group_id, user_id){
   const members = await gmembers_db.getGroupMembers(group_id);
   return members.some(member => member.user_id === user_id && member.admin)
-}//TODO - move to sql
+}
 
 router.get("/", async (req, res) => {
   if (!jwt.verifyJWT(req.headers.authorization)) 

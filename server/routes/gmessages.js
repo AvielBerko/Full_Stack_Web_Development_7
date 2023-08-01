@@ -21,7 +21,7 @@ async function user_in_group(user_id, group_id){
   groups = groups.map(group => group.id);
   if (groups.includes(group_id)) return true;
   return false;
-}//TODO - move to sql
+}
 
 router.get("/", async (req, res) => {
   const user = jwt.verifyJWT(req.headers.authorization);

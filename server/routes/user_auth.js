@@ -40,6 +40,6 @@ router.post("/register", async (req, res) => {
       }
       else res.status(500).send({error: 'Internal server error'});
     }
-  });//TODO - change error message of rows = 0
+  });
 
 module.exports = router;
