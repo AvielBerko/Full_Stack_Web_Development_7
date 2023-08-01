@@ -38,7 +38,7 @@ export default function AddContactModal({
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
-      setFatherAlert(error.message); // TODO set the alert of the father!!!
+      setFatherAlert(error.message);
     }
   });
 
@@ -104,7 +104,7 @@ export default function AddContactModal({
   const alertDOM = (
     <Row>
       <Col>
-        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
           {alert}
         </Alert>
       </Col>

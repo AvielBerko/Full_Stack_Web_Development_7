@@ -1,7 +1,5 @@
 import axios from "axios";
 
-// TODO change error to check if it is an axios error or server error
-
 export const axiosHeader = (jwt) => ({ headers: { Authorization: jwt } });
 
 export function get(path, token) {

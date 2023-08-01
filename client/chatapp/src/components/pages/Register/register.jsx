@@ -71,7 +71,7 @@ export default function Register() {
       };
       register(newUser).then((res) => {
         setAuth(res);
-        navigate("/profile", { replace: true });
+        navigate(`/${user.username}/profile`, { replace: true });
       }).catch((error) => setAlert(error.message));;
     }
   };
@@ -83,7 +83,7 @@ export default function Register() {
   const alertDOM = (
     <Row className="text-center">
       <Col>
-        <Alert variant={alert ? "danger" : ""} onAbort={() => setAlert("")}>
+        <Alert variant={alert ? "danger" : ""} onClose={() => setAlert("")}>
           {alert}
         </Alert>
       </Col>

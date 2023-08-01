@@ -35,45 +35,8 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
     },
   });
 
-  // const groupsQuery = useInfiniteQuery({
-  //   queryKey: ["groups", user.id],
-  //   enabled: user?.id != undefined,
-  //   queryFn: ({ pageParam = 0 }) => {
-  //     const start = pageParam;
-  //     return getGroups(user.id, start, start + CONTACTS_PER_PAGE);
-  //     return getGroups(user.id);
-  //   },
-  //   getNextPageParam: (lastPage, allPages) => {
-  //     if (allPages.length >= 2 && lastPage.length == 0) {
-  //       return undefined;
-  //     }
-  //     const allPagesCount = allPages.reduce(
-  //       (prev, cur) => prev + cur.length,
-  //       0
-  //     );
-  //     return allPagesCount;
-  //   },
-  //   staleTime: 1000 * 60 * 5, // 5 minutes
-  //   onError: (error) => {
-  //     setAlert(error.message);
-  //   }
-  // });
-
-  // TODO:
-  // const postsDOM = postsQuery?.data?.pages
-  // ?.reduce((prev, cur) => [...prev, ...cur], [])
-  // .map((post) => (
-  //   <PostItem
-  //     key={post.id}
-  //     post={post}
-  //     deletePost={handleDeletePost}
-  //     setAlert={setAlert}
-  //     updatePost={handleUpdatePost}
-  //   />
-  // ));
 
   if (groupsQuery.isLoading) return <>Loading</>;
-  //if (groupsQuery.isError) return <>Error</>;
   let groupsDOM = null;
   if (groupsQuery.data?.length) {
     groupsDOM = groupsQuery.data.map((group) => (
@@ -91,7 +54,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   const alertDOM = (
     <Row>
       <Col>
-        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
           {alert}
         </Alert>
       </Col>

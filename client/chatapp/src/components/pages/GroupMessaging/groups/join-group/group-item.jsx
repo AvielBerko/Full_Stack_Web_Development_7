@@ -14,7 +14,6 @@ export default function GroupItem({ group , selectedGroup, setSelectedGroup }) {
             <Card.Title style={{ fontWeight: selected ? "bold" : "normal" }}>
               {group.name}
             </Card.Title>
-            {/* TODO - add participants */}
           </Card.Body>
         </Card>
       </div>

@@ -59,7 +59,7 @@ export default function GroupInfoModal({
   const alertDOM = (
     <Row>
       <Col>
-        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
           {alert}
         </Alert>
       </Col>

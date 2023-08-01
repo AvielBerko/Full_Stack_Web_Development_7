@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
-import ContextMenu from "../../common/ContextMenu/context-menu";
-import { useContextMenu } from "../../../custom-hooks/use-context-menu"; // Import the custom hook
 import { useQuery } from "@tanstack/react-query";
 import { getContacts } from "../../../api/contacts";
 import UpdateMessageModal from "./update-message/update-message-modal";
 import ImageMessage from "./image-message";
 import routes from "../../../env";
+import { Dropdown } from "react-bootstrap";
 
 export default function Message({
   message,
@@ -28,14 +26,6 @@ export default function Message({
       setAlert(error.message);
     },
   });
-
-  const {
-    isContextMenuOpen,
-    contextMenuPosition,
-    contextMenuRef,
-    openContextMenu,
-    closeContextMenu,
-  } = useContextMenu(); // Use the custom hook
 
   if (contactsQuery.isLoading) return <>Loading</>;
   if (contactsQuery.isError) return <>Error</>;
@@ -67,17 +57,6 @@ export default function Message({
         margin: "5px",
       };
 
-  const handleContextMenu = (event) => {
-    if (!isSentByUser) return;
-    openContextMenu(event);
-    const clickEvent = new MouseEvent("click", {
-      bubbles: true,
-      cancelable: true,
-      button: 0, // 0 for left click, 1 for middle click, 2 for right click
-    });
-    event.currentTarget.dispatchEvent(clickEvent);
-  };
-
   const handleDelete = () => {
     deleteMessageMutation.mutate(message);
   };
@@ -90,11 +69,30 @@ export default function Message({
     />
   );
 
+  const dropdownDOM = (
+    <Dropdown>
+      <Dropdown.Toggle
+        variant=""
+        id="dropdown-basic"
+        style={{ fontSize: "0.7rem" }}
+      >
+        <i className="fas fa-ellipsis-v"></i>
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        {message.type === "text" && (
+          <Dropdown.Item onClick={() => setShowUpdateMessageModal(true)}>
+            Edit
+          </Dropdown.Item>
+        )}
+        <Dropdown.Item onClick={handleDelete}>Delete</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+
   return (
     <>
       {updateMessageModalDOM}
       <div
-        onContextMenu={handleContextMenu}
         style={{
           padding: "8px",
           borderRadius: "8px",
@@ -116,46 +114,38 @@ export default function Message({
                   </div>
                 )}
               </div>
-              <p style={{ marginBottom: "4px", wordWrap: "break-word" }}>{message.message}</p>
+              <div className="d-flex justify-content-between  align-items-center">
+                <p style={{ marginBottom: "4px", wordWrap: "break-word" }}>
+                  {message.message}
+                </p>
+                {isSentByUser && dropdownDOM}
+              </div>
             </>
           )}
           {message.type === "image" && (
-            <ImageMessage src={routes.getFile(message.message)} />
+            <>
+              <div style={{ textAlign: "right" }}>
+                {isSentByUser && dropdownDOM}
+              </div>
+              <ImageMessage src={routes.getFile(message.message)} />
+            </>
           )}
-          {/*  <img
-               src={routes.getFile(message.message)}
-               style={{ maxWidth: "100%", maxHeight: "200px" }}
-             /> */}
           {message.type === "video" && (
-            <video
-              src={routes.getFile(message.message)}
-              style={{ maxWidth: "100%", maxHeight: "200px" }}
-              controls
-            />
+            <>
+              <div style={{ textAlign: "right" }}>
+                {isSentByUser && dropdownDOM}
+              </div>
+              <video
+                src={routes.getFile(message.message)}
+                style={{ maxWidth: "100%", maxHeight: "200px" }}
+                controls
+              />
+            </>
           )}
-
           <div style={{ fontSize: "10px", textAlign: "right" }}>
             {new Date(message.time_sent).toLocaleString()}
           </div>
         </div>
-
-        {isContextMenuOpen &&
-          createPortal(
-            <ContextMenu
-              contextMenuRef={contextMenuRef}
-              contextMenuPosition={contextMenuPosition}
-              onClose={closeContextMenu}
-              options={
-                message.type === "text"
-                  ? [
-                      { Edit: () => setShowUpdateMessageModal(true) },
-                      { Delete: handleDelete },
-                    ]
-                  : [{ Delete: handleDelete }]
-              }
-            />,
-            document.body
-          )}
       </div>
     </>
   );

@@ -39,7 +39,7 @@ export default function AddUserModal({
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     onError: (error) => {
-      setFatherAlert(error.message); // TODO set the alert of the father!!!
+      setFatherAlert(error.message);
     }
   });
 
@@ -97,7 +97,7 @@ export default function AddUserModal({
   const alertDOM = (
     <Row>
       <Col>
-        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
           {alert}
         </Alert>
       </Col>
@@ -109,7 +109,7 @@ export default function AddUserModal({
       <Container fluid>
         <Row className="text-center">
           <Col>
-            <h3>Add Contact</h3>
+            <h3>Add User</h3>
           </Col>
         </Row>
         <Row>

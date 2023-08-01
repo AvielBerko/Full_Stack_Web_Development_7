@@ -23,7 +23,7 @@ export default function Login() {
           console.log(user);
           if (user) {
             setAuth(user);
-            navigate("/direct_messages", { replace: true });
+            navigate(`/${user.username}/contacts`, { replace: true });
           } else {
             setAlert("Something went wrong... Please try again later.");
           }
@@ -36,7 +36,7 @@ export default function Login() {
   const alertDOM = (
     <Row className="text-center">
       <Col>
-        <Alert variant={alert ? "danger" : ""} onAbort={() => setAlert("")}>
+        <Alert variant={alert ? "danger" : ""} onClose={() => setAlert("")}>
           {alert}
         </Alert>
       </Col>
