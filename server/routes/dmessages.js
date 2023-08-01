@@ -65,7 +65,7 @@ router.put("/:id", async (req, res) => {
         updated_dmessage.receiver_id = req.locals.user_id;
         updated_dmessage.edited = true;
         const result = await dmessages_db.updateDirectMessage(updated_dmessage, user.id);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Direct message to update was not found!'});
+        if (result.changedRows === 0) return wrapper.no_Changes_response(res);
         res.send(updated_dmessage);
     } catch (err) {
       res.status(500).send({error: 'Internal server error'});

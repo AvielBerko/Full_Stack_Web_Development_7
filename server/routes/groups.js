@@ -65,7 +65,7 @@ router.put("/:id", async (req, res) => {
         const group_id = req.params.id;
         const updated_group = {...req.body, id:group_id};
         const result = await groups_db.updateGroup(updated_group, user.id);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Group to update was not found!'});
+        if (result.changedRows === 0) return wrapper.no_Changes_response(res);
         res.send(updated_group);
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){

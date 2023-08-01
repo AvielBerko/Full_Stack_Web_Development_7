@@ -55,7 +55,7 @@ router.put("/:id", async (req, res) => {
         const contact_id = req.params.id;
         const updated_contact = {name:req.body.name, id:contact_id};
         const result = await contacts_db.updateContact(updated_contact, user.id);
-        if (result.changedRows === 0) return res.status(404).send({error: 'Contact to update was not found!'});
+        if (result.changedRows === 0) return wrapper.no_Changes_response(res);
         res.send(updated_contact);
     } catch (err) {
       if(err.code === 'ER_DUP_ENTRY'){
