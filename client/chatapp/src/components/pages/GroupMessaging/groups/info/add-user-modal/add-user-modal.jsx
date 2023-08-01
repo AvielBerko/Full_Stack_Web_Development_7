@@ -109,7 +109,7 @@ export default function AddUserModal({
       <Container fluid>
         <Row className="text-center">
           <Col>
-            <h3>Add Contact</h3>
+            <h3>Add User</h3>
           </Col>
         </Row>
         <Row>

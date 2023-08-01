@@ -13,16 +13,19 @@ export default function TopNavbar() {
     navigate("/login", { replace: true });
   };
 
+  // TODO - handle paths
+
   const loggedInLinks = (
     <Nav className="me-auto">
       <Nav.Link href="/profile">Profile</Nav.Link>
       <Nav.Link href="/direct_messages">Direct Messages</Nav.Link>
-      <Nav.Link href="/group_messages">Groups</Nav.Link>
+      <Nav.Link href="/group_messages">Group Messages</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>
         Logout
       </Nav.Link>
     </Nav>
   );
+
 
   const loggedOutLinks = (
     <Nav className="me-auto">
