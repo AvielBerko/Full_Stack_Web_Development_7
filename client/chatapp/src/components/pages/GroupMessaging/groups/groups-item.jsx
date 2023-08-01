@@ -96,45 +96,50 @@ export default function GroupsItem({
       {admin && updateGroupModalDOM}
       {groupInfoModalDOM}
       <ListGroupItem>
-        <div
-          onClick={() => {
-            setSelectedGroup(group.id);
+        <Card
+          style={{
+            border: selected ? "2px solid #007bff" : "1px solid #ced4da",
+            borderRadius: "8px",
           }}
         >
-          <Card
-            style={{
-              border: selected ? "2px solid #007bff" : "1px solid #ced4da",
-              borderRadius: "8px",
-            }}
-          >
-            <Card.Body>
-              <Card.Title
-                className="d-flex justify-content-between"
-                style={{ fontWeight: selected ? "bold" : "normal" }}
+          <Card.Body>
+            <Card.Title
+              className="d-flex justify-content-between"
+              style={{ fontWeight: selected ? "bold" : "normal" }}
+            >
+              <div
+                onClick={() => {
+                  setSelectedGroup(group.id);
+                }}
+                style={{ cursor: "pointer" }}
               >
                 {group.name}
-                <Dropdown>
-                  <Dropdown.Toggle variant="link" id="dropdown-basic">
-                    <i className="fas fa-ellipsis-v"></i>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    {admin && (
-                      <Dropdown.Item
-                        onClick={() => setShowUpdateGroupModal(true)}
-                      >
-                        Edit
-                      </Dropdown.Item>
-                    )}
-                    <Dropdown.Item onClick={handleLeave}>Leave</Dropdown.Item>
-                    {admin && (
-                      <Dropdown.Item onClick={handleDelete}>
-                        Delete
-                      </Dropdown.Item>
-                    )}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Card.Title>
+              </div>
+              <Dropdown>
+                <Dropdown.Toggle variant="link" id="dropdown-basic">
+                  <i className="fas fa-ellipsis-v"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {admin && (
+                    <Dropdown.Item
+                      onClick={() => setShowUpdateGroupModal(true)}
+                    >
+                      Edit
+                    </Dropdown.Item>
+                  )}
+                  <Dropdown.Item onClick={handleLeave}>Leave</Dropdown.Item>
+                  {admin && (
+                    <Dropdown.Item onClick={handleDelete}>Delete</Dropdown.Item>
+                  )}
+                </Dropdown.Menu>
+              </Dropdown>
+            </Card.Title>
+            <div
+              onClick={() => {
+                setSelectedGroup(group.id);
+              }}
+              style={{ cursor: "pointer" }}
+            >
               <Card.Text style={{ fontSize: "12.5px" }}>
                 Created: {new Date(group.time_created).toLocaleDateString()}
               </Card.Text>
@@ -146,9 +151,9 @@ export default function GroupsItem({
                   {groupMembersQuery?.data?.length} Members
                 </a>
               </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
+            </div>
+          </Card.Body>
+        </Card>
       </ListGroupItem>
     </>
   );

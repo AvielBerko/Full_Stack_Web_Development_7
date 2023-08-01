@@ -16,8 +16,8 @@ export default function TopNavbar() {
   const loggedInLinks = (
     <Nav className="me-auto">
       <Nav.Link href={`/${user?.username}/profile`}>Profile</Nav.Link>
-      <Nav.Link href={`/${user?.username}/contacts`}>Direct Messages</Nav.Link>
-      <Nav.Link href={`/${user?.username}/groups`}>Group Messages</Nav.Link>
+      <Nav.Link href={`/${user?.username}/contacts`}>Contacts</Nav.Link>
+      <Nav.Link href={`/${user?.username}/groups`}>Groups</Nav.Link>
       <Nav.Link href="#" onClick={logOut}>
         Logout
       </Nav.Link>

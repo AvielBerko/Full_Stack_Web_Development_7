@@ -70,8 +70,8 @@ export default function Register() {
         phone_number: phoneNumber,
       };
       register(newUser)
-        .then((res) => {
-          setAuth(res);
+        .then((user) => {
+          setAuth(user);
           navigate(`/${user.username}/profile`, { replace: true });
         })
         .catch((error) => setAlert(error.message));
