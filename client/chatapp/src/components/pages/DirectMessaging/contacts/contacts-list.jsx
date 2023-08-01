@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-  Alert,
-  Card,
-} from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import ContactsItem from "./contacts-item";
 import { getContacts } from "../../../../api/contacts";
 import { useQuery } from "@tanstack/react-query";
 import AddContactModal from "./add-contact/add-contact-modal";
 import BlockButton from "../../../common/BlockButton/block-button";
 import AlertComponent from "../../../common/AlertComponent/alert-component";
-import "../../../../css/contacts.css"
+import "../../../../css/contacts.css";
 
 export default function ContactsList({
   user,
@@ -82,9 +75,7 @@ export default function ContactsList({
           </BlockButton>
         </Card.Header>
 
-        <div className="contacts-list">
-          {contactsDOM ?? <>No data</>}
-        </div>
+        <div className="contacts-list">{contactsDOM ?? <>No data</>}</div>
       </Card>
     </>
   );
