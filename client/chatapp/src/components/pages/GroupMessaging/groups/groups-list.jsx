@@ -91,7 +91,7 @@ export default function GroupsList({ user, selectedGroup, setSelectedGroup }) {
   const alertDOM = (
     <Row>
       <Col>
-        <Alert variant="danger" onAbort={() => setAlert("")} dismissible>
+        <Alert variant="danger" onClose={() => setAlert("")} dismissible>
           {alert}
         </Alert>
       </Col>

@@ -36,7 +36,7 @@ export default function Login() {
   const alertDOM = (
     <Row className="text-center">
       <Col>
-        <Alert variant={alert ? "danger" : ""} onAbort={() => setAlert("")}>
+        <Alert variant={alert ? "danger" : ""} onClose={() => setAlert("")}>
           {alert}
         </Alert>
       </Col>

@@ -46,6 +46,7 @@ export default function GroupsItem({
     onSuccess: (results) => {
       if (results === "") {
         queryClient.invalidateQueries(["groups"]);
+        setSelectedGroup(null);
       } else {
         setAlert(results);
       }
