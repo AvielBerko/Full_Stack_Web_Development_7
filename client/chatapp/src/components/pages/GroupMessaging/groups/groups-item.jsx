@@ -134,7 +134,7 @@ export default function GroupsItem({
                 </Dropdown.Menu>
               </Dropdown>
             </Card.Title>
-            <div
+            <Card.Text
               onClick={() => {
                 setSelectedGroup(group.id);
               }}
@@ -143,15 +143,15 @@ export default function GroupsItem({
               <Card.Text style={{ fontSize: "12.5px" }}>
                 Created: {new Date(group.time_created).toLocaleDateString()}
               </Card.Text>
-              <Card.Text style={{ fontSize: "12.5px" }}>
-                <a
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setShowGroupInfoModal(true)}
-                >
-                  {groupMembersQuery?.data?.length} Members
-                </a>
-              </Card.Text>
-            </div>
+            </Card.Text>
+            <Card.Text style={{ fontSize: "12.5px" }}>
+              <a
+                style={{ cursor: "pointer" }}
+                onClick={() => setShowGroupInfoModal(true)}
+              >
+                {groupMembersQuery?.data?.length} Members
+              </a>
+            </Card.Text>
           </Card.Body>
         </Card>
       </ListGroupItem>

@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { sendFile } from "../../../api/files";
 import Message from "../Message/message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import "../../../css/chat.css";
-import {
-  Row,
-  Col,
-  Button,
-} from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 
 export default function Chat({
   user,
@@ -19,7 +15,6 @@ export default function Chat({
   updateMessageMutation,
   setAlert,
 }) {
-
   const [newMessage, setNewMessage] = useState("");
   const [file, setFile] = useState(null);
 
@@ -69,6 +64,20 @@ export default function Chat({
     setFile(event.target.files[0]);
   };
 
+  const scrollableDivRef = useRef(null);
+
+  // Function to scroll the div to the bottom
+  const scrollToBottom = () => {
+    const scrollableDiv = scrollableDivRef.current;
+    if (scrollableDiv) {
+      scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
+    }
+  };
+  // Scroll to the bottom initially, and whenever new content is added
+  useEffect(() => {
+    scrollToBottom();
+  }, [messagesQuery?.data]);
+
   const { data: messages, isLoading, isError } = messagesQuery;
 
   if (isLoading) return <></>;
@@ -83,7 +92,7 @@ export default function Chat({
 
   return (
     <div className="chat">
-      <div className="chat-messages">
+      <div className="chat-messages" ref={scrollableDivRef}>
         {messages.map((message) => {
           return (
             <Message

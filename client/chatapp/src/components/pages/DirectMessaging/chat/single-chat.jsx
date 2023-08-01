@@ -23,7 +23,7 @@ export default function SingleChat({ user, contact_id }) {
         user.token
       );
     },
-    refetchInterval: 1000,
+    refetchInterval: 500,
   });
 
   const sendMessageMutation = useMutation({

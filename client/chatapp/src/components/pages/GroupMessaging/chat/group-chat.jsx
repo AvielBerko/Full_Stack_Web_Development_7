@@ -18,7 +18,7 @@ export default function GroupChat({ user, group_id }) {
     queryFn: () => {
       return getGroupMessages(group_id, user.token);
     },
-    refetchInterval: 1000,
+    refetchInterval: 500,
   });
 
   const sendMessageMutation = useMutation({
