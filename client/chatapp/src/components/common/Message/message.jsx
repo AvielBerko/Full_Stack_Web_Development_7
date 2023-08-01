@@ -96,7 +96,7 @@ export default function Message({
                   </div>
                 )}
               </div>
-              <div className="d-flex justify-content-between  align-items-center">
+              <div className="d-flex justify-content-between align-items-center">
                 <p style={{ marginBottom: "4px", wordWrap: "break-word" }}>
                   {message.message}
                 </p>
