@@ -32,6 +32,6 @@ router.get("/:filename", (req, res) => {
         }
         res.sendFile(file_path);
     })
-})//TODO - add jwt
+})
 
 module.exports = router;
